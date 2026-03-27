@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>RunBuddy - 你的跑步伙伴</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 首页 -->
+        <section id="page-home" class="page active">
+            <div class="home-header">
+                <h1>RunBuddy</h1>
+                <p class="subtitle">你的跑步伙伴</p>
+            </div>
+
+            <div class="pet-display">
+                <div id="pet-container" class="pet-container">
+                    <div id="pet" class="pet">🐶</div>
+                    <div id="pet-accessories" class="pet-accessories"></div>
+                </div>
+                <div class="pet-speech" id="pet-speech">今天也要加油跑步哦！</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-label">今日距离</div>
+                    <div class="stat-value" id="today-distance">0.00 <span class="unit">公里</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🪙</div>
+                    <div class="stat-label">我的金币</div>
+                    <div class="stat-value" id="user-coins">500 <span class="unit">枚</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏃</div>
+                    <div class="stat-label">累计里程</div>
+                    <div class="stat-value" id="total-distance">0.00 <span class="unit">公里</span></div>
+                </div>
+            </div>
+
+            <div id="running-status" class="running-status hidden">
+                <div class="running-indicator">
+                    <span class="pulse"></span>
+                    <span class="running-text">跑步中...</span>
+                </div>
+                <div class="current-distance">
+                    <span id="current-distance-value">0.00</span>
+                    <span class="unit">公里</span>
+                </div>
+                <div class="earned-coins">
+                    预计获得: <span id="earned-coins">0</span> 🪙
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="btn-start" class="btn btn-primary">
+                    <span class="btn-icon">▶️</span>
+                    开始跑步
+                </button>
+                <button id="btn-end" class="btn btn-success hidden">
+                    <span class="btn-icon">⏹️</span>
+                    结束跑步
+                </button>
+            </div>
+        </section>
+
+        <!-- 地图页 -->
+        <section id="page-map" class="page">
+            <div class="page-header">
+                <h2>🏃 跑步地图</h2>
+                <p class="page-subtitle">探索苏州经典跑步路线</p>
+            </div>
+
+            <div class="map-placeholder">
+                <div class="map-icon">🗺️</div>
+                <h3>地图功能开发中</h3>
+                <p>即将推出更多精彩路线</p>
+            </div>
+
+            <div class="checkpoints-section">
+                <h3>📍 预设打卡点</h3>
+                <div class="checkpoint-list">
+                    <div class="checkpoint-item">
+                        <div class="checkpoint-icon">🏯</div>
+                        <div class="checkpoint-info">
+                            <div class="checkpoint-name">寒山寺</div>
+                            <div class="checkpoint-desc">姑苏城外寒山寺，夜半钟声到客船</div>
+                        </div>
+                        <div class="checkpoint-status locked">🔒</div>
+                    </div>
+                    <div class="checkpoint-item">
+                        <div class="checkpoint-icon">🌉</div>
+                        <div class="checkpoint-info">
+                            <div class="checkpoint-name">枫桥</div>
+                            <div class="checkpoint-desc">月落乌啼霜满天，江枫渔火对愁眠</div>
+                        </div>
+                        <div class="checkpoint-status locked">🔒</div>
+                    </div>
+                    <div class="checkpoint-item">
+                        <div class="checkpoint-icon">🏮</div>
+                        <div class="checkpoint-info">
+                            <div class="checkpoint-name">山塘街</div>
+                            <div class="checkpoint-desc">江南水乡的风情画卷</div>
+                        </div>
+                        <div class="checkpoint-status locked">🔒</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="route-progress">
+                <h3>📊 解锁进度</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="route-progress" style="width: 0%"></div>
+                </div>
+                <p class="progress-text"><span id="unlocked-routes">0</span> / 3 条路线已解锁</p>
+            </div>
+        </section>
+
+        <!-- 装扮页 -->
+        <section id="page-dress" class="page">
+            <div class="page-header">
+                <h2>👔 装扮商店</h2>
+                <p class="page-subtitle">为你的伙伴换上可爱装扮</p>
+            </div>
+
+            <div class="shop-coins">
+                <span class="coin-icon">🪙</span>
+                <span class="coin-value" id="shop-coins">500</span>
+                <span class="coin-label">金币</span>
+            </div>
+
+            <div class="items-grid">
+                <div class="shop-item" data-item-id="hat" data-price="100">
+                    <div class="item-preview">🧢</div>
+                    <div class="item-info">
+                        <div class="item-name">帽子</div>
+                        <div class="item-price">100 🪙</div>
+                    </div>
+                    <button class="btn btn-shop" onclick="app.purchaseItem('hat', 100, '🧢')">
+                        购买
+                    </button>
+                    <div class="item-owned hidden">已拥有</div>
+                </div>
+
+                <div class="shop-item" data-item-id="sunglasses" data-price="150">
+                    <div class="item-preview">🕶️</div>
+                    <div class="item-info">
+                        <div class="item-name">墨镜</div>
+                        <div class="item-price">150 🪙</div>
+                    </div>
+                    <button class="btn btn-shop" onclick="app.purchaseItem('sunglasses', 150, '🕶️')">
+                        购买
+                    </button>
+                    <div class="item-owned hidden">已拥有</div>
+                </div>
+
+                <div class="shop-item" data-item-id="tshirt" data-price="200">
+                    <div class="item-preview">👕</div>
+                    <div class="item-info">
+                        <div class="item-name">T恤</div>
+                        <div class="item-price">200 🪙</div>
+                    </div>
+                    <button class="btn btn-shop" onclick="app.purchaseItem('tshirt', 200, '👕')">
+                        购买
+                    </button>
+                    <div class="item-owned hidden">已拥有</div>
+                </div>
+
+                <div class="shop-item" data-item-id="shoes" data-price="250">
+                    <div class="item-preview">👟</div>
+                    <div class="item-info">
+                        <div class="item-name">跑鞋</div>
+                        <div class="item-price">250 🪙</div>
+                    </div>
+                    <button class="btn btn-shop" onclick="app.purchaseItem('shoes', 250, '👟')">
+                        购买
+                    </button>
+                    <div class="item-owned hidden">已拥有</div>
+                </div>
+            </div>
+
+            <div class="equipped-section">
+                <h3>✨ 当前装备</h3>
+                <div id="equipped-items" class="equipped-items">
+                    <div class="no-equipment">暂无装备</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 我的页 -->
+        <section id="page-profile" class="page">
+            <div class="page-header">
+                <h2>👤 我的资料</h2>
+            </div>
+
+            <div class="profile-avatar">
+                <div class="avatar-container">
+                    <div class="avatar">🐶</div>
+                    <div id="avatar-accessories" class="avatar-accessories"></div>
+                </div>
+                <div class="profile-level">
+                    <span class="level-badge">Lv.1</span>
+                    <span class="level-name">跑步新手</span>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-icon">📏</div>
+                    <div class="profile-stat-content">
+                        <div class="profile-stat-label">累计跑步总里程</div>
+                        <div class="profile-stat-value"><span id="profile-total-distance">0.00</span> 公里</div>
+                    </div>
+                </div>
+
+                <div class="profile-stat">
+                    <div class="profile-stat-icon">🪙</div>
+                    <div class="profile-stat-content">
+                        <div class="profile-stat-label">累计获得总金币</div>
+                        <div class="profile-stat-value"><span id="profile-total-coins">500</span> 枚</div>
+                    </div>
+                </div>
+
+                <div class="profile-stat">
+                    <div class="profile-stat-icon">👔</div>
+                    <div class="profile-stat-content">
+                        <div class="profile-stat-label">已解锁装扮数量</div>
+                        <div class="profile-stat-value"><span id="profile-unlocked-items">0</span> 件</div>
+                    </div>
+                </div>
+
+                <div class="profile-stat">
+                    <div class="profile-stat-icon">🗺️</div>
+                    <div class="profile-stat-content">
+                        <div class="profile-stat-label">已解锁路线数量</div>
+                        <div class="profile-stat-value"><span id="profile-unlocked-routes">0</span> 条</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievement-section">
+                <h3>🏆 成就展示</h3>
+                <div class="achievement-list">
+                    <div class="achievement-item" id="ach-first-run">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-name">首次开跑</div>
+                        <div class="achievement-status locked">🔒</div>
+                    </div>
+                    <div class="achievement-item" id="ach-5km">
+                        <div class="achievement-icon">🏅</div>
+                        <div class="achievement-name">5公里达成</div>
+                        <div class="achievement-status locked">🔒</div>
+                    </div>
+                    <div class="achievement-item" id="ach-rich">
+                        <div class="achievement-icon">💰</div>
+                        <div class="achievement-name">金币达人</div>
+                        <div class="achievement-status locked">🔒</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">首页</span>
+            </button>
+            <button class="nav-item" data-page="map">
+                <span class="nav-icon">🗺️</span>
+                <span class="nav-label">地图</span>
+            </button>
+            <button class="nav-item" data-page="dress">
+                <span class="nav-icon">👔</span>
+                <span class="nav-label">装扮</span>
+            </button>
+            <button class="nav-item" data-page="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">我的</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Toast通知 -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="js/store.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/pet.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
