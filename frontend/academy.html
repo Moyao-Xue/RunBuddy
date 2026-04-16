@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans&display=swap" rel="stylesheet" />
+    <title>RunBuddy Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pixelify Sans', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+        }
+
+        .page-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 透明按钮：绝对定位 */
+        .hotspot {
+            position: absolute;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 按钮1：x:100, y:488, w:87, h:37 */
+        .btn-1 {
+            top: 488px;
+            left: 100px;
+            width: 87px;
+            height: 37px;
+        }
+
+        /* 按钮2：x:214, y:489, w:82, h:35 */
+        .btn-2 {
+            top: 489px;
+            left: 214px;
+            width: 82px;
+            height: 35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <img src="images/iPhone 17 - 35.png" alt="Academy" class="page-bg">
+        <button class="hotspot btn-1" onclick="location.href='iphone17-58.html'"></button>
+        <button class="hotspot btn-2" onclick="location.href='iphone17-35-1.html'"></button>
+    </div>
+</body>
+</html>

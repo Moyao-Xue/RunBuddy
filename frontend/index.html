@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+        }
+
+        .page-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* 点击区域：覆盖整个 iPhone 17-16 页面 */
+        .click-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            cursor: pointer;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="page-slides">
+            <img src="images/iPhone 17 - 13.png" alt="Page 13" class="slide active" id="slide13">
+            <img src="images/iPhone 17 - 15.png" alt="Page 15" class="slide" id="slide15">
+            <img src="images/iPhone 17 - 16.png" alt="Page 16" class="slide" id="slide16">
+            <!-- 点击区域 -->
+            <div class="click-area" onclick="goToShouye()"></div>
+        </div>
+    </div>
+
+    <script>
+        const slides = ['slide13', 'slide15', 'slide16'];
+        let currentSlide = 0;
+
+        // 初始化：显示第一张
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                document.getElementById(slide).classList.toggle('active', i === index);
+            });
+        }
+
+        // 自动切换：0.5秒后切换到15，再过0.5秒切换到16，然后停止
+        setTimeout(() => {
+            currentSlide = 1;
+            showSlide(currentSlide);
+        }, 500);
+
+        setTimeout(() => {
+            currentSlide = 2;
+            showSlide(currentSlide);
+        }, 1000);
+
+        function goToShouye() {
+            window.location.href = 'shouye.html';
+        }
+    </script>
+</body>
+</html>
