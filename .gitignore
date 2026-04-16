@@ -1,0 +1,7 @@
+# 忽略 VS Code 配置
+.vscode/
+# 忽略 Cursor 配置
+.cursor/
+# 也可以忽略系统文件
+.DS_Store
+*/.DS_Store
