@@ -57,6 +57,22 @@
             cursor: pointer;
             z-index: 10;
         }
+
+        /* 透明按钮 */
+        .hotspot {
+            position: absolute;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 跳转按钮：x:143, y:404, w:433, h:433 */
+        .btn-iphone62 {
+            top: 404px;
+            left: 143px;
+            width: 433px;
+            height: 433px;
+        }
     </style>
 </head>
 <body>
@@ -64,7 +80,12 @@
         <img src="images/shouye.png" alt="Shouye" class="page-bg">
         <!-- 点击区域 -->
         <div class="click-area" onclick="goToPageBg()"></div>
+<<<<<<< HEAD
         <div class="click-area-34" onclick="goToPage34()"></div>
+=======
+        <!-- 跳转按钮：x:143, y:404, w:433, h:433 -->
+        <button class="hotspot btn-iphone62" onclick="location.href='iphone17-62.html'"></button>
+>>>>>>> 754c86bb5cf8cbdb8e15340ea9f6076e077a27ae
     </div>
 
     <script>
