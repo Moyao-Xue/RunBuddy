@@ -5,97 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunBuddy</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; background-color: #f0f0f0; 
         }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-        }
-
         .phone-container {
-            position: relative;
-            width: 393px;
-            height: 852px;
-            overflow: hidden;
-            border: 2px solid #333;
-            border-radius: 40px;
+            position: relative; width: 393px; height: 852px;
+            overflow: hidden; border: 2px solid #333; border-radius: 40px;
         }
+        .page-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .page-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* 点击区域：缩小到原来的3/4，保持中心点不变 */
-        .click-area {
-            position: absolute;
-            top: 160px;
-            left: 222px;
-            width: 180px;
-            height: 244px;
-            background: transparent;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .click-area-34 {
-            position: absolute;
-            top: 470px;
-            left: -25px;
-            width: 182px;
-            height: 275px;
-            background: transparent;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        /* 透明按钮 */
+        /* 通用热区样式 - 调试完记得把 background 改回 transparent */
         .hotspot {
             position: absolute;
-            background: transparent;
-            border: none;
-            cursor: pointer;
+            background: rgba(255, 0, 0, 0.3); 
+            border: none; cursor: pointer; z-index: 10;
         }
 
-        /* 跳转按钮：x:143, y:404, w:433, h:433 */
-        .btn-iphone62 {
-            top: 404px;
-            left: 143px;
-            width: 433px;
-            height: 433px;
-        }
+        /* 各个区域坐标 */
+        .click-area { top: 160px; left: 222px; width: 180px; height: 244px; }
+        .click-area-34 { top: 470px; left: -25px; width: 182px; height: 275px; }
+        .btn-iphone62 { top: 404px; left: 180px; width: 390px; height: 390px; }
+        
+        /* 你刚加的房子区域 */
+        .btn-boddyhome { top: 160px; left: 15px; width: 160px; height: 244px; }
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/shouye.png" alt="Shouye" class="page-bg">
-        <!-- 点击区域 -->
-        <div class="click-area" onclick="goToPageBg()"></div>
-<<<<<<< HEAD
-        <div class="click-area-34" onclick="goToPage34()"></div>
-=======
-        <!-- 跳转按钮：x:143, y:404, w:433, h:433 -->
+        
+        <button class="hotspot click-area" onclick="goToPageBg()"></button>
+        <button class="hotspot click-area-34" onclick="goToPage34()"></button>
         <button class="hotspot btn-iphone62" onclick="location.href='iphone17-62.html'"></button>
->>>>>>> 754c86bb5cf8cbdb8e15340ea9f6076e077a27ae
+        
+        <button class="hotspot btn-boddyhome" onclick="location.href='runboddy.html'"></button>
     </div>
 
     <script>
-        function goToPageBg() {
-            window.location.href = 'iphone17-8.html';
-        }
-
-        function goToPage34() {
-            window.location.href = 'iphone17-34.html';
-        }
+        function goToPageBg() { window.location.href = 'iphone17-8.html'; }
+        function goToPage34() { window.location.href = 'iphone17-34.html'; }
     </script>
 </body>
 </html>

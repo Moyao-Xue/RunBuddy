@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <title>RunBuddy - Customize</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: #f0f0f0; 
+            font-family: 'Pixelify Sans', sans-serif; 
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+            background-color: #f4ebd3;
+        }
+
+        /* 1. 背景图层 */
+        .page-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* 2. 透明热区按钮基础样式 */
+        .hotspot {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.3); /* 暂时设为淡红色调试位置 */
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        /* 调试开关：如果需要对齐坐标，取消下面这行的注释 */
+        /* .hotspot { background: rgba(255, 0, 0, 0.3); border: 1px solid white; } */
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <img src="images/iPhone 17 - 29.png" alt="Customize Page" class="page-bg">
+
+        <a href="cart.html" class="hotspot" 
+           style="top: 15px; left: 28px; width: 40px; height: 40px;" 
+           aria-label="Cart"></a>
+
+        <a href="customize.html" class="hotspot" 
+           style="top: 15px; left: 120px; width: 40px; height: 40px;" 
+           aria-label="Back"></a>
+
+        <a href="item-detail.html" class="hotspot" 
+           style="top: 600px; left: 12px; width: 70px; height: 70px;" 
+           aria-label="Select Blue Jacket"></a>
+    </div>
+</body>
+</html>
