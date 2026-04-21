@@ -35,18 +35,6 @@
             display: block;
         }
 
-        /* 点击区域：缩小到原来的3/4，保持中心点不变 */
-        .click-area {
-            position: absolute;
-            top: 176px;
-            left: -108px;
-            width: 284px;
-            height: 284px;
-            background: transparent;
-            cursor: pointer;
-            z-index: 10;
-        }
-
         /* 透明按钮 */
         .hotspot {
             position: absolute;
@@ -55,28 +43,28 @@
             cursor: pointer;
         }
 
-        /* 跳转按钮：x:143, y:404, w:433, h:433 */
-        .btn-iphone62 {
-            top: 404px;
-            left: 143px;
-            width: 433px;
-            height: 433px;
+        /* 返回首页按钮：x:343, y:7, w:59, h:57 */
+        .btn-back {
+            top: 7px;
+            left: 343px;
+            width: 59px;
+            height: 57px;
+        }
+
+        /* 跳转按钮：x:346, y:339, w:56, h:55 */
+        .btn-iphone60 {
+            top: 339px;
+            left: 346px;
+            width: 56px;
+            height: 55px;
         }
     </style>
 </head>
 <body>
     <div class="phone-container">
-        <img src="images/shouye.png" alt="Shouye" class="page-bg">
-        <!-- 点击区域 -->
-        <div class="click-area" onclick="goToPageBg()"></div>
-        <!-- 跳转按钮：x:143, y:404, w:433, h:433 -->
-        <button class="hotspot btn-iphone62" onclick="location.href='iphone17-62.html'"></button>
+        <img src="images/iPhone 17 - 62 (1).png" alt="iPhone 17 - 62" class="page-bg">
+        <button class="hotspot btn-back" onclick="location.href='shouye.html'"></button>
+        <button class="hotspot btn-iphone60" onclick="location.href='iphone17-60.html'"></button>
     </div>
-
-    <script>
-        function goToPageBg() {
-            window.location.href = 'page-bg.html';
-        }
-    </script>
 </body>
 </html>
