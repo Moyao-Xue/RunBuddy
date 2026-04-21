@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<title>Complete!</title>
+<link rel="stylesheet" href="css/settling.css">
+</head>
+<body>
+<main class="iphone" aria-labelledby="completion-title">
+<h1 class="text-wrapper-2" id="completion-title">Complete!</h1>
+
+<section class="rectangle" aria-label="Running summary card">
+  <button class="text-wrapper" type="button" id="moreBtn">...</button>
+
+  <div class="dropdown-menu" id="dropdownMenu">
+    <div class="dropdown-item" id="saveBtn">Save Record</div>
+    <div class="dropdown-item" id="shareBtn">Share</div>
+    <div class="dropdown-item" id="deleteBtn">Delete</div>
+  </div>
+
+  <div class="div">
+    <img class="img" src="images/character.png" alt="" />
+    <p class="date-apr">
+      Date:&nbsp;&nbsp;Apr 14,2026<br/><br/>
+      Distance: 5.20Km<br/><br/>
+      Pace: 6‘12/KM<br/><br/>
+      Duration:32:15<br/><br/>
+      Calories:245 Kcal<br/><br/>
+      Weather:
+    </p>
+    <img class="image" src="images/weather.png" alt="Sunny weather" />
+  </div>
+
+  <p class="p">You have kept running for 100 days</p>
+</section>
+
+<!-- 返回菜单按钮 -->
+<button class="button-back" type="button" id="backToMenuBtn">
+  <img src="images/back-up.png" alt="返回菜单">
+</button>
+
+<script>
+const moreBtn = document.getElementById('moreBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const shareBtn = document.getElementById('shareBtn');
+const backToMenuBtn = document.getElementById('backToMenuBtn');
+
+// 开关下拉菜单
+moreBtn.addEventListener('click', () => {
+  dropdownMenu.classList.toggle('show');
+});
+
+// 点击外部关闭
+document.addEventListener('click', (e) => {
+  if (!moreBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.classList.remove('show');
+  }
+});
+
+// Share 跳转到分享页
+shareBtn.addEventListener('click', () => {
+  window.location.href = 'iphone17-60.html';
+});
+
+// Back to menu 跳转到主页
+backToMenuBtn.addEventListener('click', () => {
+  window.location.href = 'shouye.html';
+});
+</script>
+
+</main>
+</body>
+</html>

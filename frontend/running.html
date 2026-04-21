@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <title>Runner Game Menu</title>
+  <link rel="stylesheet" href="css/running.css">
+</head>
+<body>
+
+
+<main class="iphone" aria-label="Runner game menu screen">
+  <!-- 双背景：无缝循环滚动 -->
+  <img class="background" id="bg1" src="images/background1.png" alt="">
+  <img class="background" id="bg2" src="images/background2.png" alt="">
+
+  <img class="runner-stand" id="runner" src="images/stand.png" alt="Player">
+  
+  <!-- people 会跟随 bg2 -->
+  <div class="people" id="people" aria-hidden="true">
+    <img class="element" src="images/people.png" alt="" />
+  </div>
+
+  <!-- 以下不变 -->
+  <div class="stats-panel" id="statsPanel">
+    <div class="stats-text">
+      <p id="statTime">Time: 00:00:00</p>
+      <p id="statPace">Pace: 0 km/h</p>
+      <p id="statHeartRate">Heart rate: 0 bpm</p>
+    </div>
+  </div>
+
+  <nav aria-label="Game controls">
+    <button class="button-back" id="backBtn"></button>
+    <button class="setting-down-default"></button>
+    <button class="button-start-up" id="startBtn">
+      <img class="button-start-up-2" src="images/button_start_up.png">
+    </button>
+    <button class="button-end" id="endBtn">
+      <img class="retouch" src="images/end-up.png">
+    </button>
+  </nav>
+
+  <!-- 灰色遮罩 -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<!-- 设置弹窗：背景是你的方框图片 -->
+<div class="settings-modal" id="settingsModal">
+  <!-- 右上角关闭按钮（你的图片） -->
+  <button class="modal-close-btn" id="modalClose">
+    <img src="images/close-up.png" alt="close">
+  </button>
+  <h2 class="modal-title">Setting</h2>
+  <!-- 内容：输入框 + 下拉框 -->
+  <div class="modal-content">
+    <div class="modal-item">
+      <label>Min Speed:</label>
+      <div class="speed-wrap">
+        <input type="text" id="speedInput" class="modal-input">
+        <span class="unit">km/h</span>
+      </div>
+    </div>
+    <div class="modal-item">
+      <label>Max HR:</label>
+      <div class="speed-wrap">
+        <input type="text" id="speedInput" class="modal-input">
+        <span class="unit">bpm</span>
+      </div>
+    </div>
+    <div class="modal-item">
+      <label>Music:</label>
+      <select id="musicSelect" class="modal-select">
+        <option>Music 1</option>
+        <option>Music 2</option>
+        <option>Music 3</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="warning-modal" id="warningModal">
+  <button class="warning-close-btn" id="warningClose">
+    <img src="images/close-up.png" alt="close">
+  </button>
+  <h2 class="warning-title">Warning</h2>
+  <p class="warning-text">
+    your pace too slow!<br>
+    Pay attention to your exercise intensity.
+  </p>
+</div>
+
+<img class="warning-speaker" id="warningSpeaker" src="images/horn.png" alt="speaker">
+</main>
+
+<!-- 1000米提示弹窗 -->
+<div class="info-modal" id="infoModal">
+  <button class="info-close-btn" id="infoClose">
+    <img src="images/close-up.png" alt="close">
+  </button>
+  <h2 class="info-title">Award</h2>
+  <p class="info-text">
+    Congratulation! You have gained a coin
+  </p>
+</div>
+
+<script src="js/game.js"></script>
+</body>
+</html>
