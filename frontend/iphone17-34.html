@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <title>RunBuddy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-black: #000;
+            --color-darkslategray-100: #333;
+            --color-darkslategray-200: rgba(51, 51, 51, 0.09);
+            --color-gray: #21201e;
+            --color-cream: #f4ebd3;
+            --shadow-drop: 0 4px 4px rgba(0, 0, 0, 0.25);
+            --text-shadow-cream:
+                4px 0 0 #fdeed2,
+                0 4px 0 #fdeed2,
+                -4px 0 0 #fdeed2,
+                0 -4px 0 #fdeed2;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Pixelify Sans', sans-serif;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+            background-color: var(--color-cream);
+        }
+
+        .page-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 60px;
+            right: 27px;
+            width: 39px;
+            height: 39px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .close-button img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding: 180px 25px 0 20px;
+        }
+
+        .card {
+            position: relative;
+            height: 196px;
+            padding: 0;
+            border: 2px solid var(--color-black);
+            border-radius: 12px;
+            overflow: hidden;
+            background: transparent;
+            box-shadow: var(--shadow-drop);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            background-color: var(--color-darkslategray-200);
+            border-color: var(--color-darkslategray-100);
+        }
+
+        .card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-title {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            top: 54px;
+            color: var(--color-gray);
+            font-size: 36px;
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: 0;
+            text-align: center;
+            text-shadow:
+                4px 0 0 #fdeed2,
+                0 4px 0 #fdeed2,
+                -4px 0 0 #fdeed2,
+                0 -4px 0 #fdeed2,
+                3px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-search .card-title {
+            top: 76px;
+            left: 0;
+            right: 0;
+        }
+
+        .footer-title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 118px;
+            text-align: center;
+            font-size: 24px;
+            color: var(--color-black);
+            text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <img src="images/iphone-17-61-2@2x.png" alt="RunBuddy page background" class="page-bg">
+
+        <button class="close-button" onclick="location.href='shouye.html'" aria-label="Close page">
+            <img src="images/close-up-default@2x.png" alt="">
+        </button>
+
+        <div class="content">
+            <button class="card" onclick="location.href='iphone17-36.html'" aria-label="Open professional guidance video">
+                <img src="images/image-80@2x.png" alt="Professional guidance">
+                <div class="card-title">Professional Guidance video</div>
+            </button>
+
+            <button class="card card-search" onclick="location.href='iphone17-search.html'" aria-label="Open search">
+                <img src="images/image-83@2x.png" alt="Search">
+                <div class="card-title">Search</div>
+            </button>
+        </div>
+
+        <button class="footer-title" onclick="location.href='shouye.html'">Back to the town</button>
+    </div>
+</body>
+</html>

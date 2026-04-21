@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <style>
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --wa-a-3ie: rgba(159, 204, 224, 1);
+            --d-9d-9d-9: rgba(244, 235, 211, 1);
+            --text-font-family: "Pixelify Sans", Helvetica, sans-serif;
+            --text-font-weight: 400;
+            --text-font-size: 12px;
+            --text-letter-spacing: 0;
+            --text-line-height: normal;
+            --text-font-style: normal;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: var(--text-font-family);
+        }
+
+        .iphone {
+            background-color: var(--d-9d-9d-9);
+            overflow: hidden;
+            width: 100%;
+            min-width: 320px;
+            min-height: 874px;
+            max-width: 402px;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #333;
+            border-radius: 40px;
+        }
+
+        .img {
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 400px;
+            height: 874px;
+            object-fit: cover;
+        }
+
+        .frame-2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 402px;
+            height: 62px;
+            background-color: var(--wa-a-3ie);
+        }
+
+        .group-3 {
+            position: absolute;
+            top: 76px;
+            left: 16px;
+            width: 370px;
+            height: 36px;
+            z-index: 2;
+        }
+
+        .frame-3 {
+            position: absolute;
+            top: 0;
+            left: 31px;
+            width: 339px;
+            height: 36px;
+            background-color: #f2f2f7;
+            border-radius: 21px;
+            box-shadow: 2px 4px 0.3px -2px #00000014;
+        }
+
+        .frame-4 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: absolute;
+            top: 6px;
+            left: 0;
+            width: 100%;
+            padding-right: 12px;
+        }
+
+        .pointer-left-button,
+        .tile-2-button,
+        .favorite-button,
+        .bubble {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .pointer-left-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            flex: 0 0 auto;
+        }
+
+        .search-label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .text-wrapper-3 {
+            position: relative;
+            width: 100%;
+            height: 27px;
+            opacity: 0.72;
+            font-size: 16px;
+            text-align: left;
+            color: #000;
+        }
+
+        .search-input {
+            border: 0;
+            background: transparent;
+            padding: 0 4px;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            flex: 1;
+        }
+
+        .search-input::placeholder {
+            color: #000;
+            opacity: 0.48;
+        }
+
+        .tile-2-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 21px;
+            height: 21px;
+            flex: 0 0 auto;
+        }
+
+        .pointer-left-icon,
+        .tile-2-icon,
+        .tile-icon {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .frame {
+            display: flex;
+            flex-direction: column;
+            width: 370px;
+            align-items: flex-start;
+            gap: 12px;
+            position: absolute;
+            top: 125px;
+            left: 20px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            max-height: 665px;
+            z-index: 1;
+        }
+
+        .frame::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        .result-link {
+            display: block;
+            width: 100%;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .component {
+            position: relative;
+            align-self: stretch;
+            width: 370px;
+            height: 141px;
+            margin-bottom: 0;
+            background: transparent;
+            border: 0;
+            border-radius: 15px;
+            overflow: visible;
+            box-shadow: none;
+        }
+
+        .card-visual {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 362px;
+            height: 124px;
+            transform: translate(-50%, -50%);
+            background: url("images/Component 1 2.png") center/362px 124px no-repeat;
+        }
+
+        .text-wrapper-2 {
+            position: absolute;
+            top: 12px;
+            left: 18px;
+            color: #000;
+            font-size: var(--text-font-size);
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: transparent;
+        }
+
+        .frame-wrapper {
+            display: flex;
+            width: calc(100% - 16px);
+            height: 27px;
+            align-items: center;
+            justify-content: space-between;
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 8px;
+            width: auto;
+        }
+
+        .div {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ellipse {
+            width: 27px;
+            height: 27px;
+            background-color: transparent;
+            border-radius: 13.5px;
+            border: 0;
+        }
+
+        .text-wrapper {
+            color: #000;
+            font-size: var(--text-font-size);
+        }
+
+        .action-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .favorite-button,
+        .bubble {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .favorite-icon,
+        .bubble-icon {
+            display: block;
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .favorite-icon-filled {
+            display: none;
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .favorite-button.is-active .favorite-icon {
+            display: none;
+        }
+
+        .favorite-button.is-active .favorite-icon-filled {
+            display: block;
+        }
+
+        .group-wrapper {
+            position: absolute;
+            top: 800px;
+            left: 0;
+            width: 402px;
+            height: 74px;
+            display: flex;
+            background-color: var(--wa-a-3ie);
+            z-index: 2;
+        }
+
+        .group-2 {
+            margin-top: 8px;
+            width: 72px;
+            height: 57px;
+            margin-left: 165px;
+            position: relative;
+        }
+
+        .button-start-up {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .button-start-up img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .rectangle {
+            position: absolute;
+            top: 16px;
+            left: 19px;
+            width: 34px;
+            height: 27px;
+            background-color: #fce8c2;
+        }
+
+        .tile {
+            position: absolute;
+            top: 16px;
+            left: 23px;
+            width: 26px;
+            height: 26px;
+        }
+
+        @media (max-width: 402px) {
+            .iphone {
+                min-height: 100vh;
+                border-radius: 0;
+                border: 0;
+            }
+
+            .img,
+            .frame-2,
+            .group-wrapper {
+                width: 100%;
+                left: 0;
+            }
+
+            .frame {
+                width: calc(100% - 40px);
+                left: 20px;
+            }
+
+            .group-3 {
+                width: calc(100% - 32px);
+            }
+
+            .frame-3 {
+                width: calc(100% - 31px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="iphone" aria-label="Search screen">
+        <img class="img" src="images/iphone-17-61-2@2x.png" alt="" aria-hidden="true">
+        <header class="frame-2" aria-hidden="true"></header>
+
+        <section class="group-3" aria-label="Search bar">
+            <div class="frame-3" aria-hidden="true"></div>
+            <form class="frame-4" action="#" method="get" role="search" aria-label="Search form">
+                <button type="button" class="pointer-left-button" aria-label="Go back" onclick="location.href='shouye.html'">
+                    <img class="pointer-left-icon" src="images/pointer-left.svg" alt="">
+                </button>
+                <label class="search-label" for="site-search">Search</label>
+                <input id="site-search" class="text-wrapper-3 search-input" name="search" type="search" placeholder="Search" aria-label="Search">
+                <button type="button" class="tile-2-button" aria-label="Submit search" onclick="location.href='iphone17-search.html'">
+                    <img class="tile-2-icon" src="images/tile-0008-1@2x.png" alt="">
+                </button>
+            </form>
+        </section>
+
+        <section class="frame" aria-label="Search results">
+            <article class="component">
+                <a class="result-link" href="#" aria-label="Open Town Loop feed">
+                    <div class="card-visual"></div>
+                    <p class="text-wrapper-2">trail</p>
+                    <div class="frame-wrapper">
+                        <div class="div">
+                            <div class="ellipse" aria-hidden="true"></div>
+                            <p class="text-wrapper">Town Loop</p>
+                        </div>
+                        <div class="action-row">
+                            <button type="button" class="favorite-button" aria-label="Add Town Loop item to favorites" onclick="event.preventDefault(); event.stopPropagation();">
+                                <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                                </svg>
+                                <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="bubble" aria-label="Open comments for Town Loop item" onclick="event.preventDefault(); event.stopPropagation();">
+                                <img class="bubble-icon" src="images/bubble.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="component">
+                <div class="card-visual"></div>
+                <p class="text-wrapper-2">text</p>
+                <div class="frame-wrapper">
+                    <div class="div">
+                        <div class="ellipse" aria-hidden="true"></div>
+                        <p class="text-wrapper">Name</p>
+                    </div>
+                    <div class="action-row">
+                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                            <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                            <img class="bubble-icon" src="images/bubble.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="component">
+                <div class="card-visual"></div>
+                <p class="text-wrapper-2">text</p>
+                <div class="frame-wrapper">
+                    <div class="div">
+                        <div class="ellipse" aria-hidden="true"></div>
+                        <p class="text-wrapper">Name</p>
+                    </div>
+                    <div class="action-row">
+                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                            <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                            <img class="bubble-icon" src="images/bubble.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="component">
+                <div class="card-visual"></div>
+                <p class="text-wrapper-2">text</p>
+                <div class="frame-wrapper">
+                    <div class="div">
+                        <div class="ellipse" aria-hidden="true"></div>
+                        <p class="text-wrapper">Name</p>
+                    </div>
+                    <div class="action-row">
+                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                            <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                            <img class="bubble-icon" src="images/bubble.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="component">
+                <div class="card-visual"></div>
+                <p class="text-wrapper-2">text</p>
+                <div class="frame-wrapper">
+                    <div class="div">
+                        <div class="ellipse" aria-hidden="true"></div>
+                        <p class="text-wrapper">Name</p>
+                    </div>
+                    <div class="action-row">
+                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                            <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                            <img class="bubble-icon" src="images/bubble.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <footer class="group-wrapper">
+            <div class="group-2">
+                <button type="button" class="button-start-up" onclick="location.href='iphone17-37.html'" aria-label="Create new item">
+                    <img src="images/button-start-up1@2x.png" alt="" aria-hidden="true">
+                </button>
+                <div class="rectangle" aria-hidden="true"></div>
+                <div class="tile" aria-hidden="true">
+                    <img class="tile-icon" src="images/tile-0122-1@2x.png" alt="">
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script>
+        document.querySelectorAll('.favorite-button').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                button.classList.toggle('is-active');
+            });
+        });
+    </script>
+</body>
+</html>

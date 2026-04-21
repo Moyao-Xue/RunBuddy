@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy Search</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-cream: #f4ebd3;
+            --bg-blue: #9fcce0;
+            --bg-search: #f2f2f7;
+            --text-main: #000;
+            --text-soft: rgba(0, 0, 0, 0.48);
+            --shadow-soft: 2px 4px 0.3px -2px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
+        .phone {
+            position: relative;
+            width: 402px;
+            height: 874px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+            background: var(--bg-cream);
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 62px;
+            background: var(--bg-blue);
+            z-index: 2;
+        }
+
+        .content {
+            position: absolute;
+            inset: 83px 16px 74px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .search-shell {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 1;
+            height: 36px;
+            padding: 0 12px 0 18px;
+            border-radius: 21px;
+            background: var(--bg-search);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .back-button,
+        .search-button {
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .back-button {
+            width: 24px;
+            height: 24px;
+        }
+
+        .back-button img,
+        .search-button img,
+        .history-icon {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .search-title {
+            width: 94px;
+            height: 27px;
+            font-size: 16px;
+            color: var(--text-soft);
+            text-align: center;
+            line-height: 27px;
+        }
+
+        .search-button {
+            width: 21px;
+            height: 21px;
+        }
+
+        .history-row {
+            width: 348px;
+            align-self: flex-end;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-main);
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        .history-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .bottom-strip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 74px;
+            background: var(--bg-blue);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone">
+        <img class="bg" src="images/iphone-17-61-2@2x.png" alt="">
+        <div class="top-strip" aria-hidden="true"></div>
+
+        <section class="content" aria-label="Search history">
+            <div class="search-shell">
+                <button class="back-button" type="button" aria-label="Go back" onclick="window.history.length > 1 ? history.back() : location.href='iphone17-8.html'">
+                    <img src="images/vector-search.svg" alt="">
+                </button>
+                <div class="search-bar">
+                    <div class="search-title">Search</div>
+                    <button class="search-button" type="button" aria-label="Submit search">
+                        <img src="images/tile-0008-search@2x.png" alt="">
+                    </button>
+                </div>
+            </div>
+
+            <div class="history-row">
+                <div>search history</div>
+                <img class="history-icon" src="images/tile-0016-1@2x.png" alt="">
+            </div>
+        </section>
+
+        <div class="bottom-strip" aria-hidden="true"></div>
+    </div>
+</body>
+</html>

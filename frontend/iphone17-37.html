@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: "Pixelify Sans", sans-serif;
+        }
+
+        .phone {
+            position: relative;
+            width: 402px;
+            height: 874px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+            background: #f4ebd3;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 62px;
+            background: #9fcce0;
+            z-index: 10;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 83px;
+            left: 24px;
+            width: 12px;
+            height: 20px;
+            z-index: 4;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .back-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .editor-card {
+            position: absolute;
+            top: 133px;
+            left: 21px;
+            width: 362px;
+            min-height: 211px;
+            border-radius: 12px;
+            background: #f4ebd3;
+            padding: 32px 24px 27px;
+            z-index: 3;
+        }
+
+        .editor-text {
+            margin-bottom: 65px;
+            font-size: 16px;
+            color: #21201e;
+        }
+
+        .add-tile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 68px;
+            height: 68px;
+            border: 0;
+            border-radius: 12px;
+            background: rgba(177, 177, 177, 0.5);
+            cursor: pointer;
+        }
+
+        .add-tile img {
+            width: 29px;
+            height: 29px;
+            object-fit: contain;
+        }
+
+        .scene-images {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .scene-left,
+        .scene-right {
+            position: absolute;
+            width: 595px;
+            height: 287px;
+            object-fit: contain;
+            transform: rotate(0deg);
+            transform-origin: top left;
+        }
+
+        .scene-left {
+            left: -64px;
+            top: -124px;
+        }
+
+        .scene-right {
+            left: 180px;
+            top: -124px;
+        }
+
+        .post-wrap {
+            position: absolute;
+            left: 97px;
+            right: 96px;
+            bottom: 162px;
+            z-index: 3;
+        }
+
+        .post-button {
+            width: 209px;
+            height: 114px;
+            border: 0;
+            padding: 39px 50px 46px;
+            background: url("images/20260415040031-235-8-1@2x.png") center/cover no-repeat;
+            color: #fff;
+            font: 400 24px/1 "Pixelify Sans", sans-serif;
+            text-shadow: 3px 4px 4px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+        }
+
+        .bottom-bar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 74px;
+            background: #9fcce0;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone">
+        <img class="bg" src="images/iphone-17-61-2@2x.png" alt="">
+        <div class="top-strip" aria-hidden="true"></div>
+
+        <button class="back-button" onclick="location.href='iphone17-8.html'" aria-label="Go back">
+            <img src="images/vector.svg" alt="">
+        </button>
+
+        <section class="editor-card" aria-label="Post editor">
+            <div class="editor-text">add text</div>
+            <button class="add-tile" type="button" aria-label="Add media">
+                <img src="images/tile-0122-2@2x.png" alt="">
+            </button>
+        </section>
+
+        <div class="post-wrap">
+            <button class="post-button" type="button">Post Now</button>
+        </div>
+
+        <footer class="bottom-bar"></footer>
+    </div>
+</body>
+</html>

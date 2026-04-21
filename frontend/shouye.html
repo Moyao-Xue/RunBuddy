@@ -38,10 +38,21 @@
         /* 点击区域：缩小到原来的3/4，保持中心点不变 */
         .click-area {
             position: absolute;
-            top: 176px;
-            left: -108px;
-            width: 284px;
-            height: 284px;
+            top: 160px;
+            left: 222px;
+            width: 180px;
+            height: 244px;
+            background: transparent;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .click-area-34 {
+            position: absolute;
+            top: 470px;
+            left: -25px;
+            width: 182px;
+            height: 275px;
             background: transparent;
             cursor: pointer;
             z-index: 10;
@@ -53,11 +64,16 @@
         <img src="images/shouye.png" alt="Shouye" class="page-bg">
         <!-- 点击区域 -->
         <div class="click-area" onclick="goToPageBg()"></div>
+        <div class="click-area-34" onclick="goToPage34()"></div>
     </div>
 
     <script>
         function goToPageBg() {
-            window.location.href = 'page-bg.html';
+            window.location.href = 'iphone17-8.html';
+        }
+
+        function goToPage34() {
+            window.location.href = 'iphone17-34.html';
         }
     </script>
 </body>
