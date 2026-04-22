@@ -145,6 +145,23 @@
             border: 0;
             cursor: pointer;
         }
+
+        .clickable-area {
+            position: absolute;
+            left: 29px;
+            top: 199px;
+            width: 344px;
+            height: 238px;
+            cursor: pointer;
+            z-index: 10;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .clickable-area:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -168,6 +185,8 @@
         </div>
 
         <button class="footer-title" onclick="location.href='shouye.html'">Back to the town</button>
+
+        <button class="clickable-area" onclick="window.open('https://search.bilibili.com/all?vt=26171165&keyword=%E6%96%B0%E6%89%8B%E8%B7%91%E6%AD%A5%E6%8C%87%E5%AF%BC%E6%95%99%E7%A8%8B&from_source=webtop_search&spm_id_from=333.1007&search_source=5', '_blank')" aria-label="Open new running tutorial video"></button>
     </div>
 </body>
 </html>

@@ -59,6 +59,83 @@ const RUNNER_START_X = -8;
 const NEXT_PAGE_URL = "settling.html";
 
 // ==========================
+// 音频相关
+// ==========================
+const encourageSounds = [
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-4-47.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-7-27.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-3-35.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-3-54.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-5-9.mp3'
+];
+
+let encourageInterval = null;
+let coinsInterval = null;
+
+function playBackgroundMusic() {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+  bgMusic.volume = 0.3;
+  bgMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
+}
+
+function stopBackgroundMusic() {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+}
+
+function playEncourageSound() {
+  const encourageAudio = document.getElementById('encourageAudio');
+  if (!encourageAudio) return;
+  const randomIndex = Math.floor(Math.random() * encourageSounds.length);
+  const soundPath = encourageSounds[randomIndex];
+  encourageAudio.src = soundPath;
+  encourageAudio.volume = 1.0;
+  encourageAudio.play().catch(e => console.log('Encourage audio error:', e));
+}
+
+function playCoinsSound() {
+  const coinsAudio = document.getElementById('coinsAudio');
+  if (!coinsAudio) return;
+  coinsAudio.currentTime = 0;
+  coinsAudio.play().catch(e => console.log('Coins audio error:', e));
+}
+
+function startEncourageInterval() {
+  encourageInterval = setInterval(() => {
+    if (isRunning && !isPaused && !isModalOpen && !isWarningOpen && !isInfoOpen) {
+      playEncourageSound();
+    }
+  }, 30000);
+}
+
+function stopEncourageInterval() {
+  if (encourageInterval) {
+    clearInterval(encourageInterval);
+    encourageInterval = null;
+  }
+  if (coinsInterval) {
+    clearInterval(coinsInterval);
+    coinsInterval = null;
+  }
+  const encourageAudio = document.getElementById('encourageAudio');
+  if (encourageAudio) {
+    encourageAudio.pause();
+    encourageAudio.currentTime = 0;
+  }
+}
+
+function startCoinsInterval() {
+  coinsInterval = setInterval(() => {
+    if (isRunning && !isPaused && !isModalOpen && !isWarningOpen && !isInfoOpen) {
+      playCoinsSound();
+    }
+  }, 60000); // 每分钟播放一次
+}
+
+// ==========================
 // 返回菜单按钮：重置游戏并跳转
 // ==========================
 const backBtn = document.getElementById('backBtn');
@@ -179,6 +256,11 @@ function startGame() {
   }, START_ANIM_DURATION);
 
   startStatsUpdate();
+  
+  // 播放背景音乐和启动鼓励音频
+  playBackgroundMusic();
+  startEncourageInterval();
+  startCoinsInterval();
 }
 
 // ==========================
@@ -306,6 +388,10 @@ function pauseGameWithAnimation() {
   window.stopAnimTimeout = setTimeout(() => {
     runner.src = 'images/stand.png';
   }, STOP_ANIM_DURATION);
+
+  // 暂停背景音乐
+  bgMusic.pause();
+  stopEncourageInterval();
 }
 
 // ==========================
@@ -318,6 +404,10 @@ function resetGame() {
   pauseGameWithAnimation();
 
   distanceMilestone = 0;
+
+  // 停止所有音频
+  stopBackgroundMusic();
+  stopEncourageInterval();
 
   setTimeout(() => {
     x1 = 0;
