@@ -87,6 +87,18 @@
             color: #21201e;
         }
 
+        .editor-text textarea {
+            width: 100%;
+            min-height: 100px;
+            border: none;
+            background: transparent;
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 16px;
+            color: #21201e;
+            resize: none;
+            outline: none;
+        }
+
         .add-tile {
             display: inline-flex;
             align-items: center;
@@ -97,12 +109,40 @@
             border-radius: 12px;
             background: rgba(177, 177, 177, 0.5);
             cursor: pointer;
+            overflow: hidden;
         }
 
         .add-tile img {
             width: 29px;
             height: 29px;
             object-fit: contain;
+        }
+
+        .preview-image {
+            width: 68px;
+            height: 68px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .preview-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: none;
+            background: #ff4444;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            line-height: 1;
         }
 
         .scene-images {
@@ -161,6 +201,46 @@
             background: #9fcce0;
             z-index: 2;
         }
+
+        .loading-overlay, .success-overlay {
+            position: absolute;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            border-radius: 40px;
+        }
+
+        .loading-overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .success-overlay {
+            background: rgba(159, 204, 224, 0.95);
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f4ebd3;
+            border-top-color: #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-text {
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -173,17 +253,88 @@
         </button>
 
         <section class="editor-card" aria-label="Post editor">
-            <div class="editor-text">add text</div>
-            <button class="add-tile" type="button" aria-label="Add media">
-                <img src="images/tile-0122-2@2x.png" alt="">
-            </button>
+            <div class="editor-text">
+                <textarea id="postText" placeholder="add text..."></textarea>
+            </div>
+            <div id="mediaContainer">
+                <button class="add-tile" type="button" aria-label="Add media" onclick="document.getElementById('fileInput').click()">
+                    <img src="images/tile-0122-2@2x.png" alt="" id="addIcon">
+                </button>
+            </div>
         </section>
 
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+        <!-- 加载中覆盖层 -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- 成功提示覆盖层 -->
+        <div class="success-overlay" id="successOverlay">
+            <div class="success-text">Post Successfully!</div>
+            <button class="post-button" onclick="location.href='iphone17-8.html'">Back</button>
+        </div>
+
         <div class="post-wrap">
-            <button class="post-button" type="button">Post Now</button>
+            <button class="post-button" type="button" onclick="submitPost()">Post Now</button>
         </div>
 
         <footer class="bottom-bar"></footer>
     </div>
+
+    <script>
+        let selectedImage = null;
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedImage = event.target.result;
+                    updateMediaPreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateMediaPreview() {
+            const container = document.getElementById('mediaContainer');
+            container.innerHTML = `
+                <div class="preview-container">
+                    <img src="${selectedImage}" class="preview-image" alt="Preview">
+                    <button class="remove-btn" onclick="removeImage()">×</button>
+                </div>
+            `;
+        }
+
+        function removeImage() {
+            selectedImage = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('mediaContainer').innerHTML = `
+                <button class="add-tile" type="button" aria-label="Add media" onclick="document.getElementById('fileInput').click()">
+                    <img src="images/tile-0122-2@2x.png" alt="" id="addIcon">
+                </button>
+            `;
+        }
+
+        function submitPost() {
+            const text = document.getElementById('postText').value.trim();
+
+            if (!text && !selectedImage) {
+                alert('Please add some text or an image!');
+                return;
+            }
+
+            // 显示加载动画
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // 模拟发帖延迟
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('successOverlay').style.display = 'flex';
+            }, 1500);
+        }
+    </script>
 </body>
 </html>
