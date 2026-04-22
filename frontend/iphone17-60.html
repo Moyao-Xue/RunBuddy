@@ -17,6 +17,7 @@
             align-items: center;
             min-height: 100vh;
             background-color: #f0f0f0;
+            font-family: "Pixelify Sans", sans-serif;
         }
 
         .phone-container {
@@ -48,12 +49,86 @@
             width: 59px;
             height: 57px;
         }
+
+        /* 更多按钮 */
+        .btn-more {
+            top: 17px;
+            left: 290px;
+            width: 59px;
+            height: 57px;
+        }
+
+        /* 下拉菜单 */
+        .dropdown-menu {
+            position: absolute;
+            top: 70px;
+            right: 17px;
+            background: white;
+            border: 2px solid #000;
+            border-radius: 5px;
+            min-width: 140px;
+            z-index: 100;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: #e0e0e0;
+        }
+
+        /* Share 按钮红色边框 */
+        #shareBtn {
+            border: 2px solid red;
+            border-radius: 4px;
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/iPhone 17 - 60.png" alt="iPhone 17 - 60" class="page-bg">
         <button class="hotspot btn-back" onclick="location.href='shouye.html'"></button>
+        <button class="hotspot btn-more" id="moreBtn"></button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item" id="saveBtn">Save Record</div>
+            <div class="dropdown-item" id="shareBtn">Share</div>
+            <div class="dropdown-item" id="deleteBtn">Delete</div>
+        </div>
     </div>
+
+    <script>
+        const moreBtn = document.getElementById('moreBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const shareBtn = document.getElementById('shareBtn');
+
+        // 开关下拉菜单
+        moreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // 点击外部关闭
+        document.addEventListener('click', (e) => {
+            if (!moreBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+// Share 跳转到 settling 页面
+shareBtn.addEventListener('click', () => {
+    window.location.href = 'settling.html';
+});
+    </script>
 </body>
 </html>
