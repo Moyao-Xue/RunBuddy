@@ -44,6 +44,7 @@
             overflow: hidden;
             width: 100%;
             min-width: 320px;
+            height: 874px;
             min-height: 874px;
             max-width: 402px;
             position: relative;
@@ -183,11 +184,13 @@
             gap: 12px;
             position: absolute;
             top: 125px;
+            bottom: 86px;
             left: 20px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            max-height: 665px;
             z-index: 1;
         }
 
@@ -355,7 +358,7 @@
 
         .group-wrapper {
             position: absolute;
-            top: 800px;
+            bottom: 0;
             left: 0;
             width: 402px;
             height: 74px;
@@ -409,7 +412,8 @@
 
         @media (max-width: 402px) {
             .iphone {
-                min-height: 100vh;
+                height: 100dvh;
+                min-height: 0;
                 border-radius: 0;
                 border: 0;
             }
@@ -424,6 +428,7 @@
             .frame {
                 width: calc(100% - 40px);
                 left: 20px;
+                bottom: 86px;
             }
 
             .group-3 {
@@ -582,6 +587,7 @@
                     </div>
                 </div>
             </article>
+
         </section>
 
         <footer class="group-wrapper">
