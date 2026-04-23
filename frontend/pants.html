@@ -7,13 +7,13 @@
     <title>RunBuddy - Customize</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            background: #f0f0f0; 
-            font-family: 'Pixelify Sans', sans-serif; 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: 'Pixelify Sans', sans-serif;
         }
 
         .phone-container {
@@ -26,7 +26,6 @@
             background-color: #f4ebd3;
         }
 
-        /* 1. 背景图层 */
         .page-bg {
             position: absolute;
             inset: 0;
@@ -36,29 +35,27 @@
             z-index: 0;
         }
 
-        /* 2. 透明热区按钮基础样式 */
         .hotspot {
             position: absolute;
-            background: rgba(255, 0, 0, 0.3); /* 暂时设为淡红色调试位置 */
+            background: transparent;
             border: none;
             cursor: pointer;
             z-index: 1;
         }
 
-        /* 调试开关：如果需要对齐坐标，取消下面这行的注释 */
-        /* .hotspot { background: rgba(255, 0, 0, 0.3); border: 1px solid white; } */
+        /* .hotspot { border: 1px solid white; } */
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/iPhone 17 - 30.png" alt="Customize Page" class="page-bg">
 
-        <a href="cart.html" class="hotspot" 
-           style="top: 15px; left: 28px; width: 40px; height: 40px;" 
+        <a href="cart.html" class="hotspot"
+           style="top: 15px; left: 28px; width: 40px; height: 40px;"
            aria-label="Cart"></a>
 
-        <a href="customize.html" class="hotspot" 
-           style="top: 15px; left: 120px; width: 40px; height: 40px;" 
+        <a href="customize.html" class="hotspot"
+           style="top: 15px; left: 120px; width: 40px; height: 40px;"
            aria-label="Back"></a>
     </div>
 </body>

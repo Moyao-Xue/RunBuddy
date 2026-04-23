@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Pixelify Sans', Helvetica, sans-serif;
         }
 
         :root {
@@ -20,10 +21,23 @@
             --color-cream: #f4ebd3;
             --shadow-drop: 0 4px 4px rgba(0, 0, 0, 0.25);
             --text-shadow-cream:
-                4px 0 0 #fdeed2,
-                0 4px 0 #fdeed2,
-                -4px 0 0 #fdeed2,
-                0 -4px 0 #fdeed2;
+                -3px -3px 0 #fdeed2,
+                0 -3px 0 #fdeed2,
+                3px -3px 0 #fdeed2,
+                -3px 0 0 #fdeed2,
+                3px 0 0 #fdeed2,
+                -3px 3px 0 #fdeed2,
+                0 3px 0 #fdeed2,
+                3px 3px 0 #fdeed2,
+                -2px -3px 0 #fdeed2,
+                2px -3px 0 #fdeed2,
+                -3px -2px 0 #fdeed2,
+                3px -2px 0 #fdeed2,
+                -3px 2px 0 #fdeed2,
+                3px 2px 0 #fdeed2,
+                -2px 3px 0 #fdeed2,
+                2px 3px 0 #fdeed2,
+                0 3px 5px rgba(0, 0, 0, 0.22);
         }
 
         body {
@@ -32,7 +46,11 @@
             align-items: center;
             min-height: 100vh;
             background-color: #f0f0f0;
-            font-family: 'Pixelify Sans', sans-serif;
+            font-family: 'Pixelify Sans', Helvetica, sans-serif;
+        }
+
+        button {
+            font-family: inherit;
         }
 
         .phone-container {
@@ -118,12 +136,7 @@
             line-height: normal;
             letter-spacing: 0;
             text-align: center;
-            text-shadow:
-                4px 0 0 #fdeed2,
-                0 4px 0 #fdeed2,
-                -4px 0 0 #fdeed2,
-                0 -4px 0 #fdeed2,
-                3px 4px 4px rgba(0, 0, 0, 0.25);
+            text-shadow: var(--text-shadow-cream);
         }
 
         .card-search .card-title {

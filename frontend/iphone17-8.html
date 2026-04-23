@@ -214,6 +214,7 @@
             border-radius: 15px;
             overflow: visible;
             box-shadow: none;
+            cursor: pointer;
         }
 
         .card-visual {
@@ -226,15 +227,29 @@
             background: url("images/Component 1 2.png") center/362px 124px no-repeat;
         }
 
-        .text-wrapper-2 {
+        .post-title {
             position: absolute;
-            top: 12px;
-            left: 18px;
+            top: 24px;
+            left: 22px;
+            right: 22px;
             color: #000;
-            font-size: var(--text-font-size);
-            padding: 4px 8px;
-            border-radius: 999px;
-            background: transparent;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.15;
+        }
+
+        .post-body {
+            position: absolute;
+            top: 48px;
+            left: 22px;
+            right: 22px;
+            color: rgba(0, 0, 0, 0.72);
+            font-size: 12px;
+            line-height: 1.25;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
         }
 
         .frame-wrapper {
@@ -259,9 +274,37 @@
         .ellipse {
             width: 27px;
             height: 27px;
-            background-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #9fcce0, #fce8c2);
             border-radius: 13.5px;
-            border: 0;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+            flex: 0 0 auto;
+        }
+
+        .avatar-mia {
+            background: linear-gradient(135deg, #9fcce0, #d7f2ac);
+        }
+
+        .avatar-leo {
+            background: linear-gradient(135deg, #f7c873, #f4a6a6);
+        }
+
+        .avatar-ava {
+            background: linear-gradient(135deg, #b7d7ff, #d9c2ff);
+        }
+
+        .avatar-noah {
+            background: linear-gradient(135deg, #c8e6c9, #fff2a8);
+        }
+
+        .avatar-sofia {
+            background: linear-gradient(135deg, #ffd0e1, #9fcce0);
         }
 
         .text-wrapper {
@@ -414,16 +457,17 @@
 
         <section class="frame" aria-label="Search results">
             <article class="component">
-                <a class="result-link" href="#" aria-label="Open Town Loop feed">
+                <a class="result-link" href="post-detail.html?post=mia" aria-label="Open Mia Chen post">
                     <div class="card-visual"></div>
-                    <p class="text-wrapper-2">trail</p>
+                    <h2 class="post-title">Easy pace saved my long runs</h2>
+                    <p class="post-body">Tried keeping the first 5K conversational today. Finished stronger and no knee tightness after stretching.</p>
                     <div class="frame-wrapper">
                         <div class="div">
-                            <div class="ellipse" aria-hidden="true"></div>
-                            <p class="text-wrapper">Town Loop</p>
+                            <div class="ellipse avatar-mia" aria-hidden="true">M</div>
+                            <p class="text-wrapper">Mia Chen</p>
                         </div>
                         <div class="action-row">
-                            <button type="button" class="favorite-button" aria-label="Add Town Loop item to favorites" onclick="event.preventDefault(); event.stopPropagation();">
+                            <button type="button" class="favorite-button" aria-label="Add Mia Chen post to favorites" onclick="event.preventDefault(); event.stopPropagation();">
                                 <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                                 </svg>
@@ -431,7 +475,7 @@
                                     <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                                 </svg>
                             </button>
-                            <button type="button" class="bubble" aria-label="Open comments for Town Loop item" onclick="event.preventDefault(); event.stopPropagation();">
+                            <button type="button" class="bubble" aria-label="Open comments for Mia Chen post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=mia#comments';">
                                 <img class="bubble-icon" src="images/bubble.svg" alt="">
                             </button>
                         </div>
@@ -439,16 +483,17 @@
                 </a>
             </article>
 
-            <article class="component">
+            <article class="component" onclick="location.href='post-detail.html?post=leo'">
                 <div class="card-visual"></div>
-                <p class="text-wrapper-2">text</p>
+                <h2 class="post-title">Anyone joining the city marathon?</h2>
+                <p class="post-body">Looking for a 5:30 pace buddy for the first half. Planning a relaxed start and steady fueling every 7K.</p>
                 <div class="frame-wrapper">
                     <div class="div">
-                        <div class="ellipse" aria-hidden="true"></div>
-                        <p class="text-wrapper">Name</p>
+                        <div class="ellipse avatar-leo" aria-hidden="true">L</div>
+                        <p class="text-wrapper">Leo Park</p>
                     </div>
                     <div class="action-row">
-                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                        <button type="button" class="favorite-button" aria-label="Add Leo Park post to favorites">
                             <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                             </svg>
@@ -456,23 +501,24 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                        <button type="button" class="bubble" aria-label="Open comments for Leo Park post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=leo#comments';">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component">
+            <article class="component" onclick="location.href='post-detail.html?post=ava'">
                 <div class="card-visual"></div>
-                <p class="text-wrapper-2">text</p>
+                <h2 class="post-title">Foam rolling after hills helped</h2>
+                <p class="post-body">Did 6 short hill repeats, then rolled calves for 8 minutes. Legs felt much lighter on tomorrow's shakeout.</p>
                 <div class="frame-wrapper">
                     <div class="div">
-                        <div class="ellipse" aria-hidden="true"></div>
-                        <p class="text-wrapper">Name</p>
+                        <div class="ellipse avatar-ava" aria-hidden="true">A</div>
+                        <p class="text-wrapper">Ava Stone</p>
                     </div>
                     <div class="action-row">
-                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                        <button type="button" class="favorite-button" aria-label="Add Ava Stone post to favorites">
                             <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                             </svg>
@@ -480,23 +526,24 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                        <button type="button" class="bubble" aria-label="Open comments for Ava Stone post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=ava#comments';">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component">
+            <article class="component" onclick="location.href='post-detail.html?post=noah'">
                 <div class="card-visual"></div>
-                <p class="text-wrapper-2">text</p>
+                <h2 class="post-title">Half marathon negative split goal</h2>
+                <p class="post-body">Starting 10 sec/km slower than goal pace, then picking it up after 12K. Anyone else trying this strategy?</p>
                 <div class="frame-wrapper">
                     <div class="div">
-                        <div class="ellipse" aria-hidden="true"></div>
-                        <p class="text-wrapper">Name</p>
+                        <div class="ellipse avatar-noah" aria-hidden="true">N</div>
+                        <p class="text-wrapper">Noah Kim</p>
                     </div>
                     <div class="action-row">
-                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                        <button type="button" class="favorite-button" aria-label="Add Noah Kim post to favorites">
                             <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                             </svg>
@@ -504,23 +551,24 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                        <button type="button" class="bubble" aria-label="Open comments for Noah Kim post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=noah#comments';">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component">
+            <article class="component" onclick="location.href='post-detail.html?post=sofia'">
                 <div class="card-visual"></div>
-                <p class="text-wrapper-2">text</p>
+                <h2 class="post-title">Small win: first 30-minute run</h2>
+                <p class="post-body">Used run-walk intervals and focused on breathing. If you're new too, slowing down really works.</p>
                 <div class="frame-wrapper">
                     <div class="div">
-                        <div class="ellipse" aria-hidden="true"></div>
-                        <p class="text-wrapper">Name</p>
+                        <div class="ellipse avatar-sofia" aria-hidden="true">S</div>
+                        <p class="text-wrapper">Sofia Liu</p>
                     </div>
                     <div class="action-row">
-                        <button type="button" class="favorite-button" aria-label="Add Name item to favorites">
+                        <button type="button" class="favorite-button" aria-label="Add Sofia Liu post to favorites">
                             <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                             </svg>
@@ -528,7 +576,7 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Name item">
+                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=sofia#comments';">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
