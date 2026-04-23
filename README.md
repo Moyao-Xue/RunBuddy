@@ -1,4 +1,4 @@
-# RunBuddy README
+# RunBuddy
 ## About RunBuddy
 RunBuddy is a gamified companion running app designed to help new runners build consistent running habits. By integrating character development into traditional running app features, we make running more engaging and motivating, solving the common problem of giving up easily for beginners. In addition to core running functions, we provide a community platform for runners to communicate and share experiences, as well as instructional videos to guide users in running correctly and safely.
 
