@@ -27,8 +27,11 @@ Before you start, make sure you have the following installed:
 4. Start the backend server: Run the Python backend script to start the server.
 5. Launch the frontend: Open the `index.html` file in your web browser to access the RunBuddy app.
 
+## Project Live Demo
+We have make a live demo for user to try, you can access by [RunBuddy Live Demo](https://moyao-xue.github.io/RunBuddy/)
+
 ## Project Website
-For more detailed information about the RunBuddy system, including product demonstrations, feature introductions, and team information, please visit our project website: https://github.com/Adam-aiaiai/process-portfolio
+For more detailed information about the RunBuddy system, including product demonstrations, feature introductions, and team information, please visit our project website: [RunBuddy Process Portfolio](https://adam-aiaiai.github.io/process-portfolio/)
 
 ## Contributing
 We welcome contributions from the community! If you want to contribute to RunBuddy, please follow these steps:
