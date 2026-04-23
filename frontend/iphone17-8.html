@@ -208,6 +208,7 @@
             align-self: stretch;
             width: 370px;
             height: 141px;
+            flex-shrink: 0;
             margin-bottom: 0;
             background: transparent;
             border: 0;
@@ -566,6 +567,31 @@
                     <div class="div">
                         <div class="ellipse avatar-sofia" aria-hidden="true">S</div>
                         <p class="text-wrapper">Sofia Liu</p>
+                    </div>
+                    <div class="action-row">
+                        <button type="button" class="favorite-button" aria-label="Add Sofia Liu post to favorites">
+                            <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="favorite-icon-filled" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post" onclick="event.preventDefault(); event.stopPropagation(); location.href='post-detail.html?post=sofia#comments';">
+                            <img class="bubble-icon" src="images/bubble.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="component" onclick="location.href='post-detail.html?post=susan'">
+                <div class="card-visual"></div>
+                <h2 class="post-title">Big achievement: keep running for 100 days</h2>
+                <p class="post-body">I can't believe I have keep runnging for 100 days. I will tell everyone this news</p>
+                <div class="frame-wrapper">
+                    <div class="div">
+                        <div class="ellipse avatar-sofia" aria-hidden="true">S</div>
+                        <p class="text-wrapper">Susan Li</p>
                     </div>
                     <div class="action-row">
                         <button type="button" class="favorite-button" aria-label="Add Sofia Liu post to favorites">
