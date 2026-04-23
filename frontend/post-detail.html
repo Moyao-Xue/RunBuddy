@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy Post</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-cream: #f4ebd3;
+            --bg-blue: #9fcce0;
+            --card: #fff8e8;
+            --text: #000;
+            --soft: rgba(0, 0, 0, 0.62);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: "Pixelify Sans", Helvetica, sans-serif;
+        }
+
+        .phone {
+            position: relative;
+            width: 402px;
+            height: 874px;
+            overflow: hidden;
+            border: 2px solid #333;
+            border-radius: 40px;
+            background: var(--bg-cream);
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-strip,
+        .bottom-strip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: var(--bg-blue);
+            z-index: 2;
+        }
+
+        .top-strip {
+            top: 0;
+            height: 62px;
+        }
+
+        .bottom-strip {
+            bottom: 0;
+            height: 74px;
+        }
+
+        .content {
+            position: absolute;
+            inset: 78px 18px 86px;
+            z-index: 3;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        .back-button {
+            width: 24px;
+            height: 24px;
+            border: 0;
+            padding: 0;
+            margin-bottom: 14px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .back-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .post-card,
+        .comments-card {
+            background: rgba(255, 248, 232, 0.94);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 2px 4px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .author-row,
+        .comment-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            flex: 0 0 auto;
+        }
+
+        .avatar-mia { background: linear-gradient(135deg, #9fcce0, #d7f2ac); }
+        .avatar-leo { background: linear-gradient(135deg, #f7c873, #f4a6a6); }
+        .avatar-ava { background: linear-gradient(135deg, #b7d7ff, #d9c2ff); }
+        .avatar-noah { background: linear-gradient(135deg, #c8e6c9, #fff2a8); }
+        .avatar-sofia { background: linear-gradient(135deg, #ffd0e1, #9fcce0); }
+
+        .author-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-time,
+        .comment-time {
+            margin-top: 3px;
+            color: var(--soft);
+            font-size: 11px;
+        }
+
+        .post-title {
+            margin-top: 18px;
+            font-size: 22px;
+            line-height: 1.12;
+            color: var(--text);
+        }
+
+        .post-body {
+            margin-top: 14px;
+            color: rgba(0, 0, 0, 0.78);
+            font-size: 14px;
+            line-height: 1.45;
+            white-space: pre-line;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+            color: var(--soft);
+            font-size: 12px;
+        }
+
+        .comments-card {
+            margin-top: 14px;
+        }
+
+        .section-title {
+            margin-bottom: 14px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .comment {
+            padding: 12px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .comment:first-of-type {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .comment-main {
+            flex: 1;
+        }
+
+        .comment-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .comment-text {
+            margin-top: 7px;
+            color: rgba(0, 0, 0, 0.76);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .comment-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: #f2f2f7;
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 12px;
+        }
+
+        @media (max-width: 402px) {
+            .phone {
+                width: 100%;
+                min-height: 100vh;
+                border: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="phone" aria-label="Post detail">
+        <img class="bg" src="images/iphone-17-61-2@2x.png" alt="" aria-hidden="true">
+        <div class="top-strip" aria-hidden="true"></div>
+
+        <section class="content">
+            <button class="back-button" type="button" aria-label="Go back" onclick="location.href='iphone17-8.html'">
+                <img src="images/pointer-left.svg" alt="">
+            </button>
+
+            <article class="post-card">
+                <div class="author-row">
+                    <div class="avatar" id="postAvatar" aria-hidden="true">M</div>
+                    <div>
+                        <div class="author-name" id="postAuthor">Mia Chen</div>
+                        <div class="post-time" id="postTime">Today 07:42</div>
+                    </div>
+                </div>
+                <h1 class="post-title" id="postTitle">Easy pace saved my long runs</h1>
+                <p class="post-body" id="postBody"></p>
+                <div class="post-actions">
+                    <span id="likeCount">18 likes</span>
+                    <span id="commentCount">3 comments</span>
+                </div>
+            </article>
+
+            <section class="comments-card" aria-label="Comments">
+                <h2 class="section-title">Comments</h2>
+                <div id="comments"></div>
+                <div class="comment-box">Write a supportive reply...</div>
+            </section>
+        </section>
+
+        <div class="bottom-strip" aria-hidden="true"></div>
+    </main>
+
+    <script>
+        const posts = {
+            mia: {
+                author: "Mia Chen",
+                initial: "M",
+                avatarClass: "avatar-mia",
+                time: "Today 07:42",
+                title: "Easy pace saved my long runs",
+                body: "Tried keeping the first 5K conversational today. Finished stronger and no knee tightness after stretching.\n\nI used to chase pace from the first kilometer, but now I treat long runs like patience practice. Warm up slowly, sip water before feeling thirsty, and save the faster effort for the last 10 minutes.",
+                likes: "18 likes",
+                comments: [
+                    ["Leo Park", "This is exactly what my coach keeps telling me. Going to try the conversational test this weekend.", "08:05"],
+                    ["Ava Stone", "The last 10 minutes faster idea sounds doable. Nice tip!", "08:21"],
+                    ["Noah Kim", "Slow starts have helped my knees too. Consistency beats one fast split.", "09:10"]
+                ]
+            },
+            leo: {
+                author: "Leo Park",
+                initial: "L",
+                avatarClass: "avatar-leo",
+                time: "Yesterday 20:18",
+                title: "Anyone joining the city marathon?",
+                body: "Looking for a 5:30 pace buddy for the first half. Planning a relaxed start and steady fueling every 7K.\n\nMy goal is to stay calm through 25K, then decide whether to push. If anyone is in the same start wave, let's meet near the blue balloon pacer 20 minutes before the gun.",
+                likes: "24 likes",
+                comments: [
+                    ["Mia Chen", "I am aiming around 5:35. Happy to run the first 10K together.", "20:41"],
+                    ["Sofia Liu", "Good luck! The blue pacer meetup point is easy to find.", "21:02"],
+                    ["Noah Kim", "Fuel every 7K sounds smart. I may join if my bib wave matches.", "21:30"]
+                ]
+            },
+            ava: {
+                author: "Ava Stone",
+                initial: "A",
+                avatarClass: "avatar-ava",
+                time: "Mon 18:33",
+                title: "Foam rolling after hills helped",
+                body: "Did 6 short hill repeats, then rolled calves for 8 minutes. Legs felt much lighter on tomorrow's shakeout.\n\nThe biggest change was not rolling too hard. I kept it gentle, paused on tight spots, then finished with ankle circles and a slow walk home.",
+                likes: "15 likes",
+                comments: [
+                    ["Mia Chen", "Gentle rolling is underrated. Hard pressure always makes me sore.", "18:50"],
+                    ["Leo Park", "Adding ankle circles to my routine now.", "19:12"],
+                    ["Sofia Liu", "Hill days scare me, but this recovery plan sounds manageable.", "19:27"]
+                ]
+            },
+            noah: {
+                author: "Noah Kim",
+                initial: "N",
+                avatarClass: "avatar-noah",
+                time: "Sun 09:16",
+                title: "Half marathon negative split goal",
+                body: "Starting 10 sec/km slower than goal pace, then picking it up after 12K. Anyone else trying this strategy?\n\nI wrote the target splits on my wrist because I always get pulled by the crowd. The plan is boring early, brave late: breathe easy, keep cadence smooth, and race after the final turn.",
+                likes: "31 likes",
+                comments: [
+                    ["Ava Stone", "Boring early, brave late is such a good phrase.", "09:44"],
+                    ["Leo Park", "Wrist splits saved my last race. Do it!", "10:08"],
+                    ["Mia Chen", "I am trying this for my next 10K too.", "10:19"]
+                ]
+            },
+            sofia: {
+                author: "Sofia Liu",
+                initial: "S",
+                avatarClass: "avatar-sofia",
+                time: "Sat 17:55",
+                title: "Small win: first 30-minute run",
+                body: "Used run-walk intervals and focused on breathing. If you're new too, slowing down really works.\n\nI did 4 minutes running, 1 minute walking, repeated six times. It felt less scary than trying to run nonstop, and I still finished feeling proud instead of exhausted.",
+                likes: "42 likes",
+                comments: [
+                    ["Mia Chen", "That is a huge win. Keep stacking these!", "18:03"],
+                    ["Ava Stone", "Run-walk is real training. Congrats!", "18:16"],
+                    ["Noah Kim", "Proud finish beats exhausted finish every time.", "18:40"]
+                ]
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const post = posts[params.get("post")] || posts.mia;
+        const avatar = document.getElementById("postAvatar");
+
+        avatar.textContent = post.initial;
+        avatar.className = `avatar ${post.avatarClass}`;
+        document.getElementById("postAuthor").textContent = post.author;
+        document.getElementById("postTime").textContent = post.time;
+        document.getElementById("postTitle").textContent = post.title;
+        document.getElementById("postBody").textContent = post.body;
+        document.getElementById("likeCount").textContent = post.likes;
+        document.getElementById("commentCount").textContent = `${post.comments.length} comments`;
+
+        document.getElementById("comments").innerHTML = post.comments.map(([name, text, time]) => `
+            <article class="comment">
+                <div class="comment-row">
+                    <div class="avatar" aria-hidden="true">${name.charAt(0)}</div>
+                    <div class="comment-main">
+                        <div class="comment-name">${name}</div>
+                        <div class="comment-time">${time}</div>
+                    </div>
+                </div>
+                <p class="comment-text">${text}</p>
+            </article>
+        `).join("");
+
+        if (window.location.hash === "#comments") {
+            document.getElementById("comments").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    </script>
+</body>
+</html>

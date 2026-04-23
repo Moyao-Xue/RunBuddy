@@ -17,7 +17,6 @@
             border-radius: 40px;
         }
 
-        /* 1. 全屏背景图（底图） */
         .page-bg {
             position: absolute;
             width: 100%;
@@ -26,36 +25,34 @@
             z-index: 0;
         }
 
-        /* 2. 透明热区按钮基础样式 */
         .hotspot {
             position: absolute;
-            background: rgba(255, 0, 0, 0.3); /* 暂时设为淡红色调试位置 */
+            background: transparent;
             border: none;
             cursor: pointer;
             z-index: 1;
         }
-        
-        /* 调试完毕后，请把上面 .hotspot 里的 background 改为 transparent */
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/iPhone 17 - 27.png" alt="Customize Background" class="page-bg">
 
-        <a href="iphone17-35-1.html" class="hotspot" 
-           style="top: 15px; left: 12px; width: 68px; height: 68px;" 
+        <a href="iphone17-35-1.html" class="hotspot"
+           style="top: 15px; left: 12px; width: 68px; height: 68px;"
            aria-label="Open Cart"></a>
-        
-        <a href="runboddy.html" class="hotspot" 
-           style="top: 15px; left: 80px; width: 68px; height: 68px;" 
+
+        <a href="runboddy.html" class="hotspot"
+           style="top: 15px; left: 80px; width: 68px; height: 68px;"
            aria-label="Refresh Outfit"></a>
 
-        <a href="jacket.html" class="hotspot" 
-   style="top: 160px; left: 63px; width: 100px; height: 70px;" 
-   aria-label="Select Jacket"></a>
+        <a href="jacket.html" class="hotspot"
+           style="top: 160px; left: 63px; width: 100px; height: 70px;"
+           aria-label="Select Jacket"></a>
 
-<a href="pants.html" class="hotspot" 
-   style="top: 140px; left: 230px; width: 80px; height: 110px;" 
-   aria-label="Select Pants"></a>
-        
-        
+        <a href="pants.html" class="hotspot"
+           style="top: 140px; left: 230px; width: 80px; height: 110px;"
+           aria-label="Select Pants"></a>
+    </div>
+</body>
+</html>
