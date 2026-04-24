@@ -45,7 +45,7 @@ const BG2_WIDTH = 2752;
 let speed = 0;
 let pausedElapsed = 0;
 let x1 = 0;
-let x2 = 4163;
+let x2 = BG1_WIDTH;
 
 const ACCELERATION_TIME = 800;
 const MAX_SPEED = 3;
