@@ -32,27 +32,41 @@
             cursor: pointer;
             z-index: 1;
         }
+
+        /* --- 新增：Save 按钮热区样式 --- */
+        .save-hotspot {
+            position: absolute;
+            cursor: pointer;
+            background: transparent; /* 默认透明，看不见 */
+            border: none;
+            z-index: 10;
+            transition: all 0.1s ease; /* 让点击反馈更丝滑 */
+            
+            /* 【重要】请根据你的图片，微调以下数值 */
+            top: 680px;    /* 按钮在图片中的垂直位置 */
+            left: 95px;    /* 按钮在图片中的水平位置 */
+            width: 200px;  /* 按钮的宽度 */
+            height: 80px;  /* 按钮的高度 */
+        }
+
+        /* 这里的:active就是所谓的“点击感” */
+        .save-hotspot:active {
+            background: rgba(0, 0, 0, 0.15); /* 点击瞬间变深，模拟按下 */
+            transform: scale(0.96);          /* 稍微缩小一点，模拟物理下陷 */
+            border-radius: 12px;             /* 匹配按钮圆角 */
+        }
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/iPhone 17 - 27.png" alt="Customize Background" class="page-bg">
 
-        <a href="iphone17-35-1.html" class="hotspot"
-           style="top: 15px; left: 12px; width: 68px; height: 68px;"
-           aria-label="Open Cart"></a>
+        <a href="iphone17-35-1.html" class="hotspot" style="top: 15px; left: 12px; width: 68px; height: 68px;" aria-label="Open Cart"></a>
+        <a href="runboddy.html" class="hotspot" style="top: 15px; left: 80px; width: 68px; height: 68px;" aria-label="Refresh Outfit"></a>
+        <a href="jacket.html" class="hotspot" style="top: 160px; left: 63px; width: 100px; height: 70px;" aria-label="Select Jacket"></a>
+        <a href="pants.html" class="hotspot" style="top: 140px; left: 230px; width: 80px; height: 110px;" aria-label="Select Pants"></a>
 
-        <a href="runboddy.html" class="hotspot"
-           style="top: 15px; left: 80px; width: 68px; height: 68px;"
-           aria-label="Refresh Outfit"></a>
-
-        <a href="jacket.html" class="hotspot"
-           style="top: 160px; left: 63px; width: 100px; height: 70px;"
-           aria-label="Select Jacket"></a>
-
-        <a href="pants.html" class="hotspot"
-           style="top: 140px; left: 230px; width: 80px; height: 110px;"
-           aria-label="Select Pants"></a>
+        <button class="save-hotspot" onclick="alert('保存成功！')"></button>
     </div>
 </body>
 </html>
