@@ -43,6 +43,28 @@
             z-index: 1;
         }
 
+        .top-right-actions {
+            position: absolute;
+            top: 16px;
+            right: 12px;
+            display: flex;
+            gap: 10px;
+            z-index: 12;
+        }
+
+        .top-right-action {
+            display: block;
+            width: 57px;
+            height: 57px;
+        }
+
+        .top-right-action img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         /* .hotspot { border: 1px solid white; } */
     </style>
 </head>
@@ -50,17 +72,21 @@
     <div class="phone-container">
         <img src="images/iPhone 17 - 29.png" alt="Customize Page" class="page-bg">
 
-        <a href="iphone17-35-1.html" class="hotspot"
-           style="top: 15px; left: 28px; width: 40px; height: 40px;"
-           aria-label="Cart"></a>
-
-        <a href="customize.html" class="hotspot"
-           style="top: 15px; left: 120px; width: 40px; height: 40px;"
-           aria-label="Back"></a>
-
+        <div class="top-right-actions" aria-label="Top right actions">
+            <a href="iphone17-31.html" class="top-right-action" aria-label="Go to iPhone 17 - 31 page">
+                <img src="images/Group 125.png" alt="Go to iPhone 17 - 31 page">
+            </a>
+            <a href="customize.html" class="top-right-action" aria-label="Back to customize">
+                <img src="images/Group 119 (1).png" alt="Back to customize">
+            </a>
+        </div>
         <a href="item-detail.html" class="hotspot"
            style="top: 600px; left: 12px; width: 70px; height: 70px;"
            aria-label="Select Blue Jacket"></a>
+
+        <a href="iphone17-59.html" class="hotspot"
+           style="top: 610px; left: 87px; width: 67px; height: 72px;"
+           aria-label="Go to iPhone 17 - 59"></a>
     </div>
 </body>
 </html>
