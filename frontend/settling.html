@@ -26,7 +26,7 @@
       Distance: 5.20Km<br/><br/>
       Pace: 6‘12/KM<br/><br/>
       Duration:32:15<br/><br/>
-      Calories:245 Kcal<br/><br/>
+      Calories: <span id="caloriesValue">245</span> Kcal<br/><br/>
       Weather:
     </p>
     <img class="image" src="images/weather.png" alt="Sunny weather" />
@@ -102,6 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
         /Duration:[^<]*/,
         `Duration:${duration}`
       );
+      
+      // 更新卡路里显示
+      const caloriesEl = document.getElementById('caloriesValue');
+      if (caloriesEl && session.calories) {
+        caloriesEl.textContent = session.calories;
+      }
     }
     
     console.log('Session loaded:', session);

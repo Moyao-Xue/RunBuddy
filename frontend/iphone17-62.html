@@ -117,7 +117,7 @@
         /* 滚动区域 */
         .scroll-container {
             position: absolute;
-            top: 240px;
+            top: 280px;
             left: 0;
             right: 0;
             bottom: 100px;
@@ -317,8 +317,16 @@
                 <div class="stat-label">Kilometers</div>
             </div>
             <div class="stat-box">
+                <div class="stat-value" id="totalCalories">0</div>
+                <div class="stat-label">Calories</div>
+            </div>
+        </div>
+
+        <!-- 金币统计 -->
+        <div class="stats-summary" style="top: 200px;">
+            <div class="stat-box">
                 <div class="stat-value" id="totalCoins">0</div>
-                <div class="stat-label">Coins</div>
+                <div class="stat-label">Total Coins</div>
             </div>
         </div>
 
@@ -413,7 +421,7 @@
                         <div class="record-stat">
                             <div class="record-icon">🔥</div>
                             <div class="record-stat-info">
-                                <span class="record-stat-value">${Math.round(record.distance * 0.05)}</span>
+                                <span class="record-stat-value">${record.calories || 0}</span>
                                 <span class="record-stat-label">Calories</span>
                             </div>
                         </div>
@@ -445,6 +453,7 @@
             document.getElementById('totalRuns').textContent = stats.totalRuns || 0;
             document.getElementById('totalDistance').textContent = ((stats.totalDistance || 0) / 1000).toFixed(1);
             document.getElementById('totalCoins').textContent = stats.totalCoins || 0;
+            document.getElementById('totalCalories').textContent = stats.totalCalories || 0;
 
             if (history.length === 0) {
                 renderEmptyState(container);

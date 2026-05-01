@@ -75,6 +75,10 @@
                 <span class="stat-icon">📏</span>
                 <span id="totalDistance">0km</span>
             </div>
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span id="totalCalories">0</span>
+            </div>
         </div>
         
         <button class="hotspot click-area" onclick="goToPageBg()"></button>
@@ -98,6 +102,7 @@
             document.getElementById('totalCoins').textContent = stats.totalCoins || 0;
             document.getElementById('totalRuns').textContent = stats.totalRuns || 0;
             document.getElementById('totalDistance').textContent = ((stats.totalDistance || 0) / 1000).toFixed(1) + 'km';
+            document.getElementById('totalCalories').textContent = stats.totalCalories || 0;
             
             console.log('Home page stats loaded:', stats);
         });

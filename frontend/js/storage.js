@@ -13,7 +13,8 @@ const Storage = {
     TOTAL_COINS: 'runbuddy_total_coins',
     TOTAL_DISTANCE: 'runbuddy_total_distance',
     TOTAL_RUNS: 'runbuddy_total_runs',
-    LAST_SESSION: 'runbuddy_last_session'
+    LAST_SESSION: 'runbuddy_last_session',
+    TOTAL_CALORIES: 'runbuddy_total_calories'
   },
 
   // Default values
@@ -30,6 +31,7 @@ const Storage = {
       totalDistance: 0,
       totalRuns: 0,
       totalTime: 0,
+      totalCalories: 0,
       bestPace: 0,
       bestDistance: 0
     },
@@ -115,6 +117,14 @@ const Storage = {
     return stats.totalDistance;
   },
 
+  // Add calories
+  addCalories(amount) {
+    const stats = this.getStats();
+    stats.totalCalories += amount;
+    this.saveStats(stats);
+    return stats.totalCalories;
+  },
+
   // Record a completed run
   recordRun(distance, time, pace) {
     const stats = this.getStats();
@@ -163,7 +173,7 @@ const Storage = {
       pace: runData.pace || 0,
       coinsEarned: runData.coinsEarned || 0,
       avgHeartRate: runData.avgHeartRate || 0,
-      calories: Math.round((runData.distance || 0) * 0.05)
+      calories: runData.calories || 0
     };
     
     // Add to beginning of array (newest first)

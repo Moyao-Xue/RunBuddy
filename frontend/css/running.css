@@ -93,6 +93,41 @@ html,body {
   text-align: left;
 }
 
+/* 卡路里面板样式 */
+.calories-panel {
+  position: absolute;
+  bottom: 120px;
+  right: 10px;
+  width: 140px;
+  height: 80px;
+  background-image: url("../images/panel2.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 10;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calories-text {
+  font-family: "Pixelify Sans", sans-serif;
+  color: #332211;
+  font-size: 11px;
+  text-align: center;
+}
+
+.calories-value {
+  font-family: "Pixelify Sans", sans-serif;
+  color: #ff6b35;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
 /* 按钮 —— 整体上移 */
 .button-back {
   position: absolute;

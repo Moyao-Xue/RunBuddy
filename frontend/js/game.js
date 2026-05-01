@@ -9,6 +9,7 @@ const endBtn = document.getElementById('endBtn');
 const statTimeEl = document.getElementById('statTime');
 const statPaceEl = document.getElementById('statPace');
 const statHeartRateEl = document.getElementById('statHeartRate');
+const statCaloriesEl = document.getElementById('statCalories');
 
 // 弹窗相关
 const settingBtn = document.querySelector('.setting-down-default');
@@ -53,6 +54,10 @@ const START_ANIM_DURATION = 1000;
 const RUNNER_MOVE_DURATION = 1200;
 const STOP_ANIM_DURATION = 5000;
 const RUNNER_BACK_DURATION = 500;
+
+// 卡路里计算常量
+const CALORIES_PER_METER_PER_KG = 0.05; // 每公斤每米消耗约0.05kcal (粗略估算)
+const DEFAULT_WEIGHT_KG = 60; // 默认体重60kg
 
 const RUNNER_CENTER_X = (402 - 126) / 2;
 const RUNNER_START_X = -8;
@@ -485,21 +490,28 @@ function resetGame() {
   // 保存本次跑步统计数据
   const elapsed = Date.now() - startTime;
   const distanceMeters = calculateDistance();
+  const caloriesBurned = calculateCalories(distanceMeters, elapsed);
   
-  // 每完成一次跑步获得金币
-  const coinsEarned = Math.floor(distanceMeters / 1000) + 1;
+  // 金币公式：基础金币 + 距离奖励 + 卡路里奖励
+  // 每100米获得1金币，每消耗10卡路里获得1金币
+  const baseCoins = 1;
+  const distanceCoins = Math.floor(distanceMeters / 100);
+  const caloriesCoins = Math.floor(caloriesBurned / 10);
+  const coinsEarned = baseCoins + distanceCoins + caloriesCoins;
   
   // 更新总统计数据
   Storage.recordRun(distanceMeters, elapsed, speed);
   Storage.addCoins(coinsEarned);
   Storage.addDistance(distanceMeters);
+  Storage.addCalories(caloriesBurned);
   
   // 保存到跑步历史记录
   Storage.addRunToHistory({
     distance: distanceMeters,
     time: elapsed,
     pace: speed,
-    coinsEarned: coinsEarned
+    coinsEarned: coinsEarned,
+    calories: caloriesBurned
   });
   
   // 保存最后会话信息
@@ -507,7 +519,8 @@ function resetGame() {
     distance: distanceMeters,
     time: elapsed,
     pace: speed,
-    coinsEarned: coinsEarned
+    coinsEarned: coinsEarned,
+    calories: caloriesBurned
   });
   
   console.log('Run completed - Distance:', distanceMeters, 'm, Coins earned:', coinsEarned);
@@ -536,6 +549,47 @@ function calculateDistance() {
   const hours = elapsedMs / 3600000;
   const currentPace = parseFloat(document.getElementById('statPace')?.textContent?.split(': ')[1]?.split(' ')[0] || '7');
   return hours * currentPace * 1000;
+}
+
+// 计算卡路里消耗
+// 使用更准确的跑步卡路里公式：
+// 卡路里 = MET值 × 体重(kg) × 时间(小时)
+// 慢跑(6-8 km/h)的MET值约为7-8
+function calculateCalories(distanceMeters, elapsedMs) {
+  const currentPace = parseFloat(document.getElementById('statPace')?.textContent?.split(': ')[1]?.split(' ')[0] || '7');
+  
+  // 根据速度确定MET值
+  let met;
+  if (currentPace < 6) {
+    met = 6; // 快走
+  } else if (currentPace < 8) {
+    met = 7; // 慢跑
+  } else if (currentPace < 10) {
+    met = 8.5; // 跑步
+  } else if (currentPace < 12) {
+    met = 10; // 快跑
+  } else {
+    met = 12; // 冲刺
+  }
+  
+  // 卡路里 = MET × 体重 × 时间(小时)
+  const hours = elapsedMs / 3600000;
+  const calories = met * DEFAULT_WEIGHT_KG * hours;
+  
+  return Math.round(calories);
+}
+
+// 实时更新卡路里显示
+function updateCaloriesDisplay() {
+  if (isPaused || !isRunning) return;
+  
+  const distanceMeters = calculateDistance();
+  const elapsedMs = Date.now() - startTime;
+  const calories = calculateCalories(distanceMeters, elapsedMs);
+  
+  if (statCaloriesEl) {
+    statCaloriesEl.textContent = calories;
+  }
 }
 
 // ==========================
@@ -594,6 +648,9 @@ function updateStats() {
   const elapsedMs = Date.now() - startTime;
   const hours = elapsedMs / 3600000;
   const distanceMeters = hours * currentPace * 1000;
+
+  // 更新卡路里显示
+  updateCaloriesDisplay();
 
   // ==========================
   // 每 1000 米弹窗一次
