@@ -59,6 +59,61 @@ const RUNNER_START_X = -8;
 const NEXT_PAGE_URL = "settling.html";
 
 // ==========================
+// LocalStorage - 初始化并加载设置
+// ==========================
+document.addEventListener('DOMContentLoaded', () => {
+  // 加载保存的设置
+  const savedSettings = Storage.getSettings();
+  
+  // 恢复设置值
+  minSpeedLimit = savedSettings.minSpeed;
+  
+  // 更新设置弹窗中的输入框
+  const speedInput = document.getElementById('speedInput');
+  if (speedInput && savedSettings.minSpeed) {
+    speedInput.value = savedSettings.minSpeed;
+  }
+  
+  // 加载音乐设置
+  const musicSelect = document.getElementById('musicSelect');
+  if (musicSelect && savedSettings.musicSelection) {
+    musicSelect.value = savedSettings.musicSelection;
+    // 根据选择更换背景音乐
+    updateBackgroundMusic(savedSettings.musicSelection);
+  }
+  
+  // 加载音量设置
+  const bgMusic = document.getElementById('bgMusic');
+  if (bgMusic && savedSettings.musicVolume !== undefined) {
+    bgMusic.volume = savedSettings.musicVolume;
+  }
+  
+  // 显示加载的统计数据
+  const stats = Storage.getStats();
+  updateStatsDisplay(stats);
+  
+  console.log('Settings loaded from localStorage:', savedSettings);
+  console.log('Stats loaded from localStorage:', stats);
+});
+
+// 根据音乐选择更新背景音乐
+function updateBackgroundMusic(musicSelection) {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+  
+  const musicMap = {
+    'Music 1': 'audio/faded.mp3',
+    'Music 2': 'audio/faded.mp3',
+    'Music 3': 'audio/faded.mp3'
+  };
+  
+  const musicPath = musicMap[musicSelection] || musicMap['Music 1'];
+  if (bgMusic.src.indexOf(musicPath) === -1) {
+    bgMusic.src = musicPath;
+  }
+}
+
+// ==========================
 // 音频相关
 // ==========================
 const encourageSounds = [
@@ -274,6 +329,18 @@ function openSettingModal() {
   cancelAnimationFrame(animationFrame);
   clearInterval(timerInterval);
   clearInterval(statsInterval);
+  
+  // 从 localStorage 加载当前设置
+  const savedSettings = Storage.getSettings();
+  const speedInput = document.getElementById('speedInput');
+  const musicSelect = document.getElementById('musicSelect');
+  
+  if (speedInput && savedSettings.minSpeed) {
+    speedInput.value = savedSettings.minSpeed;
+  }
+  if (musicSelect) {
+    musicSelect.value = savedSettings.musicSelection || 'Music 1';
+  }
 }
 
 function closeSettingModal() {
@@ -282,8 +349,20 @@ function closeSettingModal() {
   settingsModal.style.display = 'none';
 
   const speedInput = document.getElementById('speedInput');
+  const musicSelect = document.getElementById('musicSelect');
   const inputVal = parseFloat(speedInput.value);
   minSpeedLimit = (!isNaN(inputVal) && inputVal > 0) ? inputVal : null;
+
+  // 保存设置到 localStorage
+  const settings = Storage.getSettings();
+  settings.minSpeed = minSpeedLimit;
+  settings.maxHeartRate = null; // 可扩展
+  if (musicSelect) {
+    settings.musicSelection = musicSelect.value;
+    updateBackgroundMusic(musicSelect.value);
+  }
+  Storage.saveSettings(settings);
+  console.log('Settings saved:', settings);
 
   if (isRunning && !isPaused) {
     timerInterval = setInterval(updateTimer, 10);
@@ -403,6 +482,38 @@ function resetGame() {
 
   pauseGameWithAnimation();
 
+  // 保存本次跑步统计数据
+  const elapsed = Date.now() - startTime;
+  const distanceMeters = calculateDistance();
+  
+  // 每完成一次跑步获得金币
+  const coinsEarned = Math.floor(distanceMeters / 1000) + 1;
+  
+  // 更新总统计数据
+  Storage.recordRun(distanceMeters, elapsed, speed);
+  Storage.addCoins(coinsEarned);
+  Storage.addDistance(distanceMeters);
+  
+  // 保存到跑步历史记录
+  Storage.addRunToHistory({
+    distance: distanceMeters,
+    time: elapsed,
+    pace: speed,
+    coinsEarned: coinsEarned
+  });
+  
+  // 保存最后会话信息
+  Storage.updateLastSession({
+    distance: distanceMeters,
+    time: elapsed,
+    pace: speed,
+    coinsEarned: coinsEarned
+  });
+  
+  console.log('Run completed - Distance:', distanceMeters, 'm, Coins earned:', coinsEarned);
+  console.log('Total stats:', Storage.getStats());
+  console.log('History:', Storage.getRunHistory());
+
   distanceMilestone = 0;
 
   // 停止所有音频
@@ -417,6 +528,14 @@ function resetGame() {
     people.style.left = (x2 - 81) + 'px';
     window.location.href = NEXT_PAGE_URL;
   }, STOP_ANIM_DURATION);
+}
+
+// 计算当前跑步距离
+function calculateDistance() {
+  const elapsedMs = Date.now() - startTime;
+  const hours = elapsedMs / 3600000;
+  const currentPace = parseFloat(document.getElementById('statPace')?.textContent?.split(': ')[1]?.split(' ')[0] || '7');
+  return hours * currentPace * 1000;
 }
 
 // ==========================
@@ -442,6 +561,25 @@ function startStatsUpdate() {
     updateStats();
     statsInterval = setInterval(updateStats, 10000);
   }, 5000);
+}
+
+// 更新统计显示（可选：显示累计数据）
+function updateStatsDisplay(stats) {
+  // 可以在这里更新页面上的累计数据显示
+  // 例如：总金币、总距离等
+  const totalCoinsEl = document.getElementById('totalCoins');
+  const totalDistanceEl = document.getElementById('totalDistance');
+  const totalRunsEl = document.getElementById('totalRuns');
+  
+  if (totalCoinsEl && stats.totalCoins !== undefined) {
+    totalCoinsEl.textContent = stats.totalCoins;
+  }
+  if (totalDistanceEl && stats.totalDistance !== undefined) {
+    totalDistanceEl.textContent = (stats.totalDistance / 1000).toFixed(2) + ' km';
+  }
+  if (totalRunsEl && stats.totalRuns !== undefined) {
+    totalRunsEl.textContent = stats.totalRuns;
+  }
 }
 
 function updateStats() {

@@ -41,6 +41,9 @@
   <img src="images/back-up.png" alt="返回菜单">
 </button>
 
+<!-- LocalStorage 工具模块 -->
+<script src="js/storage.js"></script>
+
 <script>
 const moreBtn = document.getElementById('moreBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
@@ -68,6 +71,57 @@ shareBtn.addEventListener('click', () => {
 backToMenuBtn.addEventListener('click', () => {
   window.location.href = 'shouye.html';
 });
+
+// 从 localStorage 加载本次跑步数据
+document.addEventListener('DOMContentLoaded', () => {
+  const session = Storage.getLastSession();
+  const stats = Storage.getStats();
+  
+  if (session) {
+    // 更新金币显示
+    const coinsText = document.querySelector('.coins-text');
+    if (coinsText) {
+      coinsText.textContent = `${session.coinsEarned || 0} coins collected!`;
+    }
+    
+    // 更新日期
+    const dateEl = document.querySelector('.date-apr');
+    if (dateEl && session.timestamp) {
+      const date = new Date(session.timestamp);
+      const formattedDate = `Date:    ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      const distance = ((session.distance || 0) / 1000).toFixed(2);
+      const duration = formatDuration(session.time || 0);
+      
+      dateEl.innerHTML = dateEl.innerHTML.replace(
+        /Date:&nbsp;&nbsp;[^<]*/,
+        formattedDate
+      ).replace(
+        /Distance: [^<]*/,
+        `Distance: ${distance}Km`
+      ).replace(
+        /Duration:[^<]*/,
+        `Duration:${duration}`
+      );
+    }
+    
+    console.log('Session loaded:', session);
+  }
+  
+  console.log('Total stats:', stats);
+});
+
+// 格式化时间（毫秒转 MM:SS 或 HH:MM:SS）
+function formatDuration(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
 </script>
 
 </main>
