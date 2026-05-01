@@ -35,6 +35,22 @@
             display: block;
         }
 
+        .top-right-action {
+            position: absolute;
+            top: 16px;
+            left: 324px;
+            width: 57px;
+            height: 57px;
+            display: block;
+        }
+
+        .top-right-action img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
         /* 透明按钮 */
         .hotspot {
             position: absolute;
@@ -52,19 +68,15 @@
         }
 
         /* 右上角按钮：x:333, y:12, w:59, h:57 */
-        .btn-back {
-            top: 12px;
-            left: 333px;
-            width: 59px;
-            height: 57px;
-        }
     </style>
 </head>
 <body>
     <div class="phone-container">
         <img src="images/iPhone 17 - 35 (1).png" alt="iPhone 17 - 35 (1)" class="page-bg">
         <button class="hotspot btn-next" onclick="location.href='fashion shop.html'"></button>
-        <button class="hotspot btn-back" onclick="location.href='runboddy.html'"></button>
+        <a href="customize.html" class="top-right-action" aria-label="Back to customize page">
+            <img src="images/Group 119 (1).png" alt="Back to buddy home">
+        </a>
     </div>
 </body>
 </html>
