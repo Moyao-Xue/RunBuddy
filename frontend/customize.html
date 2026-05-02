@@ -13,8 +13,7 @@
             width: 393px;
             height: 852px;
             overflow: hidden;
-            border: none;
-            border-radius: 0;
+            background: #fff; /* 防止背景图加载前白屏 */
         }
 
         .page-bg {
@@ -25,12 +24,55 @@
             z-index: 0;
         }
 
+        /* --- 核心：小男孩人物样式与动画 --- */
+        .character-box {
+            position: absolute;
+            /* 根据你的背景图位置，调整人物坐标 */
+            top: 270px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5; /* 位于背景图之上，热区之下 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+   .pixel-boy {
+    /* 将原来的 140px 修改为更大数值，比如 200px */
+    width: 180px; 
+    height: auto;
+    image-rendering: pixelated; 
+    animation: breathing 2s ease-in-out infinite;
+    transform-origin: bottom;
+}
+        /* 呼吸关键帧：轻微上下起伏和缩放 */
+        @keyframes breathing {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-6px) scaleY(1.02); }
+        }
+
+        /* 脚底阴影效果 */
+        .char-shadow {
+            width: 70px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            margin-top: -8px;
+            animation: shadow-scale 2s ease-in-out infinite;
+        }
+
+        @keyframes shadow-scale {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.15); opacity: 0.1; }
+        }
+
+        /* --- 交互元素保持不变 --- */
         .hotspot {
             position: absolute;
             background: transparent;
             border: none;
             cursor: pointer;
-            z-index: 1;
+            z-index: 10;
         }
 
         .top-right-actions {
@@ -55,34 +97,38 @@
             object-fit: contain;
         }
 
-        /* --- 新增：Save 按钮热区样式 --- */
         .save-hotspot {
             position: absolute;
             cursor: pointer;
-            background: transparent; /* 默认透明，看不见 */
+            background: transparent;
             border: none;
             z-index: 10;
-            transition: all 0.1s ease; /* 让点击反馈更丝滑 */
-            
-            /* 【重要】请根据你的图片，微调以下数值 */
-            top: 680px;    /* 按钮在图片中的垂直位置 */
-            left: 95px;    /* 按钮在图片中的水平位置 */
-            width: 200px;  /* 按钮的宽度 */
-            height: 80px;  /* 按钮的高度 */
+            transition: all 0.1s ease;
+            top: 680px;
+            left: 95px;
+            width: 200px;
+            height: 80px;
         }
 
-        /* 这里的:active就是所谓的“点击感” */
         .save-hotspot:active {
-            background: rgba(0, 0, 0, 0.15); /* 点击瞬间变深，模拟按下 */
-            transform: scale(0.96);          /* 稍微缩小一点，模拟物理下陷 */
-            border-radius: 12px;             /* 匹配按钮圆角 */
+            background: rgba(0, 0, 0, 0.15);
+            transform: scale(0.96);
+            border-radius: 12px;
         }
     </style>
 </head>
 <body>
     <div class="phone-container">
+        <!-- 背景层 -->
         <img src="images/iPhone 17 - 27.png" alt="Customize Background" class="page-bg">
 
+        <!-- 人物层：新增动画男孩 -->
+        <div class="character-box">
+            <img src="images/image 50.png" alt="Pixel Boy" class="pixel-boy">
+            <div class="char-shadow"></div>
+        </div>
+
+        <!-- 交互层：按钮与热区 -->
         <div class="top-right-actions" aria-label="Top right actions">
             <a href="iphone17-35-1.html" class="top-right-action" aria-label="Open cart">
                 <img src="images/Group 123.png" alt="Open cart">
@@ -92,9 +138,11 @@
             </a>
         </div>
 
+        <!-- 衣服/裤子点击热区 -->
         <a href="jacket.html" class="hotspot" style="top: 160px; left: 63px; width: 100px; height: 70px;" aria-label="Select Jacket"></a>
         <a href="pants.html" class="hotspot" style="top: 140px; left: 230px; width: 80px; height: 110px;" aria-label="Select Pants"></a>
 
+        <!-- 保存按钮热区 -->
         <button class="save-hotspot" onclick="alert('保存成功！')"></button>
     </div>
 </body>
