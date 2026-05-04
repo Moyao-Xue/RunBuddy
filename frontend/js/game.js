@@ -12,7 +12,7 @@ const statHeartRateEl = document.getElementById('statHeartRate');
 const statCaloriesEl = document.getElementById('statCalories');
 
 // 弹窗相关
-const settingBtn = document.querySelector('.setting-down-default');
+const settingBtn = document.getElementById('settingBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 const settingsModal = document.getElementById('settingsModal');
 const modalClose = document.getElementById('modalClose');
@@ -26,7 +26,9 @@ const infoModal = document.getElementById('infoModal');
 const infoClose = document.getElementById('infoClose');
 
 let minSpeedLimit = null;
+let maxHeartRateLimit = null;
 let isWarningOpen = false;
+let isWarningForPace = false; // true = 配速警告, false = 心率警告
 let isInfoOpen = false;
 
 let distanceMilestone = 0; // 已达成的 1000 米段数
@@ -72,11 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 恢复设置值
   minSpeedLimit = savedSettings.minSpeed;
+  maxHeartRateLimit = savedSettings.maxHeartRate;
   
   // 更新设置弹窗中的输入框
   const speedInput = document.getElementById('speedInput');
+  const maxHrInput = document.getElementById('maxHrInput');
   if (speedInput && savedSettings.minSpeed) {
     speedInput.value = savedSettings.minSpeed;
+  }
+  if (maxHrInput && savedSettings.maxHeartRate) {
+    maxHrInput.value = savedSettings.maxHeartRate;
   }
   
   // 加载音乐设置
@@ -260,13 +267,26 @@ infoClose.addEventListener('click', closeInfoModal);
 // ==========================
 // 警告弹窗
 // ==========================
-function showWarningModal() {
+function showWarningModal(forPace = true) {
   if (isPaused || !isRunning || isWarningOpen) return;
 
   isWarningOpen = true;
+  isWarningForPace = forPace;
   modalOverlay.style.display = 'block';
   warningModal.style.display = 'block';
   document.getElementById('warningSpeaker').style.display = 'block';
+
+  // 根据警告类型更新内容
+  const warningTitle = document.getElementById('warningTitle');
+  const warningText = document.getElementById('warningText');
+
+  if (forPace) {
+    warningTitle.textContent = 'Warning';
+    warningText.innerHTML = 'your pace too slow!<br>Pay attention to your exercise intensity.';
+  } else {
+    warningTitle.textContent = 'Heart Rate Alert';
+    warningText.innerHTML = 'your heart rate is too high!<br>Please slow down to stay safe.';
+  }
 
   cancelAnimationFrame(animationFrame);
   clearInterval(timerInterval);
@@ -277,6 +297,7 @@ function closeWarningModal() {
   if (!isWarningOpen) return;
 
   isWarningOpen = false;
+  isWarningForPace = false;
   modalOverlay.style.display = 'none';
   warningModal.style.display = 'none';
   document.getElementById('warningSpeaker').style.display = 'none';
@@ -354,14 +375,18 @@ function closeSettingModal() {
   settingsModal.style.display = 'none';
 
   const speedInput = document.getElementById('speedInput');
+  const maxHrInput = document.getElementById('maxHrInput');
   const musicSelect = document.getElementById('musicSelect');
   const inputVal = parseFloat(speedInput.value);
   minSpeedLimit = (!isNaN(inputVal) && inputVal > 0) ? inputVal : null;
 
+  const hrInputVal = parseFloat(maxHrInput?.value);
+  maxHeartRateLimit = (!isNaN(hrInputVal) && hrInputVal > 0) ? hrInputVal : null;
+
   // 保存设置到 localStorage
   const settings = Storage.getSettings();
   settings.minSpeed = minSpeedLimit;
-  settings.maxHeartRate = null; // 可扩展
+  settings.maxHeartRate = maxHeartRateLimit;
   if (musicSelect) {
     settings.musicSelection = musicSelect.value;
     updateBackgroundMusic(musicSelect.value);
@@ -378,6 +403,12 @@ function closeSettingModal() {
 
 settingBtn.addEventListener('click', openSettingModal);
 modalClose.addEventListener('click', closeSettingModal);
+
+// Also add click handler for the setting button in the nav
+const settingNavBtn = document.getElementById('settingBtn');
+if (settingNavBtn) {
+  settingNavBtn.addEventListener('click', openSettingModal);
+}
 
 // ==========================
 // 人物移动
@@ -664,12 +695,23 @@ function updateStats() {
   // 速度过低警告
   if (minSpeedLimit !== null && !isWarningOpen && !isInfoOpen) {
     if (currentPace < minSpeedLimit) {
-      showWarningModal();
+      showWarningModal(true); // true = 配速警告
+    }
+  }
+
+  // 心率过高警告
+  if (maxHeartRateLimit !== null && !isWarningOpen && !isInfoOpen) {
+    if (heartRate > maxHeartRateLimit) {
+      showWarningModal(false); // false = 心率警告
     }
   }
 
   // 警告自动关闭
-  if (minSpeedLimit !== null && isWarningOpen && currentPace >= minSpeedLimit) {
-    closeWarningModal();
+  if (isWarningOpen && !isInfoOpen) {
+    if (isWarningForPace && minSpeedLimit !== null && currentPace >= minSpeedLimit) {
+      closeWarningModal();
+    } else if (!isWarningForPace && maxHeartRateLimit !== null && heartRate <= maxHeartRateLimit) {
+      closeWarningModal();
+    }
   }
 }

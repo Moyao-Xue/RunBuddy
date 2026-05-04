@@ -64,24 +64,50 @@
         .content {
             position: relative;
             z-index: 2;
-            padding: 143px 29px 106px;
+            padding: 143px 15px 90px;
             display: flex;
             flex-direction: column;
-            gap: 31px;
-            height: 100%;
+            gap: 15px;
+            height: calc(100% - 200px);
+            overflow-y: auto;
         }
 
-        .panel {
+        .video-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             flex: 1;
-            overflow: hidden;
-            background: #d9d9d9;
         }
 
-        .panel img {
+        .video-panel {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            flex: 1;
+        }
+
+        .video-panel iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            display: block;
-            object-fit: cover;
+            border: none;
+        }
+
+        .video-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            font-size: 10px;
+            padding: 20px 5px 5px;
+            text-align: center;
+            pointer-events: none;
         }
 
         .back-button {
@@ -116,10 +142,24 @@
         </button>
 
         <div class="content">
-            <div class="panel">
-                <img src="images/chatgpt-image-2026-4-14-14-49-12-1@2x.png" alt="Runners in town">
+            <div class="video-grid">
+                <div class="video-panel">
+                    <iframe 
+                        src="https://player.bilibili.com/player.html?bvid=BV13L4y1u7fz&page=1&autoplay=0"
+                        scrolling="no" 
+                        allowfullscreen="true">
+                    </iframe>
+                    <div class="video-title">跑步教学视频 1</div>
+                </div>
+                <div class="video-panel">
+                    <iframe 
+                        src="https://player.bilibili.com/player.html?bvid=BV1nHHeeVEYj&page=1&autoplay=0"
+                        scrolling="no" 
+                        allowfullscreen="true">
+                    </iframe>
+                    <div class="video-title">短跑专项练习课程</div>
+                </div>
             </div>
-            <div class="panel"></div>
         </div>
     </div>
 </body>

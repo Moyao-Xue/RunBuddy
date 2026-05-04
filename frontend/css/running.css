@@ -196,7 +196,46 @@ html,body {
   object-fit: cover;
 }
 
-button:focus { outline: none; }
+button:focus {
+  outline: 3px solid #4a90d9;
+  outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #4a90d9;
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 1000;
+  font-family: 'Pixelify Sans', sans-serif;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stats-panel,
+  .calories-panel,
+  .settings-modal,
+  .warning-modal,
+  .info-modal {
+    border: 3px solid #000;
+  }
+  
+  .stats-text,
+  .calories-text,
+  .calories-value,
+  .modal-item label {
+    color: #000 !important;
+  }
+}
 
 /* 半透明灰色遮罩 */
 .modal-overlay {

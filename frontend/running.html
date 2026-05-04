@@ -3,11 +3,15 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta charset="utf-8" />
+  <meta name="description" content="RunBuddy - Interactive running game with real-time stats tracking">
   <title>Runner Game Menu</title>
   <link rel="stylesheet" href="css/running.css">
 </head>
 <body>
 
+<!-- Skip navigation link for accessibility -->
+<a href="#game-controls" class="skip-link">Skip to game controls</a>
+<a href="#stats-panel" class="skip-link">Skip to statistics</a>
 
 <main class="iphone" aria-label="Runner game menu screen">
   <!-- 双背景：无缝循环滚动 -->
@@ -23,28 +27,28 @@
 
   <!-- 以下不变 -->
   <!-- 统计面板 -->
-  <div class="stats-panel" id="statsPanel">
+  <section class="stats-panel" id="statsPanel" role="status" aria-label="Running statistics">
     <div class="stats-text">
-      <p id="statTime">Time: 00:00:00</p>
-      <p id="statPace">Pace: 0 km/h</p>
-      <p id="statHeartRate">Heart rate: 0 bpm</p>
+      <p id="statTime" aria-live="polite">Time: 00:00:00</p>
+      <p id="statPace" aria-live="polite">Pace: 0 km/h</p>
+      <p id="statHeartRate" aria-live="polite">Heart rate: 0 bpm</p>
     </div>
-  </div>
+  </section>
 
   <!-- 卡路里面板 -->
-  <div class="calories-panel" id="caloriesPanel">
+  <section class="calories-panel" id="caloriesPanel" role="status" aria-label="Calories burned">
     <div class="calories-text">Calories</div>
-    <div class="calories-value"><span id="statCalories">0</span> kcal</div>
-  </div>
+    <div class="calories-value"><span id="statCalories" aria-live="polite">0</span> kcal</div>
+  </section>
 
-  <nav aria-label="Game controls">
-    <button class="button-back" id="backBtn"></button>
-    <button class="setting-down-default"></button>
-    <button class="button-start-up" id="startBtn">
-      <img class="button-start-up-2" src="images/button_start_up.png">
+  <nav class="game-controls" id="game-controls" aria-label="Game controls">
+    <button class="button-back" id="backBtn" aria-label="Return to menu"></button>
+    <button class="setting-down-default" id="settingBtn" aria-label="Open settings"></button>
+    <button class="button-start-up" id="startBtn" aria-label="Start or pause running">
+      <img class="button-start-up-2" src="images/button_start_up.png" alt="Start button">
     </button>
-    <button class="button-end" id="endBtn">
-      <img class="retouch" src="images/end-up.png">
+    <button class="button-end" id="endBtn" aria-label="End run">
+      <img class="retouch" src="images/end-up.png" alt="End button">
     </button>
   </nav>
 
@@ -52,12 +56,12 @@
 <div class="modal-overlay" id="modalOverlay"></div>
 
 <!-- 设置弹窗：背景是你的方框图片 -->
-<div class="settings-modal" id="settingsModal">
+<div class="settings-modal" id="settingsModal" role="dialog" aria-labelledby="settingsTitle" aria-modal="true">
   <!-- 右上角关闭按钮（你的图片） -->
-  <button class="modal-close-btn" id="modalClose">
+  <button class="modal-close-btn" id="modalClose" aria-label="Close settings">
     <img src="images/close-up.png" alt="close">
   </button>
-  <h2 class="modal-title">Setting</h2>
+  <h2 class="modal-title" id="settingsTitle">Setting</h2>
   <!-- 内容：输入框 + 下拉框 -->
   <div class="modal-content">
     <div class="modal-item">
@@ -70,7 +74,7 @@
     <div class="modal-item">
       <label>Max HR:</label>
       <div class="speed-wrap">
-        <input type="text" id="speedInput" class="modal-input">
+        <input type="text" id="maxHrInput" class="modal-input">
         <span class="unit">bpm</span>
       </div>
     </div>
@@ -84,12 +88,12 @@
     </div>
   </div>
 </div>
-<div class="warning-modal" id="warningModal">
-  <button class="warning-close-btn" id="warningClose">
+<div class="warning-modal" id="warningModal" role="alertdialog" aria-labelledby="warningTitle" aria-describedby="warningText" aria-modal="true">
+  <button class="warning-close-btn" id="warningClose" aria-label="Close warning">
     <img src="images/close-up.png" alt="close">
   </button>
-  <h2 class="warning-title">Warning</h2>
-  <p class="warning-text">
+  <h2 class="warning-title" id="warningTitle">Warning</h2>
+  <p class="warning-text" id="warningText">
     your pace too slow!<br>
     Pay attention to your exercise intensity.
   </p>
@@ -99,12 +103,12 @@
 </main>
 
 <!-- 1000米提示弹窗 -->
-<div class="info-modal" id="infoModal">
-  <button class="info-close-btn" id="infoClose">
+<div class="info-modal" id="infoModal" role="dialog" aria-labelledby="infoTitle" aria-describedby="infoText" aria-modal="true">
+  <button class="info-close-btn" id="infoClose" aria-label="Close">
     <img src="images/close-up.png" alt="close">
   </button>
-  <h2 class="info-title">Award</h2>
-  <p class="info-text">
+  <h2 class="info-title" id="infoTitle">Award</h2>
+  <p class="info-text" id="infoText">
     Congratulation! You have gained a coin
   </p>
 </div>
