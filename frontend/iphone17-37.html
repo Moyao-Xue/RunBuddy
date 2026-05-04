@@ -329,12 +329,37 @@
             // 显示加载动画
             document.getElementById('loadingOverlay').style.display = 'flex';
 
+            // 创建帖子对象
+            const post = {
+                id: Date.now(),
+                text: text,
+                image: selectedImage,
+                timestamp: new Date().toISOString()
+            };
+
+            // 保存到 localStorage
+            const posts = JSON.parse(localStorage.getItem('runbuddy_posts') || '[]');
+            posts.unshift(post);
+            localStorage.setItem('runbuddy_posts', JSON.stringify(posts));
+
             // 模拟发帖延迟
             setTimeout(() => {
                 document.getElementById('loadingOverlay').style.display = 'none';
                 document.getElementById('successOverlay').style.display = 'flex';
             }, 1500);
         }
+
+        // 页面加载时检查是否有新帖子并显示
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('runbuddy_posts') || '[]');
+            console.log('已保存的帖子数:', posts.length);
+            return posts;
+        }
+
+        // 初始化时加载帖子数据
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPosts();
+        });
     </script>
 </body>
 </html>

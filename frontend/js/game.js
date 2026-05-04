@@ -113,10 +113,14 @@ function updateBackgroundMusic(musicSelection) {
   const bgMusic = document.getElementById('bgMusic');
   if (!bgMusic) return;
   
+  // 支持两种格式：显示名称或文件路径
   const musicMap = {
     'Music 1': 'audio/faded.mp3',
-    'Music 2': 'audio/faded.mp3',
-    'Music 3': 'audio/faded.mp3'
+    'Music 2': 'audio/baby.mp3',
+    'Music 3': 'audio/cruelSummer.mp3',
+    'audio/faded.mp3': 'audio/faded.mp3',
+    'audio/baby.mp3': 'audio/baby.mp3',
+    'audio/cruelSummer.mp3': 'audio/cruelSummer.mp3'
   };
   
   const musicPath = musicMap[musicSelection] || musicMap['Music 1'];
@@ -365,7 +369,9 @@ function openSettingModal() {
     speedInput.value = savedSettings.minSpeed;
   }
   if (musicSelect) {
-    musicSelect.value = savedSettings.musicSelection || 'Music 1';
+    // 将保存的名称转换回文件路径
+    const labelToValue = { 'Music 1': 'audio/faded.mp3', 'Music 2': 'audio/baby.mp3', 'Music 3': 'audio/cruelSummer.mp3' };
+    musicSelect.value = labelToValue[savedSettings.musicSelection] || savedSettings.musicSelection || 'audio/faded.mp3';
   }
 }
 
@@ -388,8 +394,11 @@ function closeSettingModal() {
   settings.minSpeed = minSpeedLimit;
   settings.maxHeartRate = maxHeartRateLimit;
   if (musicSelect) {
-    settings.musicSelection = musicSelect.value;
-    updateBackgroundMusic(musicSelect.value);
+    // 保存显示名称而不是文件路径
+    const valueToLabel = { 'audio/faded.mp3': 'Music 1', 'audio/baby.mp3': 'Music 2', 'audio/cruelSummer.mp3': 'Music 3' };
+    const label = valueToLabel[musicSelect.value] || musicSelect.value;
+    settings.musicSelection = label;
+    updateBackgroundMusic(label);
   }
   Storage.saveSettings(settings);
   console.log('Settings saved:', settings);

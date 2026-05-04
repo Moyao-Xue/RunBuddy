@@ -77,11 +77,8 @@
             right: 12px;
             width: 57px;
             height: 57px;
-            padding: 0;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            z-index: 12;
+            display: block;
+            z-index: 100;
         }
 
         .close-button img {
@@ -110,7 +107,7 @@
             background: transparent;
             box-shadow: var(--shadow-drop);
             cursor: pointer;
-            z-index: 15;
+            z-index: 20;
         }
 
         .card:hover {
@@ -186,7 +183,7 @@
             <img src="images/close-up-default@2x.png" alt="">
         </button>
 
-        <div class="content">
+        <div class="content" style="position: relative; z-index: 1;">
             <button class="card" onclick="location.href='iphone17-36.html'" aria-label="Open professional guidance video">
                 <img src="images/image-80@2x.png" alt="Professional guidance">
                 <div class="card-title">Professional Guidance video</div>
@@ -199,8 +196,6 @@
         </div>
 
         <button class="footer-title" onclick="location.href='shouye.html'">Back to the town</button>
-
-        <button class="clickable-area" onclick="window.open('https://search.bilibili.com/all?vt=26171165&keyword=%E6%96%B0%E6%89%8B%E8%B7%91%E6%AD%A5%E6%8C%87%E5%AF%BC%E6%95%99%E7%A8%8B&from_source=webtop_search&spm_id_from=333.1007&search_source=5', '_blank')" aria-label="Open new running tutorial video"></button>
     </div>
 </body>
 </html>
