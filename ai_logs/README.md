@@ -65,6 +65,7 @@ Create a character customization page with:
 - **ChatGPT/Codex**: Primary code generation for game logic and UI
 - **Cursor AI**: Code editing and refinement
 - **GitHub Copilot**: Autocomplete suggestions
+- **Doubao AI**: Providing instructions and prompts
 
 ## Notes
 
