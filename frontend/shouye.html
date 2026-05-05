@@ -1,111 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RunBuddy</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; background-color: #f0f0f0; 
-        }
-        .phone-container {
-            position: relative; width: 393px; height: 852px;
-            overflow: hidden; border: none; border-radius: 0;
-        }
-        .page-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        /* 通用热区样式 */
-        .hotspot {
-            position: absolute;
-            background: transparent; 
-            border: none; cursor: pointer; z-index: 10;
-        }
-
-        /* 各个区域坐标 */
-        .click-area { top: 160px; left: 222px; width: 180px; height: 244px; }
-        .click-area-34 { top: 470px; left: -25px; width: 182px; height: 275px; }
-        .btn-iphone62 { top: 404px; left: 180px; width: 390px; height: 390px; }
-        .btn-run { top: 40px; left: 10px; width: 149px; height: 109px; }
-        
-        /* 房子区域 */
-        .btn-boddyhome { top: 160px; left: 15px; width: 160px; height: 244px; }
-        
-        /* 统计面板样式 */
-        .stats-display {
-            position: absolute;
-            top: 580px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 8px 12px;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            font-size: 11px;
-            z-index: 20;
-            display: flex;
-            gap: 12px;
-        }
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .stat-icon {
-            font-size: 14px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RunBuddy</title>
+  <link rel="stylesheet" href="css/shouye.css">
 </head>
 <body>
-    <div class="phone-container">
-        <img src="images/shouye.png" alt="Shouye" class="page-bg">
-        
-        <!-- 累计统计显示 -->
-        <div class="stats-display" id="statsDisplay">
-            <div class="stat-item">
-                <span class="stat-icon">🪙</span>
-                <span id="totalCoins">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🏃</span>
-                <span id="totalRuns">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">📏</span>
-                <span id="totalDistance">0km</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">🔥</span>
-                <span id="totalCalories">0</span>
-            </div>
-        </div>
-        
-        <button class="hotspot click-area" onclick="goToPageBg()"></button>
-        <button class="hotspot click-area-34" onclick="goToPage34()"></button>
-        <button class="hotspot btn-iphone62" onclick="location.href='iphone17-62.html'"></button>
-        <button class="hotspot btn-run" onclick="location.href='running.html'"></button>
-        <button class="hotspot btn-boddyhome" onclick="location.href='customize.html'"></button>
+  <div class="phone-container">
+    <img src="images/shouye.png" alt="RunBuddy home" class="page-bg">
+
+    <div class="stats-display" id="statsDisplay">
+      <div class="stat-item">
+        <span class="stat-icon">Coins</span>
+        <span id="totalCoins">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">Runs</span>
+        <span id="totalRuns">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">Km</span>
+        <span id="totalDistance">0.0km</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">Kcal</span>
+        <span id="totalCalories">0</span>
+      </div>
     </div>
 
-    <!-- LocalStorage 工具模块 -->
-    <script src="js/storage.js"></script>
-    
-    <script>
-        function goToPageBg() { window.location.href = 'iphone17-8.html'; }
-        function goToPage34() { window.location.href = 'iphone17-34.html'; }
-        
-        // 页面加载时显示累计统计
-        document.addEventListener('DOMContentLoaded', () => {
-            const stats = Storage.getStats();
-            
-            document.getElementById('totalCoins').textContent = stats.totalCoins || 0;
-            document.getElementById('totalRuns').textContent = stats.totalRuns || 0;
-            document.getElementById('totalDistance').textContent = ((stats.totalDistance || 0) / 1000).toFixed(1) + 'km';
-            document.getElementById('totalCalories').textContent = stats.totalCalories || 0;
-            
-            console.log('Home page stats loaded:', stats);
-        });
-    </script>
+    <button class="hotspot click-area" id="recordsBtn" aria-label="Open records"></button>
+    <button class="hotspot click-area-34" id="activityBtn" aria-label="Open activity"></button>
+    <button class="hotspot btn-iphone62" id="historyBtn" aria-label="Open run history"></button>
+    <button class="hotspot btn-run" id="runBtn" aria-label="Start running"></button>
+    <button class="hotspot btn-boddyhome" id="customizeBtn" aria-label="Customize character"></button>
+    <button class="hotspot btn-settings" id="settingBtn" aria-label="Open settings"></button>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <div class="settings-modal" id="settingsModal" role="dialog" aria-labelledby="settingsTitle" aria-modal="true">
+      <button class="modal-close-btn" id="modalClose" aria-label="Close settings">
+        <img src="images/close-up.png" alt="close">
+      </button>
+      <h2 class="modal-title" id="settingsTitle">Setting</h2>
+      <div class="settings-tabs" role="tablist" aria-label="Setting categories">
+        <button type="button" class="settings-tab is-active" id="basicSettingsTab" data-settings-tab="basic" role="tab" aria-selected="true" aria-controls="basicSettingsPanel">Basic Setting</button>
+        <button type="button" class="settings-tab" id="voiceSettingsTab" data-settings-tab="voice" role="tab" aria-selected="false" aria-controls="voiceSettingsPanel">Voice Setting</button>
+      </div>
+
+      <div class="modal-content">
+        <div class="settings-panel is-active" id="basicSettingsPanel" data-settings-panel="basic" role="tabpanel" aria-labelledby="basicSettingsTab">
+          <div class="modal-item">
+            <label for="speedInput">Min Speed:</label>
+            <div class="speed-wrap">
+              <input type="text" id="speedInput" class="modal-input">
+              <span class="unit">km/h</span>
+            </div>
+          </div>
+          <div class="modal-item">
+            <label for="maxHrInput">Max HR:</label>
+            <div class="speed-wrap">
+              <input type="text" id="maxHrInput" class="modal-input">
+              <span class="unit">bpm</span>
+            </div>
+          </div>
+          <div class="modal-item">
+            <label for="musicSelect">Music:</label>
+            <select id="musicSelect" class="modal-select">
+              <option value="audio/faded.mp3">Music 1</option>
+              <option value="audio/baby.mp3">Music 2</option>
+              <option value="audio/cruelSummer.mp3">Music 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-panel" id="voiceSettingsPanel" data-settings-panel="voice" role="tabpanel" aria-labelledby="voiceSettingsTab" hidden>
+          <div class="modal-section">
+            <div class="modal-section-header">
+              <h3 class="modal-section-title">Encourage Audio</h3>
+              <p class="modal-section-text">Hold the button to record an encouragement clip within 10 seconds.</p>
+            </div>
+            <div class="modal-item modal-item-stack">
+              <label for="encourageAudioSelect">Current:</label>
+              <select id="encourageAudioSelect" class="modal-select">
+                <option value="default">Default Encourage Audio</option>
+              </select>
+            </div>
+            <div class="record-panel">
+              <button type="button" class="record-hold-btn" id="recordHoldBtn">Hold to Record</button>
+              <p class="recording-status" id="recordingStatus" aria-live="polite">Ready to record.</p>
+              <p class="recording-timer" id="recordingTimer">0.0s / 10.0s</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="record-confirm-modal" id="recordConfirmModal" role="dialog" aria-labelledby="recordConfirmTitle" aria-describedby="recordConfirmText" aria-modal="true">
+      <h2 class="modal-title" id="recordConfirmTitle">Use This Audio?</h2>
+      <p class="record-confirm-text" id="recordConfirmText">
+        Would you like to use the audio you just recorded as the new encourage audio?
+      </p>
+      <label class="record-name-label" for="recordNameInput">Audio Name</label>
+      <input type="text" id="recordNameInput" class="record-name-input" maxlength="24" placeholder="Enter audio name">
+      <p class="record-confirm-error" id="recordConfirmError" aria-live="polite"></p>
+      <div class="record-confirm-actions">
+        <button type="button" class="record-action-btn record-action-btn-secondary" id="recordRejectBtn">Reject</button>
+        <button type="button" class="record-action-btn record-action-btn-primary" id="recordConfirmBtn">Agree</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="audio/faded.mp3" loop preload="auto"></audio>
+
+  <script src="js/storage.js"></script>
+  <script src="js/shouye.js"></script>
 </body>
 </html>

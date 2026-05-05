@@ -1,191 +1,636 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
-@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Sixtyfour+Convergence&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap");
 
 :root {
-  --pshavm: rgba(159, 204, 224, 1);
-  --d-9d-9d-9: rgba(237, 211, 174, 1);
-  --text-font-family: "Pixelify Sans", sans-serif;
-  --font-pixel: "Pixelify Sans", sans-serif;
-  --font-sixty: "Sixtyfour Convergence", sans-serif;
+  --bg-shell: #edd3ae;
+  --panel-main: rgba(159, 204, 224, 0.98);
+  --panel-soft: rgba(250, 251, 252, 0.96);
+  --panel-route: rgba(242, 246, 250, 0.96);
+  --line: #000000;
+  --title: #78444d;
+  --text-main: #171717;
+  --text-soft: #4b5563;
+  --accent: #9fccdf;
+  --accent-strong: #2577d9;
+  --accent-warm: #f5c47a;
+  --danger: #c24f4f;
 }
 
 * {
-  -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
-  overflow: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #f0f0f0;
+  font-family: "Pixelify Sans", sans-serif;
 }
 
 .iphone {
-  background-color: var(--d-9d-9d-9);
-  width: 393px;
-  max-width: 393px;
-  height: 852px;
   position: relative;
-  margin: 0 auto;
+  width: 393px;
+  max-width: 100%;
+  height: 852px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.28), transparent 28%),
+    linear-gradient(180deg, #f2d8b1 0%, #ecd1a8 100%);
+}
+
+.page-head {
+  padding: 20px 20px 0;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7d6759;
+}
+
+.title {
+  margin: 0;
+  color: var(--title);
+  font-size: 52px;
+  line-height: 1;
+}
+
+.summary-card {
+  position: absolute;
+  top: 118px;
+  left: 14px;
+  right: 14px;
+  bottom: 88px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel-main);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.more-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 52px;
+  height: 36px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #111;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 52px;
+  right: 12px;
+  min-width: 150px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  display: none;
+  z-index: 30;
   overflow: hidden;
 }
 
-.iphone .rectangle {
-  top: 160px;
-  left: 14px;
-  right: 14px;
-  height: 484px;
-  background-color: var(--pshavm);
-  position: absolute;
-  border-radius: 5px;
-  border: 2px solid #000;
-}
-
-.iphone .div {
-  top: 46px;
-  left: 30px;
-  right: 30px;
-  height: 315px;
-  background-color: #f2f2f7;
-  position: absolute;
-  border-radius: 5px;
-  border: 2px solid #000;
-}
-
-/* 更多按钮 */
-.iphone .text-wrapper {
-  position: absolute;
-  top: 4px;
-  right: 0px;
-  width: 78px;
-  font-family: "Pixelify Sans", sans-serif;
-  font-weight: 700;
-  color: #000;
-  font-size: 24px;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  z-index: 10;
-}
-
-/* 下拉菜单默认隐藏 */
-.dropdown-menu {
-  position: absolute;
-  top: 40px;
-  right: 10px;
-  background: white;
-  border: 2px solid #000;
-  border-radius: 5px;
-  min-width: 140px;
-  z-index: 999;
-  display: none;
-}
 .dropdown-menu.show {
   display: block;
 }
 
-/* 菜单项 */
 .dropdown-item {
-  padding: 10px 12px;
-  font-family: "Pixelify Sans", sans-serif;
+  padding: 11px 12px;
   font-size: 16px;
   cursor: pointer;
 }
+
+.dropdown-item + .dropdown-item {
+  border-top: 1px solid #d7d7d7;
+}
+
 .dropdown-item:hover {
-  background: #e0e0e0;
+  background: #ececec;
 }
 
-.iphone .date-apr {
-  position: absolute;
-  top: 50px;
-  left: 130px;
-  width: auto;
-  max-width: 179px;
-  font-family: "Pixelify Sans", sans-serif;
+.dropdown-item-accent {
+  color: var(--danger);
   font-weight: 700;
-  color: #000;
-  font-size: 17px;
 }
 
-.iphone .image {
-  position: absolute;
-  top: 215px;
-  left: 222px;
-  width: 30px;
-  height: 27px;
-  object-fit: cover;
+.card-shell {
+  height: 100%;
+  padding: 46px 12px 10px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
-.iphone .p {
-  position: absolute;
-  top: 401px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 332px;
-  font-family: "Pixelify Sans", sans-serif;
-  font-weight: 500;
-  color: #000;
-  font-size: 19px;
-  text-align: center;
+.hero-panel,
+.route-panel {
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-soft);
 }
 
-.iphone .img {
-  position: absolute;
-  top: -23px;
-  left: 0;
-  width: 242px;
-  height: 331px;
-  max-width: 50%;
-  object-fit: cover;
+.hero-panel {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
 }
 
-.iphone .text-wrapper-2 {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+.runner-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 238, 0.98), rgba(247, 241, 228, 0.98));
+}
+
+.runner-illustration {
   width: 100%;
-  text-align: center;
-  font-family: "Pixelify Sans", sans-serif;
-  font-weight: 700;
-  color: #78444d;
-  font-size: 64px;
-  white-space: nowrap;
+  height: 118px;
+  object-fit: contain;
 }
 
-.iphone .button-back {
-  position: absolute;
-  top: 680px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 214px;
-  height: 61px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+.runner-copy {
+  display: grid;
+  gap: 6px;
 }
-.iphone .button-back img {
+
+.streak-copy {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text-main);
+}
+
+.coins-text {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: 5px 9px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #fff0cb;
+  color: var(--title);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.session-panel {
+  display: grid;
+  gap: 0;
+  min-width: 0;
+}
+
+.section-kicker {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5b6776;
+}
+
+.section-title {
+  margin: 0;
+  color: var(--title);
+  line-height: 1.05;
+}
+
+.section-title {
+  font-size: 18px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.stat-card {
+  min-width: 0;
+  min-height: 62px;
+  padding: 9px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: #ffffff;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.stat-card-wide {
+  grid-column: 1 / -1;
+}
+
+.stat-label {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 17px;
+  line-height: 1.05;
+  word-break: break-word;
+}
+
+.stat-value-date {
+  font-size: 16px;
+}
+
+.weather-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background:
+    linear-gradient(180deg, #eef7ff 0%, #dff0ff 100%);
+}
+
+.weather-copy {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.weather-icon {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.weather-text {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.route-panel {
+  min-height: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  background: var(--panel-route);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-note {
+  max-width: 88px;
+  margin: 0;
+  text-align: right;
+  color: var(--text-soft);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.route-map-shell {
+  position: relative;
+  min-height: 0;
+  height: 172px;
+  border-radius: 10px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(234, 239, 245, 0.95), rgba(226, 232, 240, 0.95));
+}
+
+.route-map {
+  height: 100%;
+  width: 100%;
+  min-height: 172px;
+}
+
+.route-map.is-empty::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.22) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.22) 50%, rgba(255, 255, 255, 0.22) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+}
+
+.route-empty {
+  position: absolute;
+  inset: auto 16px 16px;
+  display: none;
+  margin: 0;
+  padding: 8px 10px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 12px;
+  z-index: 430;
+}
+
+.route-empty.show {
+  display: block;
+}
+
+.route-legend {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 440;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+  color: var(--text-main);
+  font-size: 12px;
+}
+
+.capture-export {
+  box-shadow: none;
+}
+
+.capture-route-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #e7f0f7 0%, #d8e6f0 100%);
+}
+
+.capture-route-map-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.capture-route-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(159, 204, 224, 0.18), rgba(114, 181, 211, 0.18));
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.capture-route-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.capture-route-line {
+  fill: none;
+  stroke: #2577d9;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.96;
+}
+
+.capture-route-start,
+.capture-route-finish {
+  stroke: #ffffff;
+  stroke-width: 7;
+}
+
+.capture-route-start {
+  fill: #4b9cf5;
+}
+
+.capture-route-finish {
+  fill: #f08a2d;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+}
+
+.legend-dot-start {
+  background: #4b9cf5;
+}
+
+.legend-dot-finish {
+  background: #f08a2d;
+}
+
+.report-export-sandbox {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 393px;
+  height: 852px;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.report-export-phone {
+  position: relative;
+  width: 393px;
+  height: 852px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.28), transparent 28%),
+    linear-gradient(180deg, #f2d8b1 0%, #ecd1a8 100%);
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.report-export-head {
+  padding-top: 20px;
+}
+
+.report-export-shell {
+  position: absolute;
+  top: 118px;
+  left: 14px;
+  right: 14px;
+  bottom: 22px;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.report-export-card-shell {
+  height: 100%;
+  padding: 46px 12px 10px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+}
+
+.report-export-route-shell {
+  background:
+    linear-gradient(180deg, rgba(234, 239, 245, 0.95), rgba(226, 232, 240, 0.95));
+}
+
+.report-export-route-art {
+  width: 100%;
+  height: 100%;
+}
+
+.report-export-route-live-map {
+  width: 100%;
+  height: 100%;
+}
+
+.report-export-route-live-map .leaflet-pane,
+.report-export-route-live-map .leaflet-map-pane,
+.report-export-route-live-map .leaflet-tile-pane,
+.report-export-route-live-map .leaflet-overlay-pane,
+.report-export-route-live-map .leaflet-shadow-pane,
+.report-export-route-live-map .leaflet-marker-pane,
+.report-export-route-live-map .leaflet-tooltip-pane,
+.report-export-route-live-map .leaflet-popup-pane {
+  width: 100%;
+  height: 100%;
+}
+
+.report-export-route-svg {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.iphone .text-wrapper:focus-visible,
-.iphone .button-back:focus-visible {
-  outline: 2px solid #4a90e2;
+.report-export-route-empty {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.home-btn {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 22px;
+  height: 54px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, #b8deec 0%, var(--accent) 100%);
+  color: #111;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.home-btn:active,
+.more-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.more-btn:focus-visible,
+.home-btn:focus-visible {
+  outline: 3px solid #2a7ccf;
   outline-offset: 2px;
 }
 
-.iphone .coins-text {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Pixelify Sans", sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  color: #78444d;
-  white-space: nowrap;
+.leaflet-control-container .leaflet-top,
+.leaflet-control-container .leaflet-bottom {
+  display: none;
+}
+
+@media (max-width: 440px) {
+  body {
+    padding: 0;
+  }
+
+  .iphone {
+    width: 100vw;
+    height: 100vh;
+    border-width: 0;
+  }
+
+  .summary-card {
+    left: 10px;
+    right: 10px;
+    top: 112px;
+    bottom: 84px;
+  }
+
+  .hero-panel {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  .runner-illustration {
+    height: 110px;
+  }
+
+  .streak-copy {
+    font-size: 12px;
+  }
+
+  .stat-value {
+    font-size: 16px;
+  }
+
+  .route-map {
+    min-height: 164px;
+  }
+
+  .route-map-shell {
+    height: 164px;
+  }
 }

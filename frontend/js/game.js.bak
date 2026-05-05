@@ -1,0 +1,825 @@
+const startBtn = document.getElementById('startBtn');
+const endBtn = document.getElementById('endBtn');
+const backBtn = document.getElementById('backBtn');
+const settingBtn = document.getElementById('settingBtn');
+
+const statTimeEl = document.getElementById('statTime');
+const statPaceEl = document.getElementById('statPace');
+const statDistanceEl = document.getElementById('statDistance');
+const statHeartRateEl = document.getElementById('statHeartRate');
+const statCaloriesEl = document.getElementById('statCalories');
+const mapStatusEl = document.getElementById('mapStatus');
+
+const modalOverlay = document.getElementById('modalOverlay');
+const settingsModal = document.getElementById('settingsModal');
+const modalClose = document.getElementById('modalClose');
+
+const warningModal = document.getElementById('warningModal');
+const warningClose = document.getElementById('warningClose');
+
+const infoModal = document.getElementById('infoModal');
+const infoClose = document.getElementById('infoClose');
+
+const warningSpeaker = document.getElementById('warningSpeaker');
+
+const NEXT_PAGE_URL = 'settling.html';
+const STOP_ANIM_DURATION = 1200;
+const DEFAULT_WEIGHT_KG = 60;
+
+const encourageSounds = [
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-4-47.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-7-27.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-3-35.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-3-54.mp3',
+  'audio/ttsMP3.com_VoiceText_2026-4-22_12-5-9.mp3'
+];
+
+let minSpeedLimit = null;
+let maxHeartRateLimit = null;
+
+let isRunning = false;
+let isPaused = false;
+let isModalOpen = false;
+let isWarningOpen = false;
+let isWarningForPace = false;
+let isInfoOpen = false;
+
+let startTime = 0;
+let pausedElapsed = 0;
+let timerInterval = null;
+let statsInterval = null;
+let encourageInterval = null;
+let coinsInterval = null;
+
+let map = null;
+let routeLine = null;
+let runnerMarker = null;
+let watchId = null;
+let hasCenteredOnUser = false;
+let baseTileLayer = null;
+let mapResizeObserver = null;
+let tileErrorCount = 0;
+let tileSourceIndex = 0;
+let totalTileErrors = 0;
+
+const TILE_SOURCES = [
+  {
+    name: 'Gaode CN',
+    url: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+    subdomains: '1234'
+  },
+  {
+    name: 'Geoq CN',
+    url: 'https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
+  },
+  {
+    name: 'OSM Global',
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    subdomains: 'abc'
+  }
+];
+
+let routePoints = [];
+let totalDistanceMeters = 0;
+let latestSpeedKmh = 0;
+let latestHeartRate = 0;
+let avgSpeedSamples = [];
+let distanceMilestone = 0;
+let currentPosition = null;
+
+// ==========================
+// Init
+// ==========================
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  initMap();
+  updateStatsDisplay(Storage.getStats());
+  updateDisplayedMetrics();
+});
+
+function loadSettings() {
+  const savedSettings = Storage.getSettings();
+  minSpeedLimit = savedSettings.minSpeed;
+  maxHeartRateLimit = savedSettings.maxHeartRate;
+
+  const speedInput = document.getElementById('speedInput');
+  const maxHrInput = document.getElementById('maxHrInput');
+  const musicSelect = document.getElementById('musicSelect');
+
+  if (speedInput && savedSettings.minSpeed) speedInput.value = savedSettings.minSpeed;
+  if (maxHrInput && savedSettings.maxHeartRate) maxHrInput.value = savedSettings.maxHeartRate;
+  if (musicSelect && savedSettings.musicSelection) {
+    const labelToValue = {
+      'Music 1': 'audio/faded.mp3',
+      'Music 2': 'audio/baby.mp3',
+      'Music 3': 'audio/cruelSummer.mp3'
+    };
+    musicSelect.value = labelToValue[savedSettings.musicSelection] || savedSettings.musicSelection;
+    updateBackgroundMusic(savedSettings.musicSelection);
+  }
+
+  const bgMusic = document.getElementById('bgMusic');
+  if (bgMusic && savedSettings.musicVolume !== undefined) {
+    bgMusic.volume = savedSettings.musicVolume;
+  }
+}
+
+function initMap() {
+  if (typeof L === 'undefined') {
+    mapStatusEl.textContent = 'Map library failed to load. Please check network and reload.';
+    return;
+  }
+
+  map = L.map('map', {
+    zoomControl: false,
+    attributionControl: false
+  }).setView([31.2304, 121.4737], 15);
+
+  setupBaseTiles();
+  setupMapResizeHandling();
+
+  routeLine = L.polyline([], {
+    color: '#2577d9',
+    weight: 4,
+    opacity: 0.95,
+    lineCap: 'round',
+    lineJoin: 'round'
+  }).addTo(map);
+
+  const runnerIcon = L.icon({
+    iconUrl: 'images/runner_stand.png',
+    iconSize: [34, 34],
+    iconAnchor: [17, 17]
+  });
+
+  runnerMarker = L.marker([31.2304, 121.4737], {
+    icon: runnerIcon,
+    keyboard: false
+  }).addTo(map);
+
+  mapStatusEl.textContent = 'Ready. Tap Start and allow location access.';
+}
+
+function buildTileLayer(source) {
+  const layer = L.tileLayer(source.url, {
+    maxZoom: 19,
+    detectRetina: true,
+    updateWhenIdle: true,
+    keepBuffer: 3,
+    crossOrigin: true,
+    subdomains: source.subdomains || undefined
+  });
+
+  layer.on('loading', () => {
+    if (tileErrorCount === 0) {
+      mapStatusEl.textContent = 'Loading map...';
+    }
+  });
+
+  layer.on('load', () => {
+    tileErrorCount = 0;
+    mapStatusEl.textContent = isRunning
+      ? mapStatusEl.textContent
+      : 'Map loaded. Tap Start and allow location access.';
+  });
+
+  layer.on('tileerror', () => {
+    tileErrorCount += 1;
+    totalTileErrors += 1;
+    if (tileErrorCount >= 4 || totalTileErrors >= 10) {
+      switchToNextTileSource();
+      return;
+    }
+  });
+
+  return layer;
+}
+
+function setupBaseTiles() {
+  baseTileLayer = buildTileLayer(TILE_SOURCES[tileSourceIndex]);
+  baseTileLayer.addTo(map);
+
+  // Leaflet in fixed containers can render partial tiles until resize is invalidated.
+  requestAnimationFrame(() => map.invalidateSize(true));
+  setTimeout(() => map.invalidateSize(true), 180);
+  setTimeout(() => map.invalidateSize(true), 520);
+}
+
+function switchToNextTileSource() {
+  if (tileSourceIndex >= TILE_SOURCES.length - 1) {
+    mapStatusEl.textContent = 'Map tiles unstable. Check network connection.';
+    return;
+  }
+
+  tileSourceIndex += 1;
+  tileErrorCount = 0;
+  totalTileErrors = 0;
+  if (baseTileLayer) {
+    map.removeLayer(baseTileLayer);
+  }
+  baseTileLayer = buildTileLayer(TILE_SOURCES[tileSourceIndex]);
+  baseTileLayer.addTo(map);
+  map.invalidateSize(true);
+  mapStatusEl.textContent = `Switched map source: ${TILE_SOURCES[tileSourceIndex].name}`;
+}
+
+function setupMapResizeHandling() {
+  const mapEl = document.getElementById('map');
+  if (!mapEl) return;
+
+  if (typeof ResizeObserver !== 'undefined') {
+    mapResizeObserver = new ResizeObserver(() => {
+      if (map) map.invalidateSize(false);
+    });
+    mapResizeObserver.observe(mapEl);
+  }
+
+  window.addEventListener('resize', () => {
+    if (map) map.invalidateSize(false);
+  });
+
+  window.addEventListener('orientationchange', () => {
+    if (map) {
+      setTimeout(() => map.invalidateSize(true), 120);
+    }
+  });
+
+  window.addEventListener('online', () => {
+    if (!map) return;
+    if (baseTileLayer) baseTileLayer.redraw();
+    map.invalidateSize(true);
+  });
+}
+
+// ==========================
+// Audio
+// ==========================
+function updateBackgroundMusic(musicSelection) {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+
+  const musicMap = {
+    'Music 1': 'audio/faded.mp3',
+    'Music 2': 'audio/baby.mp3',
+    'Music 3': 'audio/cruelSummer.mp3',
+    'audio/faded.mp3': 'audio/faded.mp3',
+    'audio/baby.mp3': 'audio/baby.mp3',
+    'audio/cruelSummer.mp3': 'audio/cruelSummer.mp3'
+  };
+
+  const musicPath = musicMap[musicSelection] || musicMap['Music 1'];
+  if (!bgMusic.src.includes(musicPath)) {
+    bgMusic.src = musicPath;
+  }
+}
+
+function playBackgroundMusic() {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+  bgMusic.volume = 0.3;
+  bgMusic.play().catch((e) => console.log('Audio autoplay blocked:', e));
+}
+
+function stopBackgroundMusic() {
+  const bgMusic = document.getElementById('bgMusic');
+  if (!bgMusic) return;
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+}
+
+function playEncourageSound() {
+  const encourageAudio = document.getElementById('encourageAudio');
+  if (!encourageAudio) return;
+  const randomIndex = Math.floor(Math.random() * encourageSounds.length);
+  encourageAudio.src = encourageSounds[randomIndex];
+  encourageAudio.volume = 1.0;
+  encourageAudio.play().catch((e) => console.log('Encourage audio error:', e));
+}
+
+function playCoinsSound() {
+  const coinsAudio = document.getElementById('coinsAudio');
+  if (!coinsAudio) return;
+  coinsAudio.currentTime = 0;
+  coinsAudio.play().catch((e) => console.log('Coins audio error:', e));
+}
+
+function startEncourageInterval() {
+  encourageInterval = setInterval(() => {
+    if (isRunning && !isPaused && !isModalOpen && !isWarningOpen && !isInfoOpen) {
+      playEncourageSound();
+    }
+  }, 30000);
+}
+
+function startCoinsInterval() {
+  coinsInterval = setInterval(() => {
+    if (isRunning && !isPaused && !isModalOpen && !isWarningOpen && !isInfoOpen) {
+      playCoinsSound();
+    }
+  }, 60000);
+}
+
+function stopEncourageInterval() {
+  if (encourageInterval) {
+    clearInterval(encourageInterval);
+    encourageInterval = null;
+  }
+  if (coinsInterval) {
+    clearInterval(coinsInterval);
+    coinsInterval = null;
+  }
+  const encourageAudio = document.getElementById('encourageAudio');
+  if (encourageAudio) {
+    encourageAudio.pause();
+    encourageAudio.currentTime = 0;
+  }
+}
+
+// ==========================
+// Controls
+// ==========================
+backBtn.addEventListener('click', () => {
+  finalizeRun(false);
+  setTimeout(() => {
+    window.location.href = 'shouye.html';
+  }, STOP_ANIM_DURATION);
+});
+
+startBtn.addEventListener('click', () => {
+  if (!isRunning) {
+    startGame();
+  } else if (!isPaused) {
+    pauseGame();
+  } else {
+    resumeGame();
+  }
+});
+
+endBtn.addEventListener('click', () => finalizeRun(true));
+
+// ==========================
+// Location Tracking
+// ==========================
+function startLocationWatch() {
+  if (!navigator.geolocation) {
+    mapStatusEl.textContent = 'Geolocation is not supported in this browser.';
+    return;
+  }
+
+  if (watchId !== null) return;
+
+  watchId = navigator.geolocation.watchPosition(
+    onPositionUpdate,
+    onPositionError,
+    {
+      enableHighAccuracy: true,
+      maximumAge: 1500,
+      timeout: 10000
+    }
+  );
+
+  mapStatusEl.textContent = 'Locating...';
+}
+
+function stopLocationWatch() {
+  if (watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+  }
+}
+
+function onPositionUpdate(position) {
+  const { latitude, longitude, accuracy, speed } = position.coords;
+  const point = [latitude, longitude];
+
+  runnerMarker.setLatLng(point);
+
+  if (!hasCenteredOnUser) {
+    map.setView(point, 17);
+    hasCenteredOnUser = true;
+  }
+
+  if (isRunning && !isPaused && !isModalOpen && !isWarningOpen && !isInfoOpen) {
+    appendRoutePoint(point, position.timestamp);
+  }
+
+  currentPosition = { lat: latitude, lng: longitude, timestamp: position.timestamp };
+
+  if (typeof speed === 'number' && speed >= 0) {
+    latestSpeedKmh = speed * 3.6;
+  }
+
+  mapStatusEl.textContent = `GPS ready (accuracy ±${Math.round(accuracy)}m)`;
+}
+
+function onPositionError(err) {
+  mapStatusEl.textContent = `Location error: ${err.message}`;
+}
+
+function appendRoutePoint(point, timestamp) {
+  const newPoint = { lat: point[0], lng: point[1], timestamp };
+
+  if (routePoints.length > 0) {
+    const prev = routePoints[routePoints.length - 1];
+    const segment = haversineMeters(prev.lat, prev.lng, newPoint.lat, newPoint.lng);
+
+    // Filter noise / jumps
+    if (segment > 0.8 && segment < 120) {
+      totalDistanceMeters += segment;
+      routePoints.push(newPoint);
+      routeLine.addLatLng(point);
+      avgSpeedSamples.push(estimateSegmentSpeed(segment, newPoint.timestamp - prev.timestamp));
+    }
+  } else {
+    routePoints.push(newPoint);
+    routeLine.addLatLng(point);
+  }
+
+  latestHeartRate = Math.floor(Math.random() * (152 - 114 + 1)) + 114;
+  checkMilestonesAndWarnings();
+  updateDisplayedMetrics();
+}
+
+function estimateSegmentSpeed(distanceMeters, elapsedMs) {
+  if (!elapsedMs || elapsedMs <= 0) return 0;
+  return (distanceMeters / elapsedMs) * 3600;
+}
+
+function haversineMeters(lat1, lon1, lat2, lon2) {
+  const toRad = (v) => (v * Math.PI) / 180;
+  const R = 6371000;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// ==========================
+// Run Lifecycle
+// ==========================
+function startGame() {
+  totalDistanceMeters = 0;
+  latestSpeedKmh = 0;
+  latestHeartRate = 0;
+  avgSpeedSamples = [];
+  distanceMilestone = 0;
+  pausedElapsed = 0;
+  routePoints = [];
+  if (routeLine) routeLine.setLatLngs([]);
+
+  isRunning = true;
+  isPaused = false;
+  startBtn.textContent = 'Pause';
+
+  startTime = Date.now() - pausedElapsed;
+
+  if (!timerInterval) {
+    timerInterval = setInterval(updateTimer, 100);
+  }
+  if (!statsInterval) {
+    statsInterval = setInterval(updateStats, 5000);
+  }
+
+  playBackgroundMusic();
+  startEncourageInterval();
+  startCoinsInterval();
+  startLocationWatch();
+}
+
+function pauseGame() {
+  isPaused = true;
+  pausedElapsed = Date.now() - startTime;
+  startBtn.textContent = 'Resume';
+
+  clearIntervals();
+  stopEncourageInterval();
+
+  const bgMusic = document.getElementById('bgMusic');
+  if (bgMusic) bgMusic.pause();
+}
+
+function resumeGame() {
+  isPaused = false;
+  startBtn.textContent = 'Pause';
+  startTime = Date.now() - pausedElapsed;
+
+  timerInterval = setInterval(updateTimer, 100);
+  statsInterval = setInterval(updateStats, 5000);
+
+  playBackgroundMusic();
+  startEncourageInterval();
+  startCoinsInterval();
+  startLocationWatch();
+}
+
+function finalizeRun(goToSettling = true) {
+  if (!isRunning && routePoints.length === 0) {
+    if (goToSettling) window.location.href = NEXT_PAGE_URL;
+    return;
+  }
+
+  const wasPaused = isPaused;
+  isRunning = false;
+  isPaused = true;
+  startBtn.textContent = 'Start';
+
+  clearIntervals();
+  stopLocationWatch();
+  stopBackgroundMusic();
+  stopEncourageInterval();
+
+  if (isWarningOpen) closeWarningModal();
+  if (isInfoOpen) closeInfoModal();
+
+  const elapsed = wasPaused ? pausedElapsed : Math.max(0, Date.now() - startTime);
+  const distanceMeters = totalDistanceMeters;
+  const caloriesBurned = calculateCalories(distanceMeters, elapsed);
+
+  const baseCoins = 1;
+  const distanceCoins = Math.floor(distanceMeters / 100);
+  const caloriesCoins = Math.floor(caloriesBurned / 10);
+  const coinsEarned = baseCoins + distanceCoins + caloriesCoins;
+
+  const avgSpeed = getAverageSpeedKmh();
+
+  Storage.recordRun(distanceMeters, elapsed, avgSpeed);
+  Storage.addCoins(coinsEarned);
+  Storage.addDistance(distanceMeters);
+  Storage.addCalories(caloriesBurned);
+
+  Storage.addRunToHistory({
+    distance: distanceMeters,
+    time: elapsed,
+    pace: avgSpeed,
+    coinsEarned,
+    avgHeartRate: latestHeartRate,
+    calories: caloriesBurned
+  });
+
+  Storage.updateLastSession({
+    distance: distanceMeters,
+    time: elapsed,
+    pace: avgSpeed,
+    coinsEarned,
+    calories: caloriesBurned
+  });
+
+  if (goToSettling) {
+    setTimeout(() => {
+      window.location.href = NEXT_PAGE_URL;
+    }, STOP_ANIM_DURATION);
+  }
+}
+
+function clearIntervals() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  if (statsInterval) {
+    clearInterval(statsInterval);
+    statsInterval = null;
+  }
+}
+
+// ==========================
+// Metrics / Stats
+// ==========================
+function updateTimer() {
+  const elapsed = Math.max(0, Date.now() - startTime);
+  const ms = Math.floor((elapsed % 1000) / 10);
+  const sec = Math.floor((elapsed / 1000) % 60);
+  const min = Math.floor((elapsed / 60000) % 60);
+  statTimeEl.textContent = `Time: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
+}
+
+function getAverageSpeedKmh() {
+  if (avgSpeedSamples.length > 0) {
+    const sum = avgSpeedSamples.reduce((a, b) => a + b, 0);
+    return sum / avgSpeedSamples.length;
+  }
+
+  if (latestSpeedKmh > 0) return latestSpeedKmh;
+
+  const elapsedHours = Math.max(1, Date.now() - startTime) / 3600000;
+  return totalDistanceMeters / 1000 / elapsedHours;
+}
+
+function calculateCalories(distanceMeters, elapsedMs) {
+  const pace = getAverageSpeedKmh();
+  let met;
+
+  if (pace < 6) met = 6;
+  else if (pace < 8) met = 7;
+  else if (pace < 10) met = 8.5;
+  else if (pace < 12) met = 10;
+  else met = 12;
+
+  const hours = elapsedMs / 3600000;
+  return Math.round(met * DEFAULT_WEIGHT_KG * hours);
+}
+
+function updateDisplayedMetrics() {
+  const pace = getAverageSpeedKmh();
+  const calories = calculateCalories(totalDistanceMeters, Math.max(1, Date.now() - startTime));
+  const distanceKm = totalDistanceMeters / 1000;
+
+  statPaceEl.textContent = `Pace: ${pace.toFixed(1)} km/h`;
+  statDistanceEl.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
+  statHeartRateEl.textContent = `Heart rate: ${latestHeartRate || 0} bpm`;
+  statCaloriesEl.textContent = calories;
+}
+
+function updateStats() {
+  if (!isRunning || isPaused) return;
+
+  latestHeartRate = Math.floor(Math.random() * (152 - 114 + 1)) + 114;
+  updateDisplayedMetrics();
+  checkMilestonesAndWarnings();
+}
+
+function checkMilestonesAndWarnings() {
+  const pace = getAverageSpeedKmh();
+  const currentMilestone = Math.floor(totalDistanceMeters / 1000);
+
+  if (currentMilestone > distanceMilestone && !isInfoOpen && !isWarningOpen) {
+    distanceMilestone = currentMilestone;
+    showInfoModal();
+  }
+
+  if (minSpeedLimit !== null && !isWarningOpen && !isInfoOpen) {
+    if (pace < minSpeedLimit) {
+      showWarningModal(true);
+    }
+  }
+
+  if (maxHeartRateLimit !== null && !isWarningOpen && !isInfoOpen) {
+    if (latestHeartRate > maxHeartRateLimit) {
+      showWarningModal(false);
+    }
+  }
+
+  if (isWarningOpen && !isInfoOpen) {
+    if (isWarningForPace && minSpeedLimit !== null && pace >= minSpeedLimit) {
+      closeWarningModal();
+    } else if (!isWarningForPace && maxHeartRateLimit !== null && latestHeartRate <= maxHeartRateLimit) {
+      closeWarningModal();
+    }
+  }
+}
+
+function updateStatsDisplay(stats) {
+  const totalCoinsEl = document.getElementById('totalCoins');
+  const totalDistanceEl = document.getElementById('totalDistance');
+  const totalRunsEl = document.getElementById('totalRuns');
+
+  if (totalCoinsEl && stats.totalCoins !== undefined) {
+    totalCoinsEl.textContent = stats.totalCoins;
+  }
+  if (totalDistanceEl && stats.totalDistance !== undefined) {
+    totalDistanceEl.textContent = `${(stats.totalDistance / 1000).toFixed(2)} km`;
+  }
+  if (totalRunsEl && stats.totalRuns !== undefined) {
+    totalRunsEl.textContent = stats.totalRuns;
+  }
+}
+
+// ==========================
+// Modals
+// ==========================
+function pauseForModal() {
+  clearIntervals();
+}
+
+function resumeFromModal() {
+  if (isRunning && !isPaused) {
+    timerInterval = setInterval(updateTimer, 100);
+    statsInterval = setInterval(updateStats, 5000);
+  }
+}
+
+function openSettingModal() {
+  isModalOpen = true;
+  modalOverlay.style.display = 'block';
+  settingsModal.style.display = 'block';
+  pauseForModal();
+
+  const savedSettings = Storage.getSettings();
+  const speedInput = document.getElementById('speedInput');
+  const maxHrInput = document.getElementById('maxHrInput');
+  const musicSelect = document.getElementById('musicSelect');
+
+  if (speedInput) speedInput.value = savedSettings.minSpeed || '';
+  if (maxHrInput) maxHrInput.value = savedSettings.maxHeartRate || '';
+  if (musicSelect) {
+    const labelToValue = {
+      'Music 1': 'audio/faded.mp3',
+      'Music 2': 'audio/baby.mp3',
+      'Music 3': 'audio/cruelSummer.mp3'
+    };
+    musicSelect.value = labelToValue[savedSettings.musicSelection] || savedSettings.musicSelection || 'audio/faded.mp3';
+  }
+}
+
+function closeSettingModal() {
+  isModalOpen = false;
+  modalOverlay.style.display = 'none';
+  settingsModal.style.display = 'none';
+
+  const speedInput = document.getElementById('speedInput');
+  const maxHrInput = document.getElementById('maxHrInput');
+  const musicSelect = document.getElementById('musicSelect');
+
+  const inputVal = parseFloat(speedInput.value);
+  minSpeedLimit = !Number.isNaN(inputVal) && inputVal > 0 ? inputVal : null;
+
+  const hrInputVal = parseFloat(maxHrInput.value);
+  maxHeartRateLimit = !Number.isNaN(hrInputVal) && hrInputVal > 0 ? hrInputVal : null;
+
+  const settings = Storage.getSettings();
+  settings.minSpeed = minSpeedLimit;
+  settings.maxHeartRate = maxHeartRateLimit;
+
+  if (musicSelect) {
+    const valueToLabel = {
+      'audio/faded.mp3': 'Music 1',
+      'audio/baby.mp3': 'Music 2',
+      'audio/cruelSummer.mp3': 'Music 3'
+    };
+    const label = valueToLabel[musicSelect.value] || musicSelect.value;
+    settings.musicSelection = label;
+    updateBackgroundMusic(label);
+  }
+
+  Storage.saveSettings(settings);
+  resumeFromModal();
+}
+
+function showWarningModal(forPace = true) {
+  if (isPaused || !isRunning || isWarningOpen) return;
+
+  isWarningOpen = true;
+  isWarningForPace = forPace;
+
+  modalOverlay.style.display = 'block';
+  warningModal.style.display = 'block';
+  warningSpeaker.style.display = 'block';
+
+  const warningTitle = document.getElementById('warningTitle');
+  const warningText = document.getElementById('warningText');
+
+  if (forPace) {
+    warningTitle.textContent = 'Warning';
+    warningText.innerHTML = 'your pace too slow!<br>Pay attention to your exercise intensity.';
+  } else {
+    warningTitle.textContent = 'Heart Rate Alert';
+    warningText.innerHTML = 'your heart rate is too high!<br>Please slow down to stay safe.';
+  }
+
+  pauseForModal();
+}
+
+function closeWarningModal() {
+  if (!isWarningOpen) return;
+
+  isWarningOpen = false;
+  isWarningForPace = false;
+
+  modalOverlay.style.display = 'none';
+  warningModal.style.display = 'none';
+  warningSpeaker.style.display = 'none';
+
+  resumeFromModal();
+}
+
+function showInfoModal() {
+  if (isPaused || !isRunning || isInfoOpen) return;
+
+  isInfoOpen = true;
+  modalOverlay.style.display = 'block';
+  infoModal.style.display = 'block';
+
+  pauseForModal();
+
+  setTimeout(() => {
+    closeInfoModal();
+  }, 5000);
+}
+
+function closeInfoModal() {
+  if (!isInfoOpen) return;
+
+  isInfoOpen = false;
+  modalOverlay.style.display = 'none';
+  infoModal.style.display = 'none';
+
+  resumeFromModal();
+}
+
+settingBtn.addEventListener('click', openSettingModal);
+modalClose.addEventListener('click', closeSettingModal);
+warningClose.addEventListener('click', closeWarningModal);
+infoClose.addEventListener('click', closeInfoModal);

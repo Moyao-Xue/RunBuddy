@@ -37,8 +37,12 @@
       <p id="statPace" aria-live="polite">Pace: 0.0 km/h</p>
       <p id="statDistance" aria-live="polite">Distance: 0.00 km</p>
       <p id="statHeartRate" aria-live="polite">Heart rate: 0 bpm</p>
-      <p id="statCaloriesLine" aria-live="polite">Calories: <span id="statCalories">0</span> kcal</p>
     </div>
+  </section>
+
+  <section class="calories-panel" id="caloriesPanel" role="status" aria-label="Calories burned">
+    <div class="calories-text">Calories</div>
+    <div class="calories-value"><span id="statCalories" aria-live="polite">0</span> kcal</div>
   </section>
 
   <nav class="game-controls" id="game-controls" aria-label="Game controls">
@@ -53,69 +57,30 @@
       <img src="images/close-up.png" alt="close">
     </button>
     <h2 class="modal-title" id="settingsTitle">Setting</h2>
-    <div class="settings-tabs" role="tablist" aria-label="Setting categories">
-      <button type="button" class="settings-tab is-active" id="basicSettingsTab" data-settings-tab="basic" role="tab" aria-selected="true" aria-controls="basicSettingsPanel">Basic Setting</button>
-      <button type="button" class="settings-tab" id="voiceSettingsTab" data-settings-tab="voice" role="tab" aria-selected="false" aria-controls="voiceSettingsPanel">Voice Setting</button>
-    </div>
 
     <div class="modal-content">
-      <div class="settings-panel is-active" id="basicSettingsPanel" data-settings-panel="basic" role="tabpanel" aria-labelledby="basicSettingsTab">
-        <div class="modal-item">
-          <label for="speedInput">Min Speed:</label>
-          <div class="speed-wrap">
-            <input type="text" id="speedInput" class="modal-input">
-            <span class="unit">km/h</span>
-          </div>
-        </div>
-        <div class="modal-item">
-          <label for="maxHrInput">Max HR:</label>
-          <div class="speed-wrap">
-            <input type="text" id="maxHrInput" class="modal-input">
-            <span class="unit">bpm</span>
-          </div>
-        </div>
-        <div class="modal-item">
-          <label for="musicSelect">Music:</label>
-          <select id="musicSelect" class="modal-select">
-            <option value="audio/faded.mp3">Music 1</option>
-            <option value="audio/baby.mp3">Music 2</option>
-            <option value="audio/cruelSummer.mp3">Music 3</option>
-          </select>
+      <div class="modal-item">
+        <label for="speedInput">Min Speed:</label>
+        <div class="speed-wrap">
+          <input type="text" id="speedInput" class="modal-input">
+          <span class="unit">km/h</span>
         </div>
       </div>
-      <div class="settings-panel" id="voiceSettingsPanel" data-settings-panel="voice" role="tabpanel" aria-labelledby="voiceSettingsTab" hidden>
-        <div class="modal-section">
-          <div class="modal-section-header">
-            <h3 class="modal-section-title">Encourage Audio</h3>
-            <p class="modal-section-text">Hold the button to record an encouragement clip within 10 seconds.</p>
-          </div>
-          <div class="modal-item modal-item-stack">
-            <label for="encourageAudioSelect">Current:</label>
-            <select id="encourageAudioSelect" class="modal-select">
-              <option value="default">Default Encourage Audio</option>
-            </select>
-          </div>
-          <div class="record-panel">
-            <button type="button" class="record-hold-btn" id="recordHoldBtn">Hold to Record</button>
-            <p class="recording-status" id="recordingStatus" aria-live="polite">Ready to record.</p>
-            <p class="recording-timer" id="recordingTimer">0.0s / 10.0s</p>
-          </div>
+      <div class="modal-item">
+        <label for="maxHrInput">Max HR:</label>
+        <div class="speed-wrap">
+          <input type="text" id="maxHrInput" class="modal-input">
+          <span class="unit">bpm</span>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="record-confirm-modal" id="recordConfirmModal" role="dialog" aria-labelledby="recordConfirmTitle" aria-describedby="recordConfirmText" aria-modal="true">
-    <h2 class="modal-title" id="recordConfirmTitle">Use This Audio?</h2>
-    <p class="record-confirm-text" id="recordConfirmText">
-      Would you like to use the audio you just recorded as the new encourage audio?
-    </p>
-    <label class="record-name-label" for="recordNameInput">Audio Name</label>
-    <input type="text" id="recordNameInput" class="record-name-input" maxlength="24" placeholder="Enter audio name">
-    <p class="record-confirm-error" id="recordConfirmError" aria-live="polite"></p>
-    <div class="record-confirm-actions">
-      <button type="button" class="record-action-btn record-action-btn-secondary" id="recordRejectBtn">Reject</button>
-      <button type="button" class="record-action-btn record-action-btn-primary" id="recordConfirmBtn">Agree</button>
+      <div class="modal-item">
+        <label for="musicSelect">Music:</label>
+        <select id="musicSelect" class="modal-select">
+          <option value="audio/faded.mp3">Music 1</option>
+          <option value="audio/baby.mp3">Music 2</option>
+          <option value="audio/cruelSummer.mp3">Music 3</option>
+        </select>
+      </div>
     </div>
   </div>
 

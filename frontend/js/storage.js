@@ -14,7 +14,9 @@ const Storage = {
     TOTAL_DISTANCE: 'runbuddy_total_distance',
     TOTAL_RUNS: 'runbuddy_total_runs',
     LAST_SESSION: 'runbuddy_last_session',
-    TOTAL_CALORIES: 'runbuddy_total_calories'
+    TOTAL_CALORIES: 'runbuddy_total_calories',
+    REPORT_PREVIEW: 'runbuddy_report_preview',
+    CUSTOM_ENCOURAGE_AUDIO: 'runbuddy_custom_encourage_audio'
   },
 
   // Default values
@@ -23,6 +25,7 @@ const Storage = {
       minSpeed: null,
       maxHeartRate: null,
       musicSelection: 'Music 1',
+      encourageAudioSelection: 'default',
       soundEnabled: true,
       musicVolume: 0.3
     },
@@ -151,6 +154,49 @@ const Storage = {
     return this.get(this.KEYS.LAST_SESSION);
   },
 
+  // Save report preview payload
+  saveReportPreview(data) {
+    return this.set(this.KEYS.REPORT_PREVIEW, data);
+  },
+
+  // Get report preview payload
+  getReportPreview() {
+    return this.get(this.KEYS.REPORT_PREVIEW);
+  },
+
+  // Clear report preview payload
+  clearReportPreview() {
+    localStorage.removeItem(this.KEYS.REPORT_PREVIEW);
+  },
+
+  // ==========================
+  // Encourage Audio Management
+  // ==========================
+
+  getCustomEncourageAudioList() {
+    const list = this.get(this.KEYS.CUSTOM_ENCOURAGE_AUDIO);
+    return Array.isArray(list) ? list : [];
+  },
+
+  saveCustomEncourageAudioList(list) {
+    return this.set(this.KEYS.CUSTOM_ENCOURAGE_AUDIO, Array.isArray(list) ? list : []);
+  },
+
+  addCustomEncourageAudio(audioData) {
+    const list = this.getCustomEncourageAudioList();
+    const newAudio = {
+      id: `encourage_${Date.now()}`,
+      name: audioData.name || `Encourage ${list.length + 1}`,
+      mimeType: audioData.mimeType || 'audio/webm',
+      dataUrl: audioData.dataUrl || '',
+      createdAt: Date.now()
+    };
+
+    list.unshift(newAudio);
+    const isSaved = this.saveCustomEncourageAudioList(list);
+    return isSaved ? newAudio : null;
+  },
+
   // ==========================
   // Run History Management
   // ==========================
@@ -173,7 +219,14 @@ const Storage = {
       pace: runData.pace || 0,
       coinsEarned: runData.coinsEarned || 0,
       avgHeartRate: runData.avgHeartRate || 0,
-      calories: runData.calories || 0
+      calories: runData.calories || 0,
+      routePoints: Array.isArray(runData.routePoints)
+        ? runData.routePoints.map(point => ({
+            lat: point.lat,
+            lng: point.lng,
+            timestamp: point.timestamp || Date.now()
+          }))
+        : []
     };
     
     // Add to beginning of array (newest first)
@@ -194,6 +247,45 @@ const Storage = {
     const filtered = history.filter(record => record.id !== recordId);
     this.set(this.KEYS.RUN_HISTORY, filtered);
     return filtered;
+  },
+
+  // Delete a run record and roll back aggregate stats/last session
+  deleteRunCompletely(recordId) {
+    const history = this.getRunHistory();
+    const record = history.find(item => item.id === recordId);
+    if (!record) {
+      return false;
+    }
+
+    const filtered = history.filter(item => item.id !== recordId);
+    this.set(this.KEYS.RUN_HISTORY, filtered);
+
+    const stats = this.getStats();
+    stats.totalRuns = Math.max(0, (stats.totalRuns || 0) - 1);
+    stats.totalDistance = Math.max(0, (stats.totalDistance || 0) - (record.distance || 0));
+    stats.totalCalories = Math.max(0, (stats.totalCalories || 0) - (record.calories || 0));
+    stats.totalCoins = Math.max(0, (stats.totalCoins || 0) - (record.coinsEarned || 0));
+
+    if ((stats.bestDistance || 0) <= (record.distance || 0)) {
+      stats.bestDistance = filtered.reduce((max, item) => Math.max(max, item.distance || 0), 0);
+    }
+
+    if ((stats.bestPace || 0) <= (record.pace || 0)) {
+      stats.bestPace = filtered.reduce((max, item) => Math.max(max, item.pace || 0), 0);
+    }
+
+    if (stats.totalTime !== undefined) {
+      stats.totalTime = Math.max(0, (stats.totalTime || 0) - (record.time || 0));
+    }
+
+    this.saveStats(stats);
+
+    const lastSession = this.getLastSession();
+    if (lastSession && lastSession.historyRecordId === recordId) {
+      localStorage.removeItem(this.KEYS.LAST_SESSION);
+    }
+
+    return true;
   },
 
   // Clear all history
