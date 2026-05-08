@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 if (recordsBtn) recordsBtn.addEventListener('click', () => navigateTo('iphone17-8.html'));
-if (activityBtn) activityBtn.addEventListener('click', () => navigateTo('iphone17-34.html'));
+if (activityBtn) activityBtn.addEventListener('click', () => navigateTo('iphone17-36.html'));
 if (historyBtn) historyBtn.addEventListener('click', () => navigateTo('iphone17-62.html'));
 if (runBtn) runBtn.addEventListener('click', () => navigateTo('running.html'));
 if (customizeBtn) customizeBtn.addEventListener('click', () => navigateTo('customize.html'));
