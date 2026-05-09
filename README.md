@@ -72,26 +72,39 @@ For more detailed information about the RunBuddy system, including product demon
 
 ## Project Structure
 
-```
+```text
 RunBuddy/
-├── index.html              # Main entry point
-├── README.md               # Project documentation
-├── .gitignore              # Git ignore rules
-├── ai_logs/                # AI-assisted coding logs
-│   └── README.md           # Vibe coding documentation
-└── frontend/
-    ├── css/                # Stylesheets
-    ├── images/             # Image assets
-    ├── audio/              # Audio files
-    ├── js/                 # JavaScript modules
-    │   ├── game.js         # Running game engine
-    │   └── storage.js      # LocalStorage utility
-    ├── running.html        # Main running game interface
-    ├── shouye.html         # Home page
-    ├── customize.html       # Character customization
-    └── *.html              # Other pages
+- index.html
+- README.md
+- STANDARDIZATION_REPORT.md
+- .gitignore
+- ai_logs/
+  - README.md
+- frontend/
+  - *.html (semantic page names)
+  - css/
+    - pages/
+      - onboarding.css
+      - home.css
+      - run-tracker.css
+      - run-tracker-watch.css
+      - run-summary.css
+      - run-share.css
+      - ...other page-level styles
+  - js/
+    - storage.js
+    - pages/
+      - onboarding.js
+      - home.js
+      - run-tracker.js
+      - run-summary.js
+      - run-report-exporter.js
+      - ...other page-level scripts
+    - vendor/
+  - images/
+  - audio/
+  - archive/
 ```
-
 ## Data Handling
 
 The system uses LocalStorage for client-side data persistence:

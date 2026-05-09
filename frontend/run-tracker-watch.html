@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="RunBuddy watch running tracker with live route and workout stats" />
+  <title>RunBuddy - Running Watch</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="css/pages/run-tracker-watch.css" />
+</head>
+<body>
+  <a href="#game-controls" class="skip-link">Skip to controls</a>
+  <a href="#statsPanel" class="skip-link">Skip to stats</a>
+
+  <main class="watch-frame" aria-label="RunBuddy watch running tracker">
+    <section class="watch-face">
+      <header class="watch-top-bar">
+        <button class="icon-btn" id="backBtn" aria-label="Return to menu">
+          <img src="images/pointer-left.svg" alt="" aria-hidden="true" />
+        </button>
+
+        <div class="title-stack">
+          <p class="title-kicker">RunBuddy</p>
+          <h1 class="page-title">Running</h1>
+        </div>
+
+        <button class="icon-btn" id="settingBtn" aria-label="Open settings">
+          <img src="images/setting-up.png" alt="" aria-hidden="true" />
+        </button>
+      </header>
+
+      <section class="map-shell" aria-label="Live map">
+        <div id="map" class="map-canvas" role="application" aria-label="Interactive running map"></div>
+        <img class="runner-hidden runner-watch" id="runner" src="images/runner_stand.png" alt="Runner avatar" />
+        <p class="map-status" id="mapStatus" aria-live="polite">Waiting for location permission...</p>
+      </section>
+
+      <section class="stats-panel" id="statsPanel" role="status" aria-label="Running statistics">
+        <div class="stats-text">
+          <p id="statTime" aria-live="polite">Time: 00:00:00</p>
+          <p id="statPace" aria-live="polite">Pace: 0.0 km/h</p>
+          <p id="statDistance" aria-live="polite">Distance: 0.00 km</p>
+          <p id="statHeartRate" aria-live="polite">Heart rate: 0 bpm</p>
+          <p id="statCaloriesLine" aria-live="polite">Calories: <span id="statCalories">0</span> kcal</p>
+        </div>
+      </section>
+
+      <nav class="game-controls" id="game-controls" aria-label="Game controls">
+        <button class="control-btn control-btn-primary" id="startBtn" aria-label="Start or pause running">Start</button>
+        <button class="control-btn control-btn-danger" id="endBtn" aria-label="End run">End</button>
+      </nav>
+
+      <div class="modal-overlay" id="modalOverlay"></div>
+
+      <div class="settings-modal" id="settingsModal" role="dialog" aria-labelledby="settingsTitle" aria-modal="true">
+        <button class="modal-close-btn" id="modalClose" aria-label="Close settings">
+          <img src="images/close-up.png" alt="close" />
+        </button>
+        <h2 class="modal-title" id="settingsTitle">Setting</h2>
+        <div class="settings-tabs" role="tablist" aria-label="Setting categories">
+          <button type="button" class="settings-tab is-active" id="basicSettingsTab" data-settings-tab="basic" role="tab" aria-selected="true" aria-controls="basicSettingsPanel">Basic Setting</button>
+          <button type="button" class="settings-tab" id="voiceSettingsTab" data-settings-tab="voice" role="tab" aria-selected="false" aria-controls="voiceSettingsPanel">Voice Setting</button>
+        </div>
+
+        <div class="modal-content">
+          <div class="settings-panel is-active" id="basicSettingsPanel" data-settings-panel="basic" role="tabpanel" aria-labelledby="basicSettingsTab">
+            <div class="modal-item">
+              <label for="speedInput">Min Speed</label>
+              <div class="speed-wrap">
+                <input type="text" id="speedInput" class="modal-input" />
+                <span class="unit">km/h</span>
+              </div>
+            </div>
+
+            <div class="modal-item">
+              <label for="maxHrInput">Max HR</label>
+              <div class="speed-wrap">
+                <input type="text" id="maxHrInput" class="modal-input" />
+                <span class="unit">bpm</span>
+              </div>
+            </div>
+
+            <div class="modal-item">
+              <label for="musicSelect">Music</label>
+              <select id="musicSelect" class="modal-select">
+                <option value="audio/faded.mp3">Music 1</option>
+                <option value="audio/baby.mp3">Music 2</option>
+                <option value="audio/cruelSummer.mp3">Music 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-panel" id="voiceSettingsPanel" data-settings-panel="voice" role="tabpanel" aria-labelledby="voiceSettingsTab" hidden>
+            <div class="modal-section">
+              <div class="modal-section-header">
+                <h3 class="modal-section-title">Encourage Audio</h3>
+                <p class="modal-section-text">Hold the button to record an encouragement clip within 10 seconds.</p>
+              </div>
+              <div class="modal-item modal-item-stack">
+                <label for="encourageAudioSelect">Current</label>
+                <select id="encourageAudioSelect" class="modal-select">
+                  <option value="default">Default Encourage Audio</option>
+                </select>
+              </div>
+              <div class="record-panel">
+                <button type="button" class="record-hold-btn" id="recordHoldBtn">Hold to Record</button>
+                <p class="recording-status" id="recordingStatus" aria-live="polite">Ready to record.</p>
+                <p class="recording-timer" id="recordingTimer">0.0s / 10.0s</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="record-confirm-modal" id="recordConfirmModal" role="dialog" aria-labelledby="recordConfirmTitle" aria-describedby="recordConfirmText" aria-modal="true">
+        <h2 class="modal-title" id="recordConfirmTitle">Use This Audio?</h2>
+        <p class="record-confirm-text" id="recordConfirmText">
+          Would you like to use the audio you just recorded as the new encourage audio?
+        </p>
+        <label class="record-name-label" for="recordNameInput">Audio Name</label>
+        <input type="text" id="recordNameInput" class="record-name-input" maxlength="24" placeholder="Enter audio name" />
+        <p class="record-confirm-error" id="recordConfirmError" aria-live="polite"></p>
+        <div class="record-confirm-actions">
+          <button type="button" class="record-action-btn record-action-btn-secondary" id="recordRejectBtn">Reject</button>
+          <button type="button" class="record-action-btn record-action-btn-primary" id="recordConfirmBtn">Agree</button>
+        </div>
+      </div>
+
+      <div class="warning-modal" id="warningModal" role="alertdialog" aria-labelledby="warningTitle" aria-describedby="warningText" aria-modal="true">
+        <button class="warning-close-btn" id="warningClose" aria-label="Close warning">
+          <img src="images/close-up.png" alt="close" />
+        </button>
+        <h2 class="warning-title" id="warningTitle">Warning</h2>
+        <p class="warning-text" id="warningText">
+          your pace too slow!<br />
+          Pay attention to your exercise intensity.
+        </p>
+      </div>
+
+      <img class="warning-speaker" id="warningSpeaker" src="images/horn.png" alt="speaker" />
+
+      <div class="info-modal" id="infoModal" role="dialog" aria-labelledby="infoTitle" aria-describedby="infoText" aria-modal="true">
+        <button class="info-close-btn" id="infoClose" aria-label="Close">
+          <img src="images/close-up.png" alt="close" />
+        </button>
+        <h2 class="info-title" id="infoTitle">Award</h2>
+        <p class="info-text" id="infoText">
+          Congratulation! You have gained a coin
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <audio id="bgMusic" src="audio/faded.mp3" loop preload="auto"></audio>
+  <audio id="encourageAudio" preload="auto"></audio>
+  <audio id="coinsAudio" src="audio/coinsSound.mp3" preload="auto"></audio>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/storage.js"></script>
+  <script src="js/pages/run-tracker.js"></script>
+</body>
+</html>

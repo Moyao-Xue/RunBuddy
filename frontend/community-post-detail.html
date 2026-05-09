@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy Post</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/pages/community-post-detail.css" />
+</head>
+<body>
+    <main class="phone" aria-label="Post detail">
+        <img class="bg" src="images/iphone-17-61-2@2x.png" alt="" aria-hidden="true">
+        <div class="top-strip" aria-hidden="true"></div>
+
+        <section class="content">
+            <button class="back-button" type="button" aria-label="Go back" onclick="location.href='community-feed.html'">
+                <img src="images/pointer-left.svg" alt="">
+            </button>
+
+            <article class="post-card">
+                <div class="author-row">
+                    <div class="avatar" id="postAvatar" aria-hidden="true">M</div>
+                    <div>
+                        <div class="author-name" id="postAuthor">Mia Chen</div>
+                        <div class="post-time" id="postTime">Today 07:42</div>
+                    </div>
+                </div>
+                <h1 class="post-title" id="postTitle">Easy pace saved my long runs</h1>
+                <p class="post-body" id="postBody"></p>
+                <div class="post-actions">
+                    <span id="likeCount">18 likes</span>
+                    <span id="commentCount">3 comments</span>
+                </div>
+            </article>
+
+            <section class="comments-card" aria-label="Comments">
+                <h2 class="section-title">Comments</h2>
+                <div id="comments"></div>
+                <div class="comment-box">Write a supportive reply...</div>
+            </section>
+        </section>
+
+        <div class="bottom-strip" aria-hidden="true"></div>
+    </main>
+
+        <script src="js/pages/community-post-detail.js"></script>
+</body>
+</html>

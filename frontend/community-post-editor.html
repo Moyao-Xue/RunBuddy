@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunBuddy</title>
+    <link href="https://fonts.googleapis.com/css?family=Pixelify+Sans:400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages/community-post-editor.css" />
+</head>
+<body>
+    <div class="phone">
+        <img class="bg" src="images/iphone-17-61-2@2x.png" alt="">
+        <div class="top-strip" aria-hidden="true"></div>
+
+        <button class="back-button" onclick="location.href='community-feed.html'" aria-label="Go back">
+            <img src="images/vector.svg" alt="">
+        </button>
+
+        <section class="editor-card" aria-label="Post editor">
+            <div class="editor-text">
+                <textarea id="postText" placeholder="add text..."></textarea>
+            </div>
+            <div id="mediaContainer">
+                <button class="add-tile" type="button" aria-label="Add media" onclick="document.getElementById('fileInput').click()">
+                    <img src="images/tile-0122-2@2x.png" alt="" id="addIcon">
+                </button>
+            </div>
+        </section>
+
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="success-overlay" id="successOverlay">
+            <div class="success-text">Post Successfully!</div>
+            <button class="post-button" onclick="location.href='community-feed.html'">Back</button>
+        </div>
+
+        <div class="post-wrap">
+            <button class="post-button" type="button" onclick="submitPost()">Post Now</button>
+        </div>
+
+        <footer class="bottom-bar"></footer>
+    </div>
+
+    <script src="js/pages/community-post-editor.js"></script>
+</body>
+</html>

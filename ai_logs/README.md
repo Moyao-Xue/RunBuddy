@@ -4,7 +4,7 @@ This folder contains the primary AI prompts used to generate core components of 
 
 ## Vibe Coding Prompts Used
 
-### 1. Game Engine (game.js)
+### 1. Game Engine (run-tracker.js)
 ```
 Create a JavaScript running game with:
 - Start/pause/stop functionality
@@ -18,7 +18,7 @@ Create a JavaScript running game with:
 - Warning system for pace and heart rate limits
 ```
 
-### 2. Storage Module (storage.js)
+### 2. Storage Module (js/storage.js)
 ```
 Create a LocalStorage utility module for a running app with:
 - Settings persistence (speed limits, music selection, volume)
@@ -29,7 +29,7 @@ Create a LocalStorage utility module for a running app with:
 - Default values and error handling
 ```
 
-### 3. Running Interface (running.html)
+### 3. Running Interface (run-tracker.html)
 ```
 Create an iPhone-optimized running game interface with:
 - Fixed viewport (393x852 iPhone 17 Pro dimensions)
@@ -42,7 +42,7 @@ Create an iPhone-optimized running game interface with:
 - Audio elements for background music and sound effects
 ```
 
-### 4. Home Page (shouye.html)
+### 4. Home Page (home.html)
 ```
 Create a mobile home page for a running app with:
 - iPhone 17 frame layout
@@ -51,7 +51,7 @@ Create a mobile home page for a running app with:
 - Integration with localStorage for persistent stats
 ```
 
-### 5. Character Customization (customize.html)
+### 5. Character Customization (character-customization.html)
 ```
 Create a character customization page with:
 - Character preview display

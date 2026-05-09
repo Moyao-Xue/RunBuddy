@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RunBuddy Report Preview</title>
+  <link rel="stylesheet" href="css/pages/run-report-preview.css" />
+</head>
+<body>
+  <main class="preview-page">
+    <header class="preview-head">
+      <div>
+        <p class="preview-kicker">Save Preview</p>
+        <h1 class="preview-title">Run Report Image</h1>
+      </div>
+      <div class="preview-actions">
+        <button class="preview-download-btn" type="button" id="downloadBtn">Download Image</button>
+        <button class="preview-back-btn" type="button" id="backBtn">Back</button>
+      </div>
+    </header>
+
+    <p class="preview-note" id="previewNote">
+      This page generates one phone-sized image file. If the browser does not save it automatically, tap Download Image again or long-press the image below.
+    </p>
+
+    <p class="preview-empty" id="emptyState" hidden>No saved report preview is available.</p>
+
+    <section class="poster-stage" id="posterStage" hidden>
+      <img class="poster-image" id="posterImage" alt="RunBuddy report image preview" />
+      <a id="downloadLink" hidden>Download</a>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/pages/run-report-exporter.js"></script>
+  <script src="js/pages/run-report-preview.js"></script>
+</body>
+</html>

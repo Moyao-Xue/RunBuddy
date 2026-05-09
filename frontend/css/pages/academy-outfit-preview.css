@@ -1,0 +1,66 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: none;
+            border-radius: 0;
+        }
+
+        .page-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .top-right-action {
+            position: absolute;
+            top: 16px;
+            left: 324px;
+            width: 57px;
+            height: 57px;
+            display: block;
+        }
+
+        .top-right-action img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .hotspot {
+            position: absolute;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-1 {
+            top: 510px;
+            left: 215px;
+            width: 98px;
+            height: 38px;
+        }
+
+        .btn-2 {
+            top: 491px;
+            left: 215px;
+            width: 82px;
+            height: 35px;
+        }

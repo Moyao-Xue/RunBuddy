@@ -1,0 +1,63 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: none;
+            border-radius: 0;
+        }
+
+        .page-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .top-right-action {
+            position: absolute;
+            top: 16px;
+            left: 324px;
+            width: 57px;
+            height: 57px;
+            display: block;
+        }
+
+        .top-right-action img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* 透明按钮 */
+        .hotspot {
+            position: absolute;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 按钮位置：x:32, y:158, w:61, h:67 */
+        .btn-next {
+            top: 158px;
+            left: 32px;
+            width: 61px;
+            height: 67px;
+        }
+
+        /* 右上角按钮：x:333, y:12, w:59, h:57 */

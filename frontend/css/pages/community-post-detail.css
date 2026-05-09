@@ -1,0 +1,218 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-cream: #f4ebd3;
+            --bg-blue: #9fcce0;
+            --card: #fff8e8;
+            --text: #000;
+            --soft: rgba(0, 0, 0, 0.62);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: "Pixelify Sans", Helvetica, sans-serif;
+        }
+
+        .phone {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            overflow: hidden;
+            border: none;
+            border-radius: 0;
+            background: var(--bg-cream);
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-strip,
+        .bottom-strip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: var(--bg-blue);
+            z-index: 2;
+        }
+
+        .top-strip {
+            top: 0;
+            height: 62px;
+        }
+
+        .bottom-strip {
+            bottom: 0;
+            height: 74px;
+        }
+
+        .content {
+            position: absolute;
+            inset: 78px 18px 86px;
+            z-index: 3;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+
+        .back-button {
+            width: 24px;
+            height: 24px;
+            border: 0;
+            padding: 0;
+            margin-bottom: 14px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .back-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .post-card,
+        .comments-card {
+            background: rgba(255, 248, 232, 0.94);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 2px 4px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .author-row,
+        .comment-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.18);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            flex: 0 0 auto;
+        }
+
+        .avatar-mia { background: linear-gradient(135deg, #9fcce0, #d7f2ac); }
+        .avatar-leo { background: linear-gradient(135deg, #f7c873, #f4a6a6); }
+        .avatar-ava { background: linear-gradient(135deg, #b7d7ff, #d9c2ff); }
+        .avatar-noah { background: linear-gradient(135deg, #c8e6c9, #fff2a8); }
+        .avatar-sofia { background: linear-gradient(135deg, #ffd0e1, #9fcce0); }
+
+        .author-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-time,
+        .comment-time {
+            margin-top: 3px;
+            color: var(--soft);
+            font-size: 11px;
+        }
+
+        .post-title {
+            margin-top: 18px;
+            font-size: 22px;
+            line-height: 1.12;
+            color: var(--text);
+        }
+
+        .post-body {
+            margin-top: 14px;
+            color: rgba(0, 0, 0, 0.78);
+            font-size: 14px;
+            line-height: 1.45;
+            white-space: pre-line;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+            color: var(--soft);
+            font-size: 12px;
+        }
+
+        .comments-card {
+            margin-top: 14px;
+        }
+
+        .section-title {
+            margin-bottom: 14px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .comment {
+            padding: 12px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .comment:first-of-type {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .comment-main {
+            flex: 1;
+        }
+
+        .comment-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .comment-text {
+            margin-top: 7px;
+            color: rgba(0, 0, 0, 0.76);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .comment-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: #f2f2f7;
+            color: rgba(0, 0, 0, 0.45);
+            font-size: 12px;
+        }
+
+        @media (max-width: 393px) {
+            .phone {
+                width: 100%;
+                min-height: 100vh;
+                border: 0;
+                border-radius: 0;
+            }
+        }

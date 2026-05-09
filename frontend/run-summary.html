@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Complete!</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="css/pages/run-summary.css" />
+</head>
+<body>
+  <main class="iphone" aria-labelledby="completion-title">
+    <header class="page-head">
+      <p class="eyebrow">Run Summary</p>
+      <h1 class="title" id="completion-title">Complete!</h1>
+    </header>
+
+    <section class="summary-card" aria-label="Running summary card">
+      <button class="more-btn" type="button" id="moreBtn" aria-label="Open more actions">...</button>
+
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" id="saveBtn">Save Record</div>
+        <div class="dropdown-item dropdown-item-accent" id="shareBtn">Share</div>
+        <div class="dropdown-item" id="deleteBtn">Delete</div>
+      </div>
+
+      <div class="card-shell">
+        <section class="hero-panel">
+          <div class="runner-panel">
+            <img class="runner-illustration" src="images/character.png" alt="Runner character" />
+            <div class="runner-copy">
+              <p class="streak-copy">You have kept running for 100 days</p>
+              <p class="coins-text">8 coins collected!</p>
+            </div>
+          </div>
+
+          <div class="session-panel">
+            <div class="stats-grid">
+              <article class="stat-card stat-card-wide">
+                <p class="stat-label">Date</p>
+                <p class="stat-value stat-value-date" id="summaryDate">Apr 14, 2026</p>
+              </article>
+
+              <article class="stat-card">
+                <p class="stat-label">Distance</p>
+                <p class="stat-value" id="summaryDistance">5.20 km</p>
+              </article>
+
+              <article class="stat-card">
+                <p class="stat-label">Pace</p>
+                <p class="stat-value" id="summaryPace">6'02/KM</p>
+              </article>
+
+              <article class="stat-card">
+                <p class="stat-label">Duration</p>
+                <p class="stat-value" id="summaryDuration">32:15</p>
+              </article>
+
+              <article class="stat-card">
+                <p class="stat-label">Calories</p>
+                <p class="stat-value" id="caloriesValue">245 Kcal</p>
+              </article>
+
+              <article class="stat-card stat-card-wide weather-card">
+                <div class="weather-copy">
+                  <p class="stat-label">Weather</p>
+                  <p class="stat-value" id="weatherInline">Loading...</p>
+                  <p class="weather-text" id="weatherText">Real-time conditions</p>
+                </div>
+                <img class="weather-icon" id="weatherIcon" src="images/weather.png" alt="Weather icon" />
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="route-panel" aria-label="This run route">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Movement Record</p>
+              <h2 class="section-title">This Run Route</h2>
+            </div>
+            <p class="section-note">Route preview</p>
+          </div>
+
+          <div class="route-map-shell">
+            <div class="route-map" id="routeMap" role="img" aria-label="Map of this run route"></div>
+            <p class="route-empty" id="routeEmpty">No route data available for this run.</p>
+          </div>
+          <div class="route-legend" aria-hidden="true">
+            <span class="legend-chip">
+              <span class="legend-dot legend-dot-start"></span>
+              Start
+            </span>
+            <span class="legend-chip">
+              <span class="legend-dot legend-dot-finish"></span>
+              Finish
+            </span>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <button class="home-btn" type="button" id="backToMenuBtn">Back To Home</button>
+  </main>
+
+  <section class="report-export-sandbox" aria-hidden="true">
+    <article class="report-export-phone" id="reportExportCard">
+      <header class="page-head report-export-head">
+        <p class="eyebrow" id="exportEyebrow">Run Summary</p>
+        <h1 class="title" id="exportTitle">Complete!</h1>
+      </header>
+
+      <section class="summary-card report-export-shell">
+        <div class="report-export-card-shell">
+          <section class="hero-panel">
+            <div class="runner-panel">
+              <img class="runner-illustration" id="exportRunnerImage" src="images/character.png" alt="Runner character" />
+              <div class="runner-copy">
+                <p class="streak-copy" id="exportStreakText">You have kept running for 100 days</p>
+                <p class="coins-text" id="exportCoinsText">0 coins collected!</p>
+              </div>
+            </div>
+
+            <div class="session-panel">
+              <div class="stats-grid">
+                <article class="stat-card stat-card-wide">
+                  <p class="stat-label">Date</p>
+                  <p class="stat-value stat-value-date" id="exportSummaryDate">--</p>
+                </article>
+
+                <article class="stat-card">
+                  <p class="stat-label">Distance</p>
+                  <p class="stat-value" id="exportSummaryDistance">--</p>
+                </article>
+
+                <article class="stat-card">
+                  <p class="stat-label">Pace</p>
+                  <p class="stat-value" id="exportSummaryPace">--</p>
+                </article>
+
+                <article class="stat-card">
+                  <p class="stat-label">Duration</p>
+                  <p class="stat-value" id="exportSummaryDuration">--</p>
+                </article>
+
+                <article class="stat-card">
+                  <p class="stat-label">Calories</p>
+                  <p class="stat-value" id="exportSummaryCalories">--</p>
+                </article>
+
+                <article class="stat-card stat-card-wide weather-card">
+                  <div class="weather-copy">
+                    <p class="stat-label">Weather</p>
+                    <p class="stat-value" id="exportWeatherInline">--</p>
+                    <p class="weather-text" id="exportWeatherText">Real-time conditions</p>
+                  </div>
+                  <img class="weather-icon" id="exportWeatherIcon" src="images/weather.png" alt="Weather icon" />
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="route-panel" aria-label="Exported run route">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Movement Record</p>
+                <h2 class="section-title">This Run Route</h2>
+              </div>
+              <p class="section-note">Route preview</p>
+            </div>
+
+            <div class="route-map-shell report-export-route-shell">
+              <div class="report-export-route-art" id="reportExportRouteArt"></div>
+            </div>
+            <div class="route-legend" aria-hidden="true">
+              <span class="legend-chip">
+                <span class="legend-dot legend-dot-start"></span>
+                Start
+              </span>
+              <span class="legend-chip">
+                <span class="legend-dot legend-dot-finish"></span>
+                Finish
+              </span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </article>
+  </section>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/storage.js"></script>
+  <script src="js/pages/run-report-exporter.js"></script>
+  <script src="js/vendor/html2canvas.min.js"></script>
+  <script src="js/pages/run-summary.js"></script>
+</body>
+</html>
