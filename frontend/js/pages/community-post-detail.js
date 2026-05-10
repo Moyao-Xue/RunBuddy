@@ -85,8 +85,55 @@ const posts = {
             }
         };
 
+        function getUserPost(postKey) {
+            if (!postKey || !postKey.startsWith("user_")) {
+                return null;
+            }
+
+            const postId = postKey.slice(5);
+            let userPosts = [];
+            try {
+                const storedPosts = JSON.parse(localStorage.getItem("runbuddy_posts") || "[]");
+                userPosts = Array.isArray(storedPosts) ? storedPosts : [];
+            } catch (error) {
+                userPosts = [];
+            }
+
+            const matchedPost = userPosts.find((item) => String(item.id) === postId);
+            if (!matchedPost) {
+                return null;
+            }
+
+            const title = (matchedPost.title || "My Post").trim();
+            const body = (matchedPost.content || matchedPost.text || "").trim();
+            let displayTime = "Just now";
+            if (matchedPost.timestamp) {
+                const date = new Date(matchedPost.timestamp);
+                if (!Number.isNaN(date.getTime())) {
+                    displayTime = date.toLocaleString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+                }
+            }
+
+            return {
+                author: "You",
+                initial: "Y",
+                avatarClass: "avatar-sofia",
+                time: displayTime,
+                title,
+                body: body || "No content.",
+                likes: "0 likes",
+                comments: []
+            };
+        }
+
         const params = new URLSearchParams(window.location.search);
-        const post = posts[params.get("post")] || posts.mia;
+        const postKey = params.get("post");
+        const post = getUserPost(postKey) || posts[postKey] || posts.mia;
         const avatar = document.getElementById("postAvatar");
 
         avatar.textContent = post.initial;
@@ -98,7 +145,13 @@ const posts = {
         document.getElementById("likeCount").textContent = post.likes;
         document.getElementById("commentCount").textContent = `${post.comments.length} comments`;
 
-        document.getElementById("comments").innerHTML = post.comments.map(([name, text, time]) => `
+        const commentsHtml = post.comments.length === 0
+            ? `
+            <article class="comment">
+                <p class="comment-text">No comments yet.</p>
+            </article>
+            `
+            : post.comments.map(([name, text, time]) => `
             <article class="comment">
                 <div class="comment-row">
                     <div class="avatar" aria-hidden="true">${name.charAt(0)}</div>
@@ -110,6 +163,8 @@ const posts = {
                 <p class="comment-text">${text}</p>
             </article>
         `).join("");
+
+        document.getElementById("comments").innerHTML = commentsHtml;
 
         if (window.location.hash === "#comments") {
             document.getElementById("comments").scrollIntoView({ behavior: "smooth", block: "start" });

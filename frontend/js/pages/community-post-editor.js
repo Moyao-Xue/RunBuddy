@@ -33,10 +33,11 @@ function removeImage() {
 }
 
 function submitPost() {
-    const text = document.getElementById("postText").value.trim();
+    const title = document.getElementById("postTitle").value.trim();
+    const content = document.getElementById("postContent").value.trim();
 
-    if (!text && !selectedImage) {
-        alert("Please add some text or an image!");
+    if (!title || !content) {
+        alert("Please add both title and content!");
         return;
     }
 
@@ -44,12 +45,21 @@ function submitPost() {
 
     const post = {
         id: Date.now(),
-        text,
+        title,
+        content,
+        text: content,
         image: selectedImage,
         timestamp: new Date().toISOString()
     };
 
-    const posts = JSON.parse(localStorage.getItem("runbuddy_posts") || "[]");
+    let posts = [];
+    try {
+        const storedPosts = JSON.parse(localStorage.getItem("runbuddy_posts") || "[]");
+        posts = Array.isArray(storedPosts) ? storedPosts : [];
+    } catch (error) {
+        posts = [];
+    }
+
     posts.unshift(post);
     localStorage.setItem("runbuddy_posts", JSON.stringify(posts));
 

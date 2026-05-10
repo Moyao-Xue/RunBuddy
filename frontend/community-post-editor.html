@@ -17,8 +17,13 @@
         </button>
 
         <section class="editor-card" aria-label="Post editor">
+            <div class="editor-title-wrap">
+                <label class="sr-only" for="postTitle">Post title</label>
+                <input id="postTitle" type="text" maxlength="80" placeholder="add title...">
+            </div>
             <div class="editor-text">
-                <textarea id="postText" placeholder="add text..."></textarea>
+                <label class="sr-only" for="postContent">Post content</label>
+                <textarea id="postContent" placeholder="add content..."></textarea>
             </div>
             <div id="mediaContainer">
                 <button class="add-tile" type="button" aria-label="Add media" onclick="document.getElementById('fileInput').click()">

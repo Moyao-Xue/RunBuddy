@@ -66,29 +66,68 @@
             top: 133px;
             left: 21px;
             width: 362px;
-            min-height: 211px;
+            min-height: 300px;
             border-radius: 12px;
             background: #f4ebd3;
             padding: 32px 24px 27px;
             z-index: 3;
         }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .editor-title-wrap {
+            margin-bottom: 14px;
+        }
+
+        .editor-title-wrap input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 0 12px;
+            background: rgba(255, 255, 255, 0.45);
+            font-family: "Pixelify Sans", sans-serif;
+            font-size: 16px;
+            color: #21201e;
+            outline: none;
+        }
+
+        .editor-title-wrap input::placeholder {
+            color: rgba(33, 32, 30, 0.55);
+        }
+
         .editor-text {
-            margin-bottom: 65px;
+            margin-bottom: 20px;
             font-size: 16px;
             color: #21201e;
         }
 
         .editor-text textarea {
             width: 100%;
-            min-height: 100px;
-            border: none;
-            background: transparent;
+            min-height: 120px;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.45);
             font-family: "Pixelify Sans", sans-serif;
             font-size: 16px;
             color: #21201e;
             resize: none;
             outline: none;
+        }
+
+        .editor-text textarea::placeholder {
+            color: rgba(33, 32, 30, 0.55);
         }
 
         .add-tile {

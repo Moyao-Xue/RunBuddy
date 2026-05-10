@@ -96,7 +96,8 @@
         .pointer-left-button,
         .tile-2-button,
         .favorite-button,
-        .bubble {
+        .bubble,
+        .delete-button {
             padding: 0;
             border: 0;
             background: transparent;
@@ -319,7 +320,8 @@
         }
 
         .favorite-button,
-        .bubble {
+        .bubble,
+        .delete-button {
             width: 24px;
             height: 24px;
             display: inline-flex;
@@ -331,7 +333,8 @@
         }
 
         .favorite-icon,
-        .bubble-icon {
+        .bubble-icon,
+        .delete-icon {
             display: block;
             width: 18px;
             height: 18px;
