@@ -15,7 +15,7 @@
         <section class="group-3" aria-label="Search bar">
             <div class="frame-3" aria-hidden="true"></div>
             <form id="post-search-form" class="frame-4" action="#" method="get" role="search" aria-label="Search form">
-                <button type="button" class="pointer-left-button" aria-label="Go back" onclick="location.href='home.html'">
+                <button type="button" class="pointer-left-button" aria-label="Go back">
                     <img class="pointer-left-icon" src="images/pointer-left.svg" alt="">
                 </button>
                 <label class="search-label" for="site-search">Search</label>
@@ -27,7 +27,7 @@
         </section>
 
         <section class="frame" aria-label="Search results">
-            <article class="component">
+            <article class="component" data-post-key="mia">
                 <a class="result-link" href="community-post-detail.html?post=mia" aria-label="Open Mia Chen post">
                     <div class="card-visual"></div>
                     <h2 class="post-title">Easy pace saved my long runs</h2>
@@ -38,7 +38,7 @@
                             <p class="text-wrapper">Mia Chen</p>
                         </div>
                         <div class="action-row">
-                            <button type="button" class="favorite-button" aria-label="Add Mia Chen post to favorites" onclick="event.preventDefault(); event.stopPropagation();">
+                            <button type="button" class="favorite-button" aria-label="Add Mia Chen post to favorites">
                                 <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="none" stroke="#000" stroke-width="1.8" stroke-linejoin="round"/>
                                 </svg>
@@ -46,7 +46,7 @@
                                     <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                                 </svg>
                             </button>
-                            <button type="button" class="bubble" aria-label="Open comments for Mia Chen post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=mia#comments';">
+                            <button type="button" class="bubble" aria-label="Open comments for Mia Chen post">
                                 <img class="bubble-icon" src="images/bubble.svg" alt="">
                             </button>
                         </div>
@@ -54,7 +54,7 @@
                 </a>
             </article>
 
-            <article class="component" onclick="location.href='community-post-detail.html?post=leo'">
+            <article class="component" data-post-key="leo">
                 <div class="card-visual"></div>
                 <h2 class="post-title">Anyone joining the city marathon?</h2>
                 <p class="post-body">Looking for a 5:30 pace buddy for the first half. Planning a relaxed start and steady fueling every 7K.</p>
@@ -72,14 +72,14 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Leo Park post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=leo#comments';">
+                        <button type="button" class="bubble" aria-label="Open comments for Leo Park post">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component" onclick="location.href='community-post-detail.html?post=ava'">
+            <article class="component" data-post-key="ava">
                 <div class="card-visual"></div>
                 <h2 class="post-title">Foam rolling after hills helped</h2>
                 <p class="post-body">Did 6 short hill repeats, then rolled calves for 8 minutes. Legs felt much lighter on tomorrow's shakeout.</p>
@@ -97,14 +97,14 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Ava Stone post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=ava#comments';">
+                        <button type="button" class="bubble" aria-label="Open comments for Ava Stone post">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component" onclick="location.href='community-post-detail.html?post=noah'">
+            <article class="component" data-post-key="noah">
                 <div class="card-visual"></div>
                 <h2 class="post-title">Half marathon negative split goal</h2>
                 <p class="post-body">Starting 10 sec/km slower than goal pace, then picking it up after 12K. Anyone else trying this strategy?</p>
@@ -122,14 +122,14 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Noah Kim post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=noah#comments';">
+                        <button type="button" class="bubble" aria-label="Open comments for Noah Kim post">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component" onclick="location.href='community-post-detail.html?post=sofia'">
+            <article class="component" data-post-key="sofia">
                 <div class="card-visual"></div>
                 <h2 class="post-title">Small win: first 30-minute run</h2>
                 <p class="post-body">Used run-walk intervals and focused on breathing. If you're new too, slowing down really works.</p>
@@ -147,14 +147,14 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=sofia#comments';">
+                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
                 </div>
             </article>
 
-            <article class="component" onclick="location.href='community-post-detail.html?post=susan'">
+            <article class="component" data-post-key="susan">
                 <div class="card-visual"></div>
                 <h2 class="post-title">Big achievement: keep running for 100 days</h2>
                 <p class="post-body">I can't believe I have keep runnging for 100 days. I will tell everyone this news</p>
@@ -172,7 +172,7 @@
                                 <path d="M12 2.6l2.9 5.88 6.49.94-4.69 4.57 1.11 6.46L12 17.4l-5.81 3.05 1.11-6.46L2.61 9.42l6.49-.94L12 2.6z" fill="#ffd34d" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=sofia#comments';">
+                        <button type="button" class="bubble" aria-label="Open comments for Sofia Liu post">
                             <img class="bubble-icon" src="images/bubble.svg" alt="">
                         </button>
                     </div>
@@ -182,7 +182,7 @@
 
         <footer class="group-wrapper">
             <div class="group-2">
-                <button type="button" class="button-start-up" onclick="location.href='community-post-editor.html'" aria-label="Create new item">
+                <button type="button" class="button-start-up" aria-label="Create new item">
                     <img src="images/button-start-up1@2x.png" alt="" aria-hidden="true">
                 </button>
                 <div class="rectangle" aria-hidden="true"></div>
@@ -192,6 +192,7 @@
             </div>
         </footer>
     </main>
+    <script src="js/storage.js"></script>
         <script src="js/pages/community-feed.js"></script>
 </body>
 </html>

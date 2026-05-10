@@ -12,34 +12,34 @@
         <img class="bg" src="images/iphone-17-61-2@2x.png" alt="">
         <div class="top-strip"></div>
 
-        <button class="back-button" onclick="location.href='run-summary.html'" aria-label="Go back">
+        <button class="back-button" type="button" aria-label="Go back">
             <img src="images/vector.svg" alt="">
         </button>
 
         <div class="share-card">
             <div class="share-title">Share to</div>
             <div class="social-grid">
-                <div class="social-item" onclick="shareTo('wechat')">
+                <div class="social-item" data-share-platform="wechat">
                     <div class="social-icon wechat"></div>
                     <span class="social-name">WeChat</span>
                 </div>
-                <div class="social-item" onclick="shareTo('weibo')">
+                <div class="social-item" data-share-platform="weibo">
                     <div class="social-icon weibo"></div>
                     <span class="social-name">Weibo</span>
                 </div>
-                <div class="social-item" onclick="shareTo('qq')">
+                <div class="social-item" data-share-platform="qq">
                     <div class="social-icon qq"></div>
                     <span class="social-name">QQ</span>
                 </div>
-                <div class="social-item" onclick="shareTo('moments')">
+                <div class="social-item" data-share-platform="moments">
                     <div class="social-icon moments"></div>
                     <span class="social-name">Moments</span>
                 </div>
-                <div class="social-item" onclick="shareTo('whatsapp')">
+                <div class="social-item" data-share-platform="whatsapp">
                     <div class="social-icon whatsapp"></div>
                     <span class="social-name">WhatsApp</span>
                 </div>
-                <div class="social-item" onclick="shareTo('tiktok')">
+                <div class="social-item" data-share-platform="tiktok">
                     <div class="social-icon tiktok"></div>
                     <span class="social-name">TikTok</span>
                 </div>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <button class="copy-link-btn" onclick="copyLink()">Copy Link</button>
+        <button class="copy-link-btn" type="button">Copy Link</button>
         <div class="toast" id="toast">Link copied!</div>
         <div class="bottom-bar"></div>
     </div>

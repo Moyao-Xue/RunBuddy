@@ -14,16 +14,11 @@ function attachFavoriteHandlers(root = document) {
 }
 
 function getStoredUserPosts() {
-    try {
-        const storedPosts = JSON.parse(localStorage.getItem("runbuddy_posts") || "[]");
-        return Array.isArray(storedPosts) ? storedPosts : [];
-    } catch (error) {
-        return [];
-    }
+    return Storage.getUserPosts();
 }
 
 function saveStoredUserPosts(posts) {
-    localStorage.setItem("runbuddy_posts", JSON.stringify(posts));
+    Storage.saveUserPosts(posts);
 }
 
 function attachDeleteHandlers(root = document) {
@@ -136,6 +131,64 @@ function escapeHtml(text) {
         .replace(/'/g, "&#39;");
 }
 
+function bindCommunityFeedStaticHandlers() {
+    const backButton = document.querySelector(".pointer-left-button");
+    if (backButton && backButton.dataset.bound !== "true") {
+        backButton.dataset.bound = "true";
+        backButton.addEventListener("click", () => {
+            location.href = "home.html";
+        });
+    }
+
+    const startButton = document.querySelector(".button-start-up");
+    if (startButton && startButton.dataset.bound !== "true") {
+        startButton.dataset.bound = "true";
+        startButton.addEventListener("click", () => {
+            location.href = "community-post-editor.html";
+        });
+    }
+}
+
+function bindStaticCardHandlers() {
+    document.querySelectorAll(".frame .component").forEach((postElement) => {
+        if (postElement.dataset.staticBound === "true") {
+            return;
+        }
+
+        postElement.dataset.staticBound = "true";
+
+        const favoriteButton = postElement.querySelector(".favorite-button");
+        if (favoriteButton && favoriteButton.dataset.favoriteBound !== "true") {
+            favoriteButton.dataset.favoriteBound = "true";
+            favoriteButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                favoriteButton.classList.toggle("is-active");
+            });
+        }
+
+        const bubbleButton = postElement.querySelector(".bubble");
+        if (bubbleButton && bubbleButton.dataset.bubbleBound !== "true") {
+            bubbleButton.dataset.bubbleBound = "true";
+            bubbleButton.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                const postKey = postElement.dataset.postKey;
+                if (postKey) {
+                    location.href = `community-post-detail.html?post=${postKey}#comments`;
+                }
+            });
+        }
+
+        postElement.addEventListener("click", () => {
+            const postKey = postElement.dataset.postKey;
+            if (postKey) {
+                location.href = `community-post-detail.html?post=${postKey}`;
+            }
+        });
+    });
+}
+
 function loadUserPosts() {
     const posts = getStoredUserPosts();
 
@@ -148,9 +201,7 @@ function loadUserPosts() {
         const postElement = document.createElement("article");
         postElement.className = "component";
         postElement.dataset.userPostId = String(post.id);
-        postElement.onclick = () => {
-            location.href = `community-post-detail.html?post=user_${post.id}`;
-        };
+        postElement.dataset.postKey = `user_${post.id}`;
 
         const title = (post.title || `My Post #${index + 1}`).trim();
         const content = (post.content || post.text || "No content").trim();
@@ -178,7 +229,7 @@ function loadUserPosts() {
                             <path d="M4 7h16M9 7V5h6v2m-7 0l1 12h6l1-12" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button type="button" class="bubble" aria-label="Open comments" onclick="event.preventDefault(); event.stopPropagation(); location.href='community-post-detail.html?post=user_${post.id}#comments';">
+                    <button type="button" class="bubble" aria-label="Open comments">
                         <img class="bubble-icon" src="images/bubble.svg" alt="">
                     </button>
                 </div>
@@ -190,6 +241,7 @@ function loadUserPosts() {
 
     attachFavoriteHandlers(frame);
     attachDeleteHandlers(frame);
+    bindStaticCardHandlers();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -197,6 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
     attachFavoriteHandlers();
     attachDeleteHandlers();
     loadUserPosts();
+    bindCommunityFeedStaticHandlers();
+    bindStaticCardHandlers();
 
     const searchInput = document.getElementById("site-search") || document.querySelector(".search-input");
     filterPosts(searchInput ? searchInput.value : "");

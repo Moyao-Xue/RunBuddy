@@ -8,9 +8,7 @@ const loginForm = document.getElementById("loginForm");
         const DEMO_PASSWORD = "123456";
 
         function saveSession(username, mode) {
-            localStorage.setItem("runbuddyUser", username);
-            localStorage.setItem("runbuddyAuthMode", mode);
-            localStorage.setItem("runbuddyLoggedInAt", new Date().toISOString());
+            Storage.saveLoginSession(username, mode);
         }
 
         function goHome() {

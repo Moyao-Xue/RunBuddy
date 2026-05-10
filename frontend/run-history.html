@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunBuddy - Running History</title>
-        <link rel="stylesheet" href="css/pages/run-history.css" />
+    <link rel="stylesheet" href="css/pages/run-history.css" />
 </head>
 <body>
     <div class="phone-container">
         <img class="bg" src="images/iphone-17-61-2@2x.png" alt="" aria-hidden="true">
-        <!-- 顶部导航 -->
+        <!-- Top navigation -->
         <div class="header">
             <h1 class="header-title">My Runs</h1>
-            <button class="btn-back" onclick="location.href='home.html'" aria-label="Back to home">
+            <button class="btn-back" type="button" aria-label="Back to home">
                 <img src="images/pointer-left.svg" alt="">
             </button>
         </div>
 
-        <!-- 统计摘要 -->
+        <!-- Summary stats -->
         <div class="stats-summary">
             <div class="stat-box">
                 <div class="stat-value" id="totalRuns">0</div>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <!-- 金币统计 -->
+        <!-- Coin stats -->
         <div class="stats-summary" style="top: 200px;">
             <div class="stat-box">
                 <div class="stat-value" id="totalCoins">0</div>
@@ -41,19 +41,18 @@
             </div>
         </div>
 
-        <!-- 滚动历史记录列表 -->
+        <!-- Scrollable history list -->
         <div class="scroll-container" id="historyList">
             <div class="section-title">Recent Activities</div>
             <!-- Records will be dynamically inserted here -->
         </div>
 
-        <!-- 底部按钮 -->
-        <button class="bottom-button" onclick="location.href='monthly-checkin.html'">Monthly Check-in</button>
+        <!-- Bottom button -->
+        <button class="bottom-button" type="button">Monthly Check-in</button>
     </div>
 
-    <!-- LocalStorage 工具模块 -->
+    <!-- LocalStorage utility module -->
     <script src="js/storage.js"></script>
-    
-        <script src="js/pages/run-history.js"></script>
+    <script src="js/pages/run-history.js"></script>
 </body>
 </html>

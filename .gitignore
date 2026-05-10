@@ -1,7 +1,10 @@
-# 忽略 VS Code 配置
+# Ignore VS Code settings
 .vscode/
-# 忽略 Cursor 配置
+
+# Ignore Cursor settings
 .cursor/
-# 也可以忽略系统文件
+
+# Ignore common local and system files
+node_modules/
 .DS_Store
 */.DS_Store

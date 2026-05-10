@@ -51,8 +51,8 @@
             border: none;
             cursor: pointer;
         }
-        
-        /* 按钮1：x:100, y:488, w:87, h:37 */
+
+        /* Button 1: x:100, y:488, w:87, h:37 */
         .btn-1 {
             top: 488px;
             left: 100px;
@@ -60,7 +60,7 @@
             height: 37px;
         }
 
-        /* 按钮2：x:214, y:489, w:82, h:35 */
+        /* Button 2: x:214, y:489, w:82, h:35 */
         .btn-2 {
             top: 489px;
             left: 214px;

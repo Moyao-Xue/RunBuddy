@@ -91,13 +91,7 @@ const posts = {
             }
 
             const postId = postKey.slice(5);
-            let userPosts = [];
-            try {
-                const storedPosts = JSON.parse(localStorage.getItem("runbuddy_posts") || "[]");
-                userPosts = Array.isArray(storedPosts) ? storedPosts : [];
-            } catch (error) {
-                userPosts = [];
-            }
+            const userPosts = Storage.getUserPosts();
 
             const matchedPost = userPosts.find((item) => String(item.id) === postId);
             if (!matchedPost) {
@@ -168,4 +162,12 @@ const posts = {
 
         if (window.location.hash === "#comments") {
             document.getElementById("comments").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        const backButton = document.querySelector(".back-button");
+        if (backButton && backButton.dataset.bound !== "true") {
+            backButton.dataset.bound = "true";
+            backButton.addEventListener("click", () => {
+                location.href = "community-feed.html";
+            });
         }

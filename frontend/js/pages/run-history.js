@@ -21,12 +21,10 @@ function formatDistance(meters) {
     return (meters / 1000).toFixed(2);
 }
 
-function formatPace(pace) {
-    if (!pace || pace <= 0) return "--";
+function formatSpeedKmh(speedKmh) {
+    if (!speedKmh || speedKmh <= 0) return "--";
 
-    const paceMin = Math.floor(pace);
-    const paceSec = Math.round((pace - paceMin) * 60);
-    return `${paceMin}'${paceSec.toString().padStart(2, "0")}`;
+    return `${speedKmh.toFixed(1)} km/h`;
 }
 
 function renderEmptyState(container) {
@@ -40,6 +38,8 @@ function renderEmptyState(container) {
 }
 
 function renderRecordCard(record) {
+    const speedKmh = record.speedKmh ?? record.pace ?? 0;
+
     return `
         <div class="record-card">
             <div class="record-header">
@@ -62,10 +62,10 @@ function renderRecordCard(record) {
                     </div>
                 </div>
                 <div class="record-stat">
-                    <div class="record-icon">P</div>
+                    <div class="record-icon">SPD</div>
                     <div class="record-stat-info">
-                        <span class="record-stat-value">${formatPace(record.pace)}/km</span>
-                        <span class="record-stat-label">Pace</span>
+                        <span class="record-stat-value">${formatSpeedKmh(speedKmh)}</span>
+                        <span class="record-stat-label">Speed</span>
                     </div>
                 </div>
                 <div class="record-stat">
@@ -129,6 +129,25 @@ function renderHistoryList() {
     container.innerHTML = html;
 }
 
+function bindRunHistoryActions() {
+    const backButton = document.querySelector(".btn-back");
+    if (backButton && backButton.dataset.bound !== "true") {
+        backButton.dataset.bound = "true";
+        backButton.addEventListener("click", () => {
+            location.href = "home.html";
+        });
+    }
+
+    const checkInButton = document.querySelector(".bottom-button");
+    if (checkInButton && checkInButton.dataset.bound !== "true") {
+        checkInButton.dataset.bound = "true";
+        checkInButton.addEventListener("click", () => {
+            location.href = "monthly-checkin.html";
+        });
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     renderHistoryList();
+    bindRunHistoryActions();
 });

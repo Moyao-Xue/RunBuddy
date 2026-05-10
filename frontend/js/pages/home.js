@@ -8,6 +8,10 @@ const settingBtn = document.getElementById('settingBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 const settingsModal = document.getElementById('settingsModal');
 const modalClose = document.getElementById('modalClose');
+const runChoiceModal = document.getElementById('runChoiceModal');
+const runChoiceClose = document.getElementById('runChoiceClose');
+const runChoicePhoneBtn = document.getElementById('runChoicePhoneBtn');
+const runChoiceWatchBtn = document.getElementById('runChoiceWatchBtn');
 const recordConfirmModal = document.getElementById('recordConfirmModal');
 const recordConfirmBtn = document.getElementById('recordConfirmBtn');
 const recordRejectBtn = document.getElementById('recordRejectBtn');
@@ -48,6 +52,28 @@ let isRecordConfirmOpen = false;
 
 function navigateTo(url) {
   window.location.href = url;
+}
+
+function openRunChoiceModal() {
+  if (!runChoiceModal) {
+    navigateTo('run-tracker.html');
+    return;
+  }
+
+  modalOverlay.style.display = 'block';
+  runChoiceModal.style.display = 'block';
+}
+
+function closeRunChoiceModal() {
+  if (!runChoiceModal) return;
+
+  runChoiceModal.style.display = 'none';
+  modalOverlay.style.display = 'none';
+}
+
+function chooseRunDevice(device) {
+  closeRunChoiceModal();
+  navigateTo(device === 'watch' ? 'run-tracker-watch.html' : 'run-tracker.html');
 }
 
 function updateStatsDisplay() {
@@ -406,12 +432,23 @@ document.addEventListener('DOMContentLoaded', () => {
 if (recordsBtn) recordsBtn.addEventListener('click', () => navigateTo('community-feed.html'));
 if (activityBtn) activityBtn.addEventListener('click', () => navigateTo('running-guidance.html'));
 if (historyBtn) historyBtn.addEventListener('click', () => navigateTo('run-history.html'));
-if (runBtn) runBtn.addEventListener('click', () => navigateTo('run-tracker.html'));
+if (runBtn) runBtn.addEventListener('click', openRunChoiceModal);
 if (customizeBtn) customizeBtn.addEventListener('click', () => navigateTo('character-customization.html'));
 if (settingBtn) settingBtn.addEventListener('click', openSettingModal);
 if (modalClose) modalClose.addEventListener('click', closeSettingModal);
+if (runChoiceClose) runChoiceClose.addEventListener('click', closeRunChoiceModal);
+if (runChoicePhoneBtn) runChoicePhoneBtn.addEventListener('click', () => chooseRunDevice('phone'));
+if (runChoiceWatchBtn) runChoiceWatchBtn.addEventListener('click', () => chooseRunDevice('watch'));
 if (recordConfirmBtn) recordConfirmBtn.addEventListener('click', savePendingRecordedAudio);
 if (recordRejectBtn) recordRejectBtn.addEventListener('click', discardPendingRecordedAudio);
+
+if (modalOverlay) {
+  modalOverlay.addEventListener('click', () => {
+    if (runChoiceModal && runChoiceModal.style.display === 'block') {
+      closeRunChoiceModal();
+    }
+  });
+}
 
 if (musicSelect) {
   musicSelect.addEventListener('change', (event) => {

@@ -12,7 +12,7 @@
         <img class="bg" src="images/iphone-17-61-2@2x.png" alt="">
         <div class="top-strip" aria-hidden="true"></div>
 
-        <button class="back-button" onclick="location.href='community-feed.html'" aria-label="Go back">
+        <button class="back-button" type="button" aria-label="Go back">
             <img src="images/vector.svg" alt="">
         </button>
 
@@ -26,7 +26,7 @@
                 <textarea id="postContent" placeholder="add content..."></textarea>
             </div>
             <div id="mediaContainer">
-                <button class="add-tile" type="button" aria-label="Add media" onclick="document.getElementById('fileInput').click()">
+                <button class="add-tile" type="button" aria-label="Add media" data-action="add-media">
                     <img src="images/tile-0122-2@2x.png" alt="" id="addIcon">
                 </button>
             </div>
@@ -40,16 +40,17 @@
 
         <div class="success-overlay" id="successOverlay">
             <div class="success-text">Post Successfully!</div>
-            <button class="post-button" onclick="location.href='community-feed.html'">Back</button>
+            <button class="post-button" type="button">Back</button>
         </div>
 
         <div class="post-wrap">
-            <button class="post-button" type="button" onclick="submitPost()">Post Now</button>
+            <button class="post-button" type="button">Post Now</button>
         </div>
 
         <footer class="bottom-bar"></footer>
     </div>
 
+    <script src="js/storage.js"></script>
     <script src="js/pages/community-post-editor.js"></script>
 </body>
 </html>

@@ -44,7 +44,7 @@
             display: block;
         }
 
-        /* 透明按钮 */
+        /* Transparent button */
         .hotspot {
             position: absolute;
             background: transparent;
@@ -52,7 +52,7 @@
             cursor: pointer;
         }
 
-        /* 按钮位置：x:32, y:158, w:61, h:67 */
+        /* Button position: x:32, y:158, w:61, h:67 */
         .btn-next {
             top: 158px;
             left: 32px;
@@ -60,4 +60,4 @@
             height: 67px;
         }
 
-        /* 右上角按钮：x:333, y:12, w:59, h:57 */
+        /* Top-right button: x:333, y:12, w:59, h:57 */

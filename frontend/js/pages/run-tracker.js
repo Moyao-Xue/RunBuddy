@@ -4,7 +4,7 @@ const backBtn = document.getElementById('backBtn');
 const settingBtn = document.getElementById('settingBtn');
 
 const statTimeEl = document.getElementById('statTime');
-const statPaceEl = document.getElementById('statPace');
+const statSpeedEl = document.getElementById('statSpeed');
 const statDistanceEl = document.getElementById('statDistance');
 const statHeartRateEl = document.getElementById('statHeartRate');
 const statCaloriesEl = document.getElementById('statCalories');
@@ -73,7 +73,7 @@ let isRunning = false;
 let isPaused = false;
 let isModalOpen = false;
 let isWarningOpen = false;
-let isWarningForPace = false;
+let isWarningForSpeed = false;
 let isInfoOpen = false;
 let isRecordConfirmOpen = false;
 
@@ -824,7 +824,7 @@ function onPositionUpdate(position) {
   }
 
   updateRunnerScreenPosition();
-  mapStatusEl.textContent = `GPS ready (accuracy 卤${Math.round(accuracy)}m)`;
+    mapStatusEl.textContent = `GPS ready (accuracy ~${Math.round(accuracy)}m)`;
 }
 
 function onPositionError(err) {
@@ -1139,9 +1139,9 @@ function finalizeRun(goToSettling = true) {
   const caloriesCoins = Math.floor(caloriesBurned / 10);
   const coinsEarned = baseCoins + distanceCoins + caloriesCoins;
 
-  const avgSpeed = getAverageSpeedKmh();
+  const avgSpeedKmh = getAverageSpeedKmh();
 
-  Storage.recordRun(distanceMeters, elapsed, avgSpeed);
+  Storage.recordRun(distanceMeters, elapsed, avgSpeedKmh);
   Storage.addCoins(coinsEarned);
   Storage.addDistance(distanceMeters);
   Storage.addCalories(caloriesBurned);
@@ -1149,7 +1149,8 @@ function finalizeRun(goToSettling = true) {
   const historyRecord = Storage.addRunToHistory({
     distance: distanceMeters,
     time: elapsed,
-    pace: avgSpeed,
+    speedKmh: avgSpeedKmh,
+    pace: avgSpeedKmh,
     coinsEarned,
     avgHeartRate: latestHeartRate,
     calories: caloriesBurned,
@@ -1164,7 +1165,8 @@ function finalizeRun(goToSettling = true) {
     historyRecordId: historyRecord.id,
     distance: distanceMeters,
     time: elapsed,
-    pace: avgSpeed,
+    speedKmh: avgSpeedKmh,
+    pace: avgSpeedKmh,
     coinsEarned,
     calories: caloriesBurned,
     routePoints: routePoints.map((point) => ({
@@ -1341,13 +1343,13 @@ function getCurrentElapsedMs() {
 function calculateCalories(distanceMeters, elapsedMs) {
   if (elapsedMs <= 0) return 0;
 
-  const pace = getAverageSpeedKmh();
+  const speedKmh = getAverageSpeedKmh();
   let met;
 
-  if (pace < 6) met = 6;
-  else if (pace < 8) met = 7;
-  else if (pace < 10) met = 8.5;
-  else if (pace < 12) met = 10;
+  if (speedKmh < 6) met = 6;
+  else if (speedKmh < 8) met = 7;
+  else if (speedKmh < 10) met = 8.5;
+  else if (speedKmh < 12) met = 10;
   else met = 12;
 
   const hours = elapsedMs / 3600000;
@@ -1355,11 +1357,11 @@ function calculateCalories(distanceMeters, elapsedMs) {
 }
 
 function updateDisplayedMetrics() {
-  const pace = getAverageSpeedKmh();
+  const speedKmh = getAverageSpeedKmh();
   const calories = calculateCalories(totalDistanceMeters, getCurrentElapsedMs());
   const distanceKm = totalDistanceMeters / 1000;
 
-  statPaceEl.textContent = `Pace: ${pace.toFixed(1)} km/h`;
+  statSpeedEl.textContent = `Speed: ${speedKmh.toFixed(1)} km/h`;
   statDistanceEl.textContent = `Distance: ${distanceKm.toFixed(2)} km`;
   statHeartRateEl.textContent = `Heart rate: ${latestHeartRate || 0} bpm`;
   statCaloriesEl.textContent = calories;
@@ -1374,7 +1376,7 @@ function updateStats() {
 }
 
 function checkMilestonesAndWarnings() {
-  const pace = getAverageSpeedKmh();
+  const speedKmh = getAverageSpeedKmh();
   const currentMilestone = Math.floor(totalDistanceMeters / 1000);
 
   if (currentMilestone > distanceMilestone && !isInfoOpen && !isWarningOpen) {
@@ -1383,7 +1385,7 @@ function checkMilestonesAndWarnings() {
   }
 
   if (minSpeedLimit !== null && !isWarningOpen && !isInfoOpen) {
-    if (pace < minSpeedLimit) {
+    if (speedKmh < minSpeedLimit) {
       showWarningModal(true);
     }
   }
@@ -1395,9 +1397,9 @@ function checkMilestonesAndWarnings() {
   }
 
   if (isWarningOpen && !isInfoOpen) {
-    if (isWarningForPace && minSpeedLimit !== null && pace >= minSpeedLimit) {
+    if (isWarningForSpeed && minSpeedLimit !== null && speedKmh >= minSpeedLimit) {
       closeWarningModal();
-    } else if (!isWarningForPace && maxHeartRateLimit !== null && latestHeartRate <= maxHeartRateLimit) {
+    } else if (!isWarningForSpeed && maxHeartRateLimit !== null && latestHeartRate <= maxHeartRateLimit) {
       closeWarningModal();
     }
   }
@@ -1490,11 +1492,11 @@ function closeSettingModal() {
   resumeFromModal();
 }
 
-function showWarningModal(forPace = true) {
+function showWarningModal(forSpeed = true) {
   if (isPaused || !isRunning || isWarningOpen) return;
 
   isWarningOpen = true;
-  isWarningForPace = forPace;
+  isWarningForSpeed = forSpeed;
 
   modalOverlay.style.display = 'block';
   warningModal.style.display = 'block';
@@ -1503,9 +1505,9 @@ function showWarningModal(forPace = true) {
   const warningTitle = document.getElementById('warningTitle');
   const warningText = document.getElementById('warningText');
 
-  if (forPace) {
+  if (forSpeed) {
     warningTitle.textContent = 'Warning';
-    warningText.innerHTML = 'your pace too slow!<br>Pay attention to your exercise intensity.';
+    warningText.innerHTML = 'your speed is too low!<br>Pay attention to your exercise intensity.';
   } else {
     warningTitle.textContent = 'Heart Rate Alert';
     warningText.innerHTML = 'your heart rate is too high!<br>Please slow down to stay safe.';
@@ -1518,7 +1520,7 @@ function closeWarningModal() {
   if (!isWarningOpen) return;
 
   isWarningOpen = false;
-  isWarningForPace = false;
+  isWarningForSpeed = false;
 
   modalOverlay.style.display = 'none';
   warningModal.style.display = 'none';

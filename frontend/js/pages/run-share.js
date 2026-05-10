@@ -52,3 +52,32 @@ function showToast(message) {
         toast.classList.remove("show");
     }, 2000);
 }
+
+function bindRunShareActions() {
+    const backButton = document.querySelector(".back-button");
+    if (backButton && backButton.dataset.bound !== "true") {
+        backButton.dataset.bound = "true";
+        backButton.addEventListener("click", () => {
+            location.href = "run-summary.html";
+        });
+    }
+
+    document.querySelectorAll(".social-item[data-share-platform]").forEach((item) => {
+        if (item.dataset.bound === "true") {
+            return;
+        }
+
+        item.dataset.bound = "true";
+        item.addEventListener("click", () => {
+            shareTo(item.dataset.sharePlatform);
+        });
+    });
+
+    const copyButton = document.querySelector(".copy-link-btn");
+    if (copyButton && copyButton.dataset.bound !== "true") {
+        copyButton.dataset.bound = "true";
+        copyButton.addEventListener("click", copyLink);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", bindRunShareActions);

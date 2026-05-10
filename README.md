@@ -1,74 +1,87 @@
 # RunBuddy
 
-## About RunBuddy
+RunBuddy is a coursework demo prototype for a mobile-first running companion web app, built with HTML, CSS, and JavaScript. It demonstrates live running tracking, gamified rewards, character customization, community pages, and beginner running guidance in a browser-based experience.
 
-RunBuddy is a gamified companion running app designed to help new runners build consistent running habits. By integrating character development into traditional running app features, we make running more engaging and motivating, solving the common problem of giving up easily for beginners. In addition to core running functions, we provide a community platform for runners to communicate and share experiences, as well as instructional videos to guide users in running correctly and safely.
+This repository is not the final production version of the application. It is the implemented demo used to present the core concept and working flows for the coursework submission.
 
-## Key Features
+## Demo Scope
 
-- **Gamified Character Development**: Create and cultivate your unique running companion. Your character's growth (level, attributes, appearance) is directly linked to your running achievements (distance, duration, frequency), making every run meaningful and rewarding.
-- **Core Running Tools**: Track your running data in real time, including distance, pace, duration, calories burned, and route. Automatically record and analyze your running history to help you set reasonable goals.
-- **Community Exchange Platform**: Connect with other runners, share running experiences, post progress, join group challenges, and get encouragement and support from peers to keep running motivation high.
-- **Instructional Videos**: Provide professional running guidance videos, covering correct running posture, warm-up and cool-down exercises, injury prevention, and training plans, helping beginners start running scientifically.
+- Front-end only, with no backend or database
+- No package install or build step is required
+- Persistent data stored in `localStorage`
+- Optimized for an iPhone 17 Pro style viewport (`393 x 852`)
+- Best experience on HTTPS hosting or a local HTTP server
 
-## Core Playful Features
+## Implemented Demo Modules
 
-1. **Interactive Running Game**: Real-time running simulation with animated character, scrolling backgrounds, and dynamic pace tracking
-2. **Gamification System**: Earn coins for completing runs, tracked with persistent statistics
-3. **Character Customization**: Unlock and equip different outfits (jackets, pants, caps) using earned coins
-4. **Audio Feedback**: Background music and voice encouragement during runs
-5. **Achievement Alerts**: Milestone notifications every 1000 meters with visual/audio feedback
-6. **Health Warnings**: Real-time pace and heart rate monitoring with safety alerts
+### Running System
 
-## Technology Stack
+- Start, pause, and end a run
+- Live time, speed, distance, heart rate, and calorie tracking
+- Route tracking on a live map
+- Pace and heart-rate warning prompts
+- Milestone alerts and coin rewards
+- Background music and custom encouragement audio recording
+- Desktop and watch-style running layouts
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Storage**: LocalStorage (client-side data persistence)
-- **Audio**: Web Audio API, HTML5 Audio elements
-- **Animation**: CSS transitions, JavaScript requestAnimationFrame
-- **Deployment**: GitHub Pages
+### Progress and History
 
-## Project Repository
+- Persistent total stats dashboard
+- Run history and run summary pages
+- Share and report preview/export flow
+- Monthly check-in page
 
-**Source Code**: [https://github.com/Moyao-Xue/RunBuddy](https://github.com/Moyao-Xue/RunBuddy)
+### Character and Shop System
+
+- Character customization
+- Wardrobe overview and outfit cart
+- Jacket, pants, cap, and academy outfit pages
+- Unlockable items stored locally
+
+### Community and Guidance
+
+- Community feed, search, post editor, and post detail pages
+- Running guidance page for beginner users
+- Client-side login and session entry flow
+
+## Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- `localStorage` for client-side persistence
+- Browser APIs: Geolocation, MediaRecorder, and Audio
+- Leaflet for map rendering
+- Static hosting on GitHub Pages or any other HTTP server
+
+## Demo Links
+
+- Source code: https://github.com/Moyao-Xue/RunBuddy
+- Demo preview: https://moyao-xue.github.io/RunBuddy/
+- Process portfolio: https://adam-aiaiai.github.io/process-portfolio/
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 
-- A modern web browser (Chrome, Firefox, Edge, Safari)
-- Git (for cloning the repository)
+- A modern browser such as Chrome, Edge, Firefox, or Safari
+- Network access for the Leaflet CDN and map tiles
+- HTTPS or `localhost` for geolocation and microphone features
 
-### Installation
+### Run Locally
 
-1. Clone the repository:
+1. Open `index.html` to enter the onboarding flow.
+2. Or serve the project with a local HTTP server:
+
    ```bash
-   git clone https://github.com/Moyao-Xue/RunBuddy.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd RunBuddy
-   ```
-
-3. Open `index.html` in your web browser, or use a local server:
-   ```bash
-   # Using Python
    python -m http.server 8000
-
-   # Using Node.js
-   npx serve
    ```
 
-4. Access the app at `http://localhost:8000`
+3. Visit `http://localhost:8000`.
 
-## Project Live Demo
+### Recommended Flow
 
-Access the hosted application: **[RunBuddy Live Demo](https://moyao-xue.github.io/RunBuddy/)**
-
-## Project Website
-
-For more detailed information about the RunBuddy system, including product demonstrations, feature introductions, and team information, please visit: **[RunBuddy Process Portfolio](https://adam-aiaiai.github.io/process-portfolio/)**
+`index.html` -> `frontend/home.html` -> `frontend/run-tracker.html` -> `frontend/run-summary.html` -> `frontend/run-share.html`
 
 ## Project Structure
 
@@ -81,8 +94,13 @@ RunBuddy/
 - ai_logs/
   - README.md
 - frontend/
-  - *.html (semantic page names)
+  - *.html
+  - archive/
+    - legacy-assets/
+    - legacy-backups/
+  - audio/
   - css/
+    - main.css
     - pages/
       - onboarding.css
       - home.css
@@ -90,7 +108,10 @@ RunBuddy/
       - run-tracker-watch.css
       - run-summary.css
       - run-share.css
-      - ...other page-level styles
+      - run-report-preview.css
+      - run-history.css
+      - ...other page styles
+  - images/
   - js/
     - storage.js
     - pages/
@@ -98,42 +119,37 @@ RunBuddy/
       - home.js
       - run-tracker.js
       - run-summary.js
-      - run-report-exporter.js
-      - ...other page-level scripts
+      - run-share.js
+      - run-report-preview.js
+      - run-history.js
+      - ...other page scripts
     - vendor/
-  - images/
-  - audio/
-  - archive/
+      - html2canvas.min.js
 ```
-## Data Handling
 
-The system uses LocalStorage for client-side data persistence:
+## Data Persistence
 
-- **Settings**: User preferences (speed limits, music, volume)
-- **Statistics**: Total coins, distance, calories, runs
-- **Run History**: Detailed records of each completed run
-- **User Data**: Username, character level, experience points
+- Settings: minimum speed, maximum heart rate, music choice, encouragement audio, and volume
+- Stats: coins, distance, runs, time, calories, and best records
+- Run history: completed sessions and summary metadata
+- User data: username, level, and experience
+- Community data: login session and user posts
+- Wardrobe data: owned item IDs and customization state
 
-## Responsive Design
+## Browser Notes
 
-The interface is optimized for mobile devices (iPhone 17 Pro: 393x852px) but also works on desktop browsers.
+- Geolocation and microphone access require user permission.
+- Some running features rely on a secure context.
+- Map tiles are loaded from external sources, so network access is required.
+- Clearing browser storage resets stats, history, and settings.
+- Some pages are simplified demo flows rather than production-ready services.
 
 ## AI-Assisted Development
 
-This project utilized AI tools for development. See `ai_logs/README.md` for documentation of AI prompts used for core components.
+- `ai_logs/README.md` records the main prompts used to generate and refine the core components.
+- The generated code was reviewed and adjusted by the team after implementation.
 
-## Contributing
+## Related Documentation
 
-We welcome contributions from the community! If you want to contribute to RunBuddy, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes with clear and concise descriptions.
-4. Push your branch to your forked repository.
-5. Submit a pull request, and we will review it as soon as possible.
-
-## License
-
-## Contact
-
-For questions, suggestions, or feedback, please contact us through the [GitHub repository](https://github.com/Moyao-Xue/RunBuddy).
+- `STANDARDIZATION_REPORT.md` summarizes the filename and folder normalization work.
+- `ai_logs/README.md` contains the AI prompt log for the main modules.
